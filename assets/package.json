@@ -5,7 +5,7 @@
   "version": "1.0.1",
   "symfony": {
     "controllers": {
-      "datatable": {
+      "datatables": {
         "main": "src/controllers/datatables_controller.js",
         "webpackMode": "eager",
         "fetch": "eager",

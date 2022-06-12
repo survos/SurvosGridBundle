@@ -31,7 +31,7 @@ class DatatablesTwigExtension extends AbstractExtension
             // If your filter generates SAFE HTML, you should add a third
             // parameter: ['is_safe' => ['html']]
             // Reference: https://twig.symfony.com/doc/3.x/advanced.html#automatic-escaping
-            new TwigFilter('datatable', [$this, 'datatable'], ['is_safe' => ['html']]),
+            new TwigFilter('datatable', [$this, 'datatable'], ['needs_environment' => true, 'is_safe' => ['html']]),
         ];
     }
 
@@ -63,14 +63,21 @@ class DatatablesTwigExtension extends AbstractExtension
         }
 
     }
-    public function datatable(iterable $data, array $columns, array $columnDefinitions=[]): string
+    public function datatable(Environment $env, iterable $data, array $columns, array $columnDefinitions=[]): string
     {
         if (!count($data)) {
             return '';
         }
 
-        $html = "<table class='table'>";
-        $html .= '<head><tr>';
+        $controllers = [];
+        $_controller = '@survos/datatables-bundle/datatables';
+        $controllers[$_controller] = [];
+
+        $html = sprintf("<div %s>\n", $this->stimulus->renderStimulusController($env, $controllers));
+        $html .= sprintf("<div class='modal' %s>modal here.</div>\n\n", $this->stimulus->renderStimulusTarget($env, $_controller, 'modal'));
+        $html .= sprintf("<table class='table' %s>\n", $this->stimulus->renderStimulusTarget($env, $_controller, 'table'));
+
+        $html .= '<thead><tr>';
         $html .= join("\n", array_map(fn($key) => sprintf("<th>%s</th>", $key), $columns));
         $html .= "</thead><tbody>";
         foreach ($data as $row) {
@@ -82,9 +89,10 @@ class DatatablesTwigExtension extends AbstractExtension
                         $this->renderColumn($columnDefinitions, $key, $row )),
                         $columns)
                 )
-                . "</tr>";
+                . "</tr>\n";
         }
-        $html .= '</tbody></table';
+        $html .= "</tbody></table>\n";
+        $html .= '</div>';
         return $html;
 
     }
@@ -92,7 +100,7 @@ class DatatablesTwigExtension extends AbstractExtension
     {
 
         $controllers = [];
-        $controllers['@survos/datatables-bundle/datatable'] = $attributes;
+        $controllers['@survos/datatables-bundle/datatables'] = $attributes;
 
         $html = '<div '.$this->stimulus->renderStimulusController($env, $controllers).' ';
 //        foreach ($attributes as $name => $value) {
