@@ -1,7 +1,13 @@
 {% block content %}
     {{ _self}} content
 
-    <table class="table">
+{% set _controller = '@survos/datatables-bundle/datatables' %}
+<div
+        {{ stimulus_controller(_controller) }}
+>
+    <div         {{ stimulus_target(_controller, 'modal') }}>Modal</div>
+
+    <table class="table" {{ stimulus_target(_controller, 'table') }}>
         <thead>
         <tr>
             {% for c in columns %}
@@ -37,4 +43,5 @@
         </tbody>
 
     </table>
-{% endblock %}
+</div>
+    {% endblock %}
