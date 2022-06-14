@@ -3,6 +3,7 @@
 namespace Survos\Datatables;
 
 use Gedmo\Mapping\Annotation\Tree;
+use Survos\Datatables\Components\DataTableComponent;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
@@ -36,7 +37,15 @@ class SurvosDatatablesBundle extends AbstractBundle
                 ->addTag('twig.extension')
                 ->setPublic(false)
             ;
+
         }
+
+        $builder->register(DataTableComponent::class)
+            ->setAutowired(true)
+            ->setAutoconfigured(true) // required unless you manually set the tag attributes
+        ;
+//        $builder->register(DataTableComponent::class);
+//        $builder->autowire(DataTableComponent::class);
 
 //        $definition->setArgument('$widthFactor', $config['widthFactor']);
 //        $definition->setArgument('$height', $config['height']);
