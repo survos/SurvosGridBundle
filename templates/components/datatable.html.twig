@@ -1,0 +1,47 @@
+{# templates/components/datatable.html.twig #}
+<div class="alert alert-success">
+    Success! You've created a Twig component! {{ _self }}
+</div>
+
+{% block content %}
+    {{ _self}} content
+
+    <table class="table">
+        <thead>
+        <tr>
+            {% for c in columns %}
+                <th>
+                    {{ c }}
+                </th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in data %}
+            <tr>
+                {% for c in columns %}
+                <td>
+
+
+                    {% if block(c) is defined %}
+                        {% with {row: row} %}
+                            {{ block(c) }}
+                        {% endwith %}
+                    {% else %}
+                        {{ attribute(row, c) }}
+                    {% endif %}
+                    {#                    {% set _block = block(c)|default(false) %}#}
+                    {#                    {% if _block is not empty %}#}
+                    {#                        {{ _block|raw }}#}
+                    {#                    {% else %}#}
+                    {#                        {{ attribute(row, c) }}#}
+                    {#                    {% endif %}#}
+
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+{% endblock %}
