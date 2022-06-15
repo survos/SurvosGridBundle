@@ -11,6 +11,8 @@ import 'datatables.net-fixedheader-bs5';
 
 // import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 // require('./js/Components/DataTables');
+import Routing from '../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+const routes = require('../../../../../public/js/fos_js_routes.json');
 
 import ('datatables.net-bs5');
 import('datatables.net-select-bs5');
@@ -26,17 +28,30 @@ console.log(__dirname);
 // const routes = require('../../../public/js/fos_js_routes.json');
 // const routes = require('../../public/js/fos_js_routes.json');
 // const routes = require('../public/js/fos_js_routes.json');
-// Routing.setRoutingData(routes);
-//     global.Routing = Routing;
-// Twig.extend(function (Twig) {
-//     Twig._function.extend('path', function (route, routeParams) {
-//         console.log(route, routeParams);
-//         return Routing.generate(route, routeParams);
-//         return route;
-//
-//         // return Twig.functions.range(end, start);
-//     });
-// });
+console.error(routes);
+Routing.setRoutingData(routes);
+console.warn(Routing.generate('ost_movie_show', {movieId: 1}));
+console.assert(Routing, 'Routing is not defined');
+// global.Routing = Routing;
+
+Twig.extend(function (Twig) {
+    Twig._function.extend('reverseRange', function (start, end) {
+        console.log(start, end);
+        return start + end;
+    });
+});
+
+    Twig.extend(function (Twig) {
+        Twig._function.extend('path', (route, routeParams) => {
+            // console.log(route, routeParams);
+            let routeUri = Routing.generate(route, routeParams);
+            // console.log(routeUri);
+            return routeUri;
+
+            // return Twig.functions.range(end, start);
+        });
+    });
+
 // try {
 // } catch (e) {
 //     console.error(e);

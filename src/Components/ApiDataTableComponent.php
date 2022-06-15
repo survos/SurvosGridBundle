@@ -17,6 +17,8 @@ class ApiDataTableComponent
     public iterable $data;
     public array $columns;
     public ?string $caller=null;
+    public string $class;
+    public array $filter = [];
     public ?string $stimulusController='@survos/datatables-bundle/api_datatables';
 
 //    #[PreMount]

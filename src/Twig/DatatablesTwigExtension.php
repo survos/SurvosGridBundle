@@ -42,6 +42,7 @@ class DatatablesTwigExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('reverseRange', fn($x, $y) => sprintf("%s-%s", $x, $y)),
             new TwigFunction('api_route', [$this, 'apiCollectionRoute']),
             new TwigFunction('api_item_route', [$this, 'apiCollectionRoute']),
             new TwigFunction('sortable_fields', [$this, 'sortableFields']),
