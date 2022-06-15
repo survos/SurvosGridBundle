@@ -11,8 +11,10 @@
         <thead>
         <tr>
             {% for c in columns %}
+                {% set columnName = c is iterable ? c.data|default(false) : c %}
+                {% set title = c is iterable ? c.title|default(columnName|title) : columnName|title %}
                 <th>
-                    {{ c }}
+                    {{ title }}
                 </th>
             {% endfor %}
         </tr>
@@ -21,23 +23,18 @@
         {% for row in data %}
             <tr>
                 {% for c in columns %}
+                {% set blockName = c is iterable ? c.blockName|default(false) : c %}
+                {% set columnName = c is iterable ? c.data|default(false) : c %}
 <td>
 
 
-    {% if block(c) is defined %}
+    {% if block(blockName) is defined %}
         {% with {row: row} %}
-        {{ block(c) }}
+                {{ block(blockName) }}
         {% endwith %}
         {% else %}
-            {{ attribute(row, c) }}
+            {{ attribute(row, columnName)  }}
     {% endif %}
-{#                    {% set _block = block(c)|default(false) %}#}
-{#                    {% if _block is not empty %}#}
-{#                        {{ _block|raw }}#}
-{#                    {% else %}#}
-{#                        {{ attribute(row, c) }}#}
-{#                    {% endif %}#}
-
                 {% endfor %}
 </td>
             </tr>
