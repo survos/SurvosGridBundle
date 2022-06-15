@@ -2,6 +2,7 @@
 
 namespace Survos\Datatables\Twig;
 
+use ApiPlatform\Core\Api\IriConverterInterface;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -14,13 +15,15 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
+use function Symfony\Component\String\u;
 
 class DatatablesTwigExtension extends AbstractExtension
 {
     public function __construct(
-        private SerializerInterface $serializer,
-        private NormalizerInterface $normalizer,
+        private SerializerInterface   $serializer,
+        private NormalizerInterface   $normalizer,
         private UrlGeneratorInterface $generator,
+        private IriConverterInterface $iriConverter,
         private StimulusTwigExtension $stimulus)
     {
     }
@@ -39,70 +42,56 @@ class DatatablesTwigExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('render_table', [$this, 'renderTable'], ['needs_environment' => true, 'is_safe' => ['html']]),
+            new TwigFunction('api_route', [$this, 'apiCollectionRoute']),
+            new TwigFunction('api_item_route', [$this, 'apiCollectionRoute']),
+            new TwigFunction('sortable_fields', [$this, 'sortableFields']),
+            new TwigFunction('api_table', [$this, 'apiTable'], ['needs_environment' => true, 'is_safe' => ['html']]),
         ];
     }
 
-    private function renderColumn(array $columnDefinitions, $key, $row)
+    public function sortableFields(string $class): array
     {
-        $accessor = new PropertyAccessor();
-        $value = $accessor->getValue($row, $key);
-        if (array_key_exists($key, $columnDefinitions)) {
-            $def = $columnDefinitions[$key];
-            if ($route = $def['route'] ?? false) {
-                return sprintf("<a href='%s'>%s</a>",
-                    $this->generator->generate($route, $accessor->getValue($row, 'rp')),
-                $value
-                );
+        $reflector = new \ReflectionClass($class);
+        foreach ($reflector->getAttributes() as $attribute) {
+            if (!u($attribute->getName())->endsWith('ApiFilter')) {
+                continue;
             }
-
-            return json_encode($def);
-        } else {
-            // maybe figure out by type?
-            return $value;
+            $filter = $attribute->getArguments()[0];
+            if (u($filter)->endsWith('OrderFilter')) {
+                return $attribute->getArguments()['properties'];
+            }
         }
-
+        return [];
     }
-    public function datatable(Environment $env, iterable $data, array $columns, array $columnDefinitions=[]): string
+
+    public function apiCollectionRoute($entityOrClass)
     {
-        if (!count($data)) {
-            return '';
-        }
+        $x = $this->iriConverter->getIriFromResourceClass($entityOrClass);
+        return $x;
+    }
 
-        $controllers = [];
-        $_controller = '@survos/datatables-bundle/datatables';
-        $controllers[$_controller] = [];
+    public function apiItemRoute($entityOrClass, $id)
+    {
+        $x = $this->iriConverter->getIriFromItem($entityOrClass);
+        return $x;
+    }
 
-        $html = sprintf("<div %s>\n", $this->stimulus->renderStimulusController($env, $controllers));
-        $html .= sprintf("<div class='modal' %s>modal here.</div>\n\n", $this->stimulus->renderStimulusTarget($env, $_controller, 'modal'));
-        $html .= sprintf("<table class='table' %s>\n", $this->stimulus->renderStimulusTarget($env, $_controller, 'table'));
-
-        $html .= '<thead><tr>';
-        $html .= join("\n", array_map(fn($key) => sprintf("<th>%s</th>", $key), $columns));
-        $html .= "</thead><tbody>";
-        foreach ($data as $row) {
-
-
-            $html .= "<tr>" .
-                join("\n", array_map(fn($key) =>
-                    sprintf('<td>%s</td>',
-                        $this->renderColumn($columnDefinitions, $key, $row )),
-                        $columns)
-                )
-                . "</tr>\n";
-        }
-        $html .= "</tbody></table>\n";
-        $html .= '</div>';
-        return $html;
+    public function datatable(Environment $env, iterable $data, array $headers = []): string
+    {
+        return "Generate the component...";
 
     }
-    public function renderTable(Environment $env, array $attributes = []): string
+
+    public function apiTable(Environment $env, string $class, array $attributes = []): string
     {
 
         $controllers = [];
-        $controllers['@survos/datatables-bundle/datatables'] = $attributes;
+        $attributes['sortableFields'] = json_encode($this->sortableFields($class));
+        $attributes['apiCall'] = $this->apiCollectionRoute($class);
+        $dtController = '@survos/datatables-bundle/api_datatables';
+        $controllers[$dtController] = $attributes;
 
-        $html = '<div '.$this->stimulus->renderStimulusController($env, $controllers).' ';
+        $html = '<div ' . $this->stimulus->renderStimulusController($env, $controllers) . ' ';
 //        foreach ($attributes as $name => $value) {
 //            if ('data-controller' === $name) {
 //                continue;
@@ -115,7 +104,10 @@ class DatatablesTwigExtension extends AbstractExtension
 //            }
 //        }
 
-        return trim($html).'></div>';
+        $html .= trim($html) . '>';
+        $html .= '</div>';
+        $html .= "CLASS: " . $class;
+        return $html;
     }
 
 }

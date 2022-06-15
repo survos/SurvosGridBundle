@@ -11,25 +11,13 @@ class DataTableComponent
 {
     public iterable $data;
     public array $columns;
-    public ?string  $stimulusController;
-
-    public function mount(
-        iterable $data = [],
-        array    $columns = [],
-        ?string  $stimulusController = '@survos/datatables-bundle/datatables',
-        array $stimulusControllerValues = []
-    )
-    {
-        $this->data = $data;
-        $this->columns = $this->normalizeColumns($columns);
-        $this->stimulusController = $stimulusController;
-    }
+    public ?string $stimulusController='@survos/datatables-bundle/datatables';
 
     /** @return array<string, Column> */
-    private function normalizeColumns(array $columns): iterable
+    public function normalizedColumns(): iterable
     {
         $normalizedColumns = [];
-        foreach ($columns as $c) {
+        foreach ($this->columns as $c) {
             if (is_string($c)) {
                 $c = ['name' => $c];
             }

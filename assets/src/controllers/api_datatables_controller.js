@@ -1,24 +1,47 @@
 import {Controller} from "@hotwired/stimulus";
-// import $ from 'jquery'; // for datatables.
-// // import {SurvosDataTable} from 'survos-datatables';
 
 import {default as axios} from "axios";
-
-// require('./js/Components/DataTables');
-const DataTable = require('datatables.net');
-import ('datatables.net-bs5');
-import('datatables.net-select-bs5');
 // import('datatables.net-buttons-bs5');
-
+import Twig from 'twig/twig.min';
+const DataTable = require('datatables.net');
 import 'datatables.net-scroller';
 import 'datatables.net-scroller-bs5';
 // import 'datatables.net-searchpanes-bs5'
 import 'datatables.net-fixedheader-bs5';
+
+// import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+// require('./js/Components/DataTables');
+
+import ('datatables.net-bs5');
+import('datatables.net-select-bs5');
 // import {Modal} from "bootstrap"; !!
 // https://stackoverflow.com/questions/68084742/dropdown-doesnt-work-after-modal-of-bootstrap-imported
 // import Modal from 'bootstrap/js/dist/modal';
 // import cb from "../js/app-buttons";
 
+
+console.log("loading global.Routing (api_datatables)");
+console.log(__dirname);
+// const routes = require('../../../../public/js/fos_js_routes.json');
+// const routes = require('../../../public/js/fos_js_routes.json');
+// const routes = require('../../public/js/fos_js_routes.json');
+// const routes = require('../public/js/fos_js_routes.json');
+// Routing.setRoutingData(routes);
+//     global.Routing = Routing;
+// Twig.extend(function (Twig) {
+//     Twig._function.extend('path', function (route, routeParams) {
+//         console.log(route, routeParams);
+//         return Routing.generate(route, routeParams);
+//         return route;
+//
+//         // return Twig.functions.range(end, start);
+//     });
+// });
+// try {
+// } catch (e) {
+//     console.error(e);
+//     console.warn("FOS JS Routing not loaded, so path() won't work");
+// }
 
 const contentTypes = {
     'PATCH': 'application/merge-patch+json',
@@ -29,21 +52,49 @@ export default class extends Controller {
     static targets = ['table', 'modal', 'modalBody', 'fieldSearch', 'message'];
     static values = {
         apiCall: String,
+        columnConfiguration: {type: String, default: '[]'},
         sortableFields: String,
         filter: String
     }
 
-    connect() {
-        super.connect(); //
-        this.sortableFields = JSON.parse(this.sortableFieldsValue);
-        this.filter = JSON.parse(this.filterValue||'[]')
-        console.log('hi from ' + this.identifier, this.sortableFields, this.filter);
+    cols() {
+        let x = this.columns.map(  c => {
+            let render = null;
+            if (c.twigTemplate) {
+                let template = Twig.twig({
+                    data: c.twigTemplate
+                });
+                render = ( data, type, row, meta ) => {
+                    return template.render({data: data, row: row})
+                }
+            }
 
-        console.log(this.tableTarget ? 'table target exists' : 'missing table target')
-        console.log(this.modalTarget ? 'target exists' : 'missing modalstarget')
+            return this.c({propertyName: c.name,
+                data: c.name,
+                label: c.title,
+                render: render
+            })
+        });
+        console.warn(x);
+        return x;
+
+    }
+    connect() {
+        this.columns = JSON.parse(this.columnConfigurationValue);
+        console.error(this.columns, this.columnConfigurationValue);
+        // "compile" the custom twig blocks
+        // var columnRender = [];
+
+        this.filter = JSON.parse(this.filterValue||'[]')
+        this.sortableFields = JSON.parse(this.sortableFieldsValue);
+        console.log('hi from ' + this.identifier, this.sortableFields, this.filter);
+        super.connect(); //
+
+        console.log(this.hasTableTarget ? 'table target exists' : 'missing table target')
+        console.log(this.hasModalTarget ? 'target exists' : 'missing modalstarget')
         // console.log(this.fieldSearch ? 'target exists' : 'missing fieldSearch')
         console.log(this.sortableFieldsValue);
-        console.assert(this.modalTarget, "Missing modal target");
+        console.assert(this.hasModalTarget, "Missing modal target");
         this.that = this;
         this.dt = this.initDataTable(this.tableTarget);
 
@@ -82,7 +133,6 @@ export default class extends Controller {
 
     handleTrans(el)
     {
-        console.log(el);
         let transitionButtons = el.querySelectorAll('button.transition');
         // console.log(transitionButtons);
         transitionButtons.forEach( btn => btn.addEventListener('click', (event) => {
@@ -100,37 +150,6 @@ export default class extends Controller {
             // console.dir(event.target.id);
         }));
 
-        if (0)
-            $('.transition').click(function (e) {
-                // console.log(e, e.target);
-                var rowId = $(this).closest('tr').attr('id');
-                // this also works: var rowId2 = $(e.target).closest('tr').attr('id');
-                let transition = $(e.target).closest('button').data('transition');
-                console.warn(transition, rowId);
-                if (transition === undefined) {
-                    console.error("Undefined transition", rowId, $(e.target));
-                }
-                $("#" + rowId).remove();
-
-                if (transition === 'edit') {
-                    let url = $(e.target).closest('button').data('url');
-
-                    // const url = Routing.generate('article_edit', {articleId: rowId});
-                    var strWindowFeatures = "menubar=on,location=no,resizable=yes,scrollbars=yes,status=yes";
-                    let newWindow = window.open(url, "Article_" + rowId, strWindowFeatures);
-                    // var newWindow = window.open(url);
-                    newWindow.focus()
-                    return false;
-
-
-                } else {
-                    cb.transitionHeadlines(this, transition, rowId, 'article_transition')
-                        .done(function (data) {
-                            console.log(data);
-                        });
-
-                }
-            });
     }
 
     requestTransition(route, entityClass, id) {
@@ -251,7 +270,7 @@ export default class extends Controller {
             scrollCollapse: true,
             scroller: {
                 // rowHeight: 90, // @WARNING: Problematic!!
-                displayBuffer: 10,
+                // displayBuffer: 10,
                 loadingIndicator: true,
             },
             // "processing": true,
@@ -364,7 +383,13 @@ export default class extends Controller {
             // dom: '<"js-dt-buttons"B><"js-dt-info"i>ft',
             dom: '<"js-dt-buttons"B><"js-dt-info"i>ft',
             buttons: [], // this.buttons,
-            columns: this.columns(),
+            columns: this.cols(),
+            // columns:
+            //     [
+            //     this.c({
+            //         propertyName: 'name',
+            //     }),
+            // ],
             ajax: (params, callback, settings) => {
 
                 console.warn(params, settings);
@@ -387,7 +412,6 @@ export default class extends Controller {
                         // handle success
                         let hydraData = response.data;
                         var total = hydraData['hydra:totalItems'];
-                        console.log(response);
                         var itemsReturned = hydraData['hydra:member'].length;
                         let first = (params.page-1) * params.itemsPerPage;
                         if (params.search.value) {
@@ -413,7 +437,7 @@ export default class extends Controller {
                         }
 
                         console.log('X', next, hydraData,  'total: ' + total);
-                        console.log(params);
+                        console.warn(params);
                         if ( next && (params.start > 0) ) // && itemsReturned !== params.length
                         {
 
@@ -464,13 +488,13 @@ export default class extends Controller {
     }
 
 
-    get columns() {
-        // if columns isn't overwritten, use the th's in the first tr?  or data-field='status', and then make the api call with _fields=...?
-        // or https://datatables.net/examples/ajax/null_data_source.html
-        return [
-            {title: '@id', data: 'id'}
-        ]
-    }
+    // get columns() {
+    //     // if columns isn't overwritten, use the th's in the first tr?  or data-field='status', and then make the api call with _fields=...?
+    //     // or https://datatables.net/examples/ajax/null_data_source.html
+    //     return [
+    //         {title: '@id', data: 'id'}
+    //     ]
+    // }
 
     actions({prefix = null, actions=['edit','show']} = {})
     {
@@ -537,10 +561,9 @@ export default class extends Controller {
         }
 
         return {
-            title: propertyName,
+            title: label,
             data: propertyName || '',
-            render:
-            render,
+            render: render,
             sortable: this.sortableFields.includes(propertyName)
         }
         // ...function body...

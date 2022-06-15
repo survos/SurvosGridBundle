@@ -1,4 +1,8 @@
 import {Controller} from "@hotwired/stimulus";
+
+// HTML dataable controller, works with DataTableComponent, which generates an HTML table.
+// see api_datatables_controller for remote data loading use API Platform
+
 // import $ from 'jquery'; // for datatables.
 // // import {SurvosDataTable} from 'survos-datatables';
 
@@ -21,15 +25,9 @@ import Modal from 'bootstrap/js/dist/modal';
 // import cb from "../js/app-buttons";
 
 
-const contentTypes = {
-    'PATCH': 'application/merge-patch+json',
-    'POST': 'application/json'
-};
-
 export default class extends Controller {
     static targets = ['table', 'modal', 'modalBody', 'fieldSearch', 'message'];
     static values = {
-        apiCall: {type: String, default: ''},
         sortableFields: {type: String, default: '{}'},
         filter: {type: String, default: ''}
     }
@@ -46,7 +44,19 @@ export default class extends Controller {
         // console.log(this.sortableFieldsValue);
         // console.assert(this.hasModalTarget, "Missing modal target");
         this.that = this;
-        this.dt = this.initDataTable(this.tableTarget);
+
+        this.tableElement = false;
+        if (this.hasTableTarget) {
+            this.tableElement = this.tableTarget;
+        } else if (this.element.tagName === 'TABLE') {
+            this.tableElement = this.element;
+        } else {
+            this.tableElement = document.getElementsByTagName('table')[0];
+        }
+        // else {
+        //     console.error('A table element is required.');
+        // }
+        this.dt = this.initDataTable(this.tableElement);
 
     }
 
@@ -101,37 +111,6 @@ export default class extends Controller {
             // console.dir(event.target.id);
         }));
 
-        if (0)
-            $('.transition').click(function (e) {
-                // console.log(e, e.target);
-                var rowId = $(this).closest('tr').attr('id');
-                // this also works: var rowId2 = $(e.target).closest('tr').attr('id');
-                let transition = $(e.target).closest('button').data('transition');
-                console.warn(transition, rowId);
-                if (transition === undefined) {
-                    console.error("Undefined transition", rowId, $(e.target));
-                }
-                $("#" + rowId).remove();
-
-                if (transition === 'edit') {
-                    let url = $(e.target).closest('button').data('url');
-
-                    // const url = Routing.generate('article_edit', {articleId: rowId});
-                    var strWindowFeatures = "menubar=on,location=no,resizable=yes,scrollbars=yes,status=yes";
-                    let newWindow = window.open(url, "Article_" + rowId, strWindowFeatures);
-                    // var newWindow = window.open(url);
-                    newWindow.focus()
-                    return false;
-
-
-                } else {
-                    cb.transitionHeadlines(this, transition, rowId, 'article_transition')
-                        .done(function (data) {
-                            console.log(data);
-                        });
-
-                }
-            });
     }
 
     requestTransition(route, entityClass, id) {
@@ -230,6 +209,7 @@ export default class extends Controller {
 
     initDataTable(el)
     {
+        console.log('init table ', el);
         // let dt = $(el).DataTable({
         let dt = new DataTable(el, {
             createdRow: this.createdRow,
