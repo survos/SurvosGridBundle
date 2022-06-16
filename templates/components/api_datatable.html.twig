@@ -11,7 +11,6 @@
 {#        {{ attribute(row, c.name)|default() }}#}
 {#    {% endif %}#}
 
-
 <div {{ stimulus_controller(this.stimulusController, {
         class: this.class,
         sortableFields: sortable_fields(this.class),
@@ -26,8 +25,25 @@
 
         filter: filter,
 
+    {% block modal %}
+        MODAL HERE
+        {{ include('@SurvosDatatables/_modal.html.twig', {
+            formUrl: '/',
+            aaController: this.stimulusController,
+            modalController: 'modal-form',
+            modalClass: 'modal-md',
+            modalTitle: this.caller,
+            buttonLabel: 'Show MODAL',
+            modalContent: 'really should load with ajax'
+        }) }}
+    {% endblock %}
 
-<table class="table" {{ stimulus_target(this.stimulusController, 'table') }}></table>
+
+
+    <table class="table" {{ stimulus_target(this.stimulusController, 'table') }}>
+
+
+</table>
         {#                    {% else %} #}
         {#                        {{ attribute(row, c) }} #}
         {#                    {% endif %} #}

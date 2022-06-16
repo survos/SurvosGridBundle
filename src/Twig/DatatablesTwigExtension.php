@@ -86,9 +86,11 @@ class DatatablesTwigExtension extends AbstractExtension
     public function apiTable(Environment $env, string $class, array $attributes = []): string
     {
 
+        assert(class_implements(RouteParametersInterface::class), "Class $class must implement RP");
         $controllers = [];
         $attributes['sortableFields'] = json_encode($this->sortableFields($class));
         $attributes['apiCall'] = $this->apiCollectionRoute($class);
+        $attributes['prefix'] = $class::getPrefix();
         $dtController = '@survos/datatables-bundle/api_datatables';
         $controllers[$dtController] = $attributes;
 

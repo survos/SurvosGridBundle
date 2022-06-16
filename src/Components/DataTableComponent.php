@@ -1,6 +1,5 @@
 <?php
 
-// src/Components/AlertComponent.php
 namespace Survos\Datatables\Components;
 
 use Survos\Datatables\Model\Column;

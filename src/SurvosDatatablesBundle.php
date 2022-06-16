@@ -3,6 +3,7 @@
 namespace Survos\Datatables;
 
 use Gedmo\Mapping\Annotation\Tree;
+use Survos\Datatables\Api\DataProvider\DataTablesCollectionProvider;
 use Survos\Datatables\Components\ApiDataTableComponent;
 use Survos\Datatables\Components\DataTableComponent;
 use Symfony\Component\DependencyInjection\Definition;
@@ -39,8 +40,11 @@ class SurvosDatatablesBundle extends AbstractBundle
                 ->addTag('twig.extension')
                 ->setPublic(false)
             ;
-
         }
+
+        $builder->register(DataTablesCollectionProvider::class)
+            ->setPublic(true)
+            ->setAutowired(true);
 
         $builder->register(DataTableComponent::class)
             ->setAutowired(true)

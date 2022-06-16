@@ -1,9 +1,6 @@
 import {Controller} from "@hotwired/stimulus";
 
 import {default as axios} from "axios";
-// import('datatables.net-buttons-bs5');
-import Twig from 'twig/twig.min';
-const DataTable = require('datatables.net');
 import 'datatables.net-scroller';
 import 'datatables.net-scroller-bs5';
 // import 'datatables.net-searchpanes-bs5'
@@ -12,10 +9,23 @@ import 'datatables.net-fixedheader-bs5';
 // import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 // require('./js/Components/DataTables');
 import Routing from '../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+import Twig from 'twig/twig.min';
+// import('datatables.net-buttons-bs5');
+const DataTable = require('datatables.net');
+
 const routes = require('../../../../../public/js/fos_js_routes.json');
 
 import ('datatables.net-bs5');
 import('datatables.net-select-bs5');
+
+
+Twig.extend(function (Twig) {
+    Twig._function.extend('path', (route, routeParams) => {
+        return Routing.generate(route, routeParams);
+    });
+});
+
+
 // import {Modal} from "bootstrap"; !!
 // https://stackoverflow.com/questions/68084742/dropdown-doesnt-work-after-modal-of-bootstrap-imported
 // import Modal from 'bootstrap/js/dist/modal';
@@ -24,13 +34,8 @@ import('datatables.net-select-bs5');
 
 console.log("loading global.Routing (api_datatables)");
 console.log(__dirname);
-// const routes = require('../../../../public/js/fos_js_routes.json');
-// const routes = require('../../../public/js/fos_js_routes.json');
-// const routes = require('../../public/js/fos_js_routes.json');
-// const routes = require('../public/js/fos_js_routes.json');
 console.error(routes);
 Routing.setRoutingData(routes);
-console.warn(Routing.generate('ost_movie_show', {movieId: 1}));
 console.assert(Routing, 'Routing is not defined');
 // global.Routing = Routing;
 
@@ -40,17 +45,6 @@ Twig.extend(function (Twig) {
         return start + end;
     });
 });
-
-    Twig.extend(function (Twig) {
-        Twig._function.extend('path', (route, routeParams) => {
-            // console.log(route, routeParams);
-            let routeUri = Routing.generate(route, routeParams);
-            // console.log(routeUri);
-            return routeUri;
-
-            // return Twig.functions.range(end, start);
-        });
-    });
 
 // try {
 // } catch (e) {

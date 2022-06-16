@@ -1,8 +1,8 @@
 {
     "name": "survos/datatables-bundle",
-    "description": "incorporate DatatablesNet, using twig and stimulus",
+    "description": "incorporate DatatablesNet, using twig and stimulus, twig_component requires ^2.2",
     "keywords": ["symfony-ux", "symfony6"],
-
+    "minimum-stability": "dev",
     "type": "symfony-bundle",
     "license": "MIT",
 
@@ -19,7 +19,7 @@
         "symfony/config": "^6.1",
         "symfony/dependency-injection": "^6.1",
         "symfony/http-kernel": "^6.1",
-        "symfony/ux-twig-component": "^2.1",
+        "symfony/ux-twig-component": "^2.2",
         "twig/twig": "^2 || ^3.4"
     },
     "autoload": {
