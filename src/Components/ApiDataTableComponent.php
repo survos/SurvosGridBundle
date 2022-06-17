@@ -15,7 +15,7 @@ class ApiDataTableComponent
 
     }
     public iterable $data;
-    public array $columns;
+    public array $columns = [];
     public ?string $caller=null;
     public string $class;
     public array $filter = [];
