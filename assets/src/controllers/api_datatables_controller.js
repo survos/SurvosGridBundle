@@ -13,8 +13,6 @@ const DataTable = require('datatables.net');
 import ('datatables.net-bs5');
 import('datatables.net-select-bs5');
 
-// import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
-// require('./js/Components/DataTables');
 import Twig from 'twig/twig.min';
 
 
@@ -23,8 +21,8 @@ import Routing from '../../../../../vendor/friendsofsymfony/jsrouting-bundle/Res
 const routes = require('../../../../../public/js/fos_js_routes.json');
 
 // if a local test.
-import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
-const routes = require('../../public/js/fos_js_routes.json');
+// import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+// const routes = require('../../public/js/fos_js_routes.json');
 
 Routing.setRoutingData(routes);
 
@@ -104,6 +102,7 @@ export default class extends Controller {
 
         this.filter = JSON.parse(this.filterValue||'[]')
         this.sortableFields = JSON.parse(this.sortableFieldsValue);
+        this.searchableFields = JSON.parse(this.searchableFieldsValue);
         console.log('hi from ' + this.identifier);
         super.connect(); //
 
@@ -275,7 +274,7 @@ export default class extends Controller {
         // let dt = $(el).DataTable({
         let dt = new DataTable(el, {
             language: {
-                searchPlaceholder: this.searchableFields.join(',')
+                searchPlaceholder: 'srch: ' + this.searchableFields.join(',')
             },
             createdRow: this.createdRow,
             // paging: true,
@@ -309,7 +308,7 @@ export default class extends Controller {
             },
 
             // dom: '<"js-dt-buttons"B><"js-dt-info"i>ft',
-            dom: '<"js-dt-buttons"B><"js-dt-info"i>' + '' +t,
+            dom: '<"js-dt-buttons"B><"js-dt-info"i>' + (this.searchableFields.length ? 'f': '') +'t',
             buttons: [], // this.buttons,
             columns: this.cols(),
             // columns:
