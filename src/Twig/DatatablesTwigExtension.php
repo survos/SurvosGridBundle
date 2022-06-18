@@ -89,6 +89,12 @@ class DatatablesTwigExtension extends AbstractExtension
         return $x;
     }
 
+    public function apiCollectionSubresourceRoute($entityOrClass, $object)
+    {
+        $x = $this->iriConverter->getSubresourceIriFromResourceClass($entityOrClass, $object);
+        return $x;
+    }
+
     public function apiItemRoute($entityOrClass, $id)
     {
         $x = $this->iriConverter->getIriFromItem($entityOrClass);
