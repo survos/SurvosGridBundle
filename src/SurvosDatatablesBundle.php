@@ -56,9 +56,7 @@ class SurvosDatatablesBundle extends AbstractBundle
             ->setAutoconfigured(true)
         ;
 
-//        if (0)
         $builder->register(MultiFieldSearchFilter::class)
-//        arguments: [ '@doctrine', '@request_stack', '@?logger' ]
             ->addArgument(new Reference('doctrine.orm.default_entity_manager'))
             ->addArgument(new Reference('request_stack'))
             ->addArgument(new Reference('logger'))
