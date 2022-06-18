@@ -22,8 +22,6 @@ use ApiPlatform\Core\Exception\InvalidArgumentException;
  */
 class MultiFieldSearchFilter extends AbstractContextAwareFilter
 {
-    private $searchParameterName;
-
     /**
      * Add configuration parameter
      * {@inheritdoc}
@@ -34,12 +32,11 @@ class MultiFieldSearchFilter extends AbstractContextAwareFilter
                                 LoggerInterface $logger = null,
                                 array $properties = null,
                                 NameConverterInterface $nameConverter = null,
-                                string $searchParameterName = 'simplesearch')
+                                private string $searchParameterName = 'search')
     {
         parent::__construct($managerRegistry, $requestStack, $logger, $properties, $nameConverter);
-
-        $this->searchParameterName = $searchParameterName;
     }
+
 
     /** {@inheritdoc} */
     protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null, array $context = [])
@@ -51,12 +48,11 @@ class MultiFieldSearchFilter extends AbstractContextAwareFilter
         $words = explode(' ', $value);
         foreach ($words as $word) {
             if (empty($word)) continue;
-
             $this->addWhere($queryBuilder, $word, $queryNameGenerator->generateParameterName($property));
         }
     }
 
-    private function addWhere($queryBuilder, $word, $parameterName)
+    private function addWhere(QueryBuilder $queryBuilder, string $word, string $parameterName)
     {
         $alias = $queryBuilder->getRootAliases()[0];
 
@@ -69,6 +65,7 @@ class MultiFieldSearchFilter extends AbstractContextAwareFilter
         $queryBuilder
             ->andWhere('(' . $orExp . ')')
             ->setParameter($parameterName, strtolower($word). '%');
+//        dd($queryBuilder->getQuery()->getSQL());
     }
 
     /** {@inheritdoc} */

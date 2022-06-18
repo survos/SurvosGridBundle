@@ -44,7 +44,7 @@ class ApiDataTableComponent
             $template = $this->twig->resolveTemplate($this->caller);
             // total hack, but not sure how to get the blocks any other way
             $source = $template->getSourceContext()->getCode();
-            if (preg_match_all('/component.*{% ?block (\w+) %}(.*?){% endblock /ms', $source, $mm, PREG_SET_ORDER)) {
+            if (preg_match_all('/component.*{% ?block (\w+) %}(.*?){% endblock .*?endcomponent/ms', $source, $mm, PREG_SET_ORDER)) {
                 foreach ($mm as $m) {
                     [$all, $columnName, $twigCode] = $m;
                     $customColumnTemplates[$columnName] = trim($twigCode);

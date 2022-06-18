@@ -46,6 +46,7 @@ class DatatablesTwigExtension extends AbstractExtension
             new TwigFunction('api_route', [$this, 'apiCollectionRoute']),
             new TwigFunction('api_item_route', [$this, 'apiCollectionRoute']),
             new TwigFunction('sortable_fields', [$this, 'sortableFields']),
+            new TwigFunction('searchable_fields', [$this, 'searchableFields']),
             new TwigFunction('api_table', [$this, 'apiTable'], ['needs_environment' => true, 'is_safe' => ['html']]),
         ];
     }
@@ -62,6 +63,23 @@ class DatatablesTwigExtension extends AbstractExtension
                 return $attribute->getArguments()['properties'];
             }
         }
+        return [];
+    }
+
+    public function searchableFields(string $class): array
+    {
+
+        $reflector = new \ReflectionClass($class);
+        foreach ($reflector->getAttributes() as $attribute) {
+            if (!u($attribute->getName())->endsWith('ApiFilter')) {
+                continue;
+            }
+            $filter = $attribute->getArguments()[0];
+            if (u($filter)->endsWith('MultiFieldSearchFilter')) {
+                return $attribute->getArguments()['properties'];
+            }
+        }
+
         return [];
     }
 
@@ -89,8 +107,10 @@ class DatatablesTwigExtension extends AbstractExtension
         assert(class_implements(RouteParametersInterface::class), "Class $class must implement RP");
         $controllers = [];
         $attributes['sortableFields'] = json_encode($this->sortableFields($class));
+        $attributes['searchableFields'] = json_encode($this->searchableFields($class));
         $attributes['apiCall'] = $this->apiCollectionRoute($class);
         $attributes['prefix'] = $class::getPrefix();
+        dd($attributes);
         $dtController = '@survos/datatables-bundle/api_datatables';
         $controllers[$dtController] = $attributes;
 

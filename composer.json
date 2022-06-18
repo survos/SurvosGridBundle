@@ -3,6 +3,7 @@
     "description": "incorporate DatatablesNet, using twig and stimulus, twig_component requires ^2.2",
     "keywords": ["symfony-ux", "symfony6"],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "type": "symfony-bundle",
     "license": "MIT",
 
@@ -20,7 +21,9 @@
         "symfony/dependency-injection": "^6.1",
         "symfony/http-kernel": "^6.1",
         "symfony/ux-twig-component": "^2.2",
-        "twig/twig": "^2 || ^3.4"
+        "twig/twig": "^2 || ^3.4",
+        "doctrine/persistence": "^2.0 || ^3.0",
+        "doctrine/orm": "^2.12"
     },
     "autoload": {
         "psr-4": {

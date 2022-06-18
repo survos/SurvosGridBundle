@@ -21,7 +21,7 @@ import 'datatables.net-fixedheader-bs5';
 
 // import {Modal} from "bootstrap"; !!
 // https://stackoverflow.com/questions/68084742/dropdown-doesnt-work-after-modal-of-bootstrap-imported
-import Modal from 'bootstrap/js/dist/modal';
+// import Modal from 'bootstrap/js/dist/modal';
 // import cb from "../js/app-buttons";
 
 

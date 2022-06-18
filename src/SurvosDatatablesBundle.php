@@ -4,6 +4,7 @@ namespace Survos\Datatables;
 
 use Gedmo\Mapping\Annotation\Tree;
 use Survos\Datatables\Api\DataProvider\DataTablesCollectionProvider;
+use Survos\Datatables\Api\Filter\MultiFieldSearchFilter;
 use Survos\Datatables\Components\ApiDataTableComponent;
 use Survos\Datatables\Components\DataTableComponent;
 use Symfony\Component\DependencyInjection\Definition;
@@ -54,6 +55,15 @@ class SurvosDatatablesBundle extends AbstractBundle
             ->setAutowired(true)
             ->setAutoconfigured(true)
         ;
+
+//        if (0)
+        $builder->register(MultiFieldSearchFilter::class)
+//        arguments: [ '@doctrine', '@request_stack', '@?logger' ]
+            ->addArgument(new Reference('doctrine.orm.default_entity_manager'))
+            ->addArgument(new Reference('request_stack'))
+            ->addArgument(new Reference('logger'))
+            ->addTag('api_platform.filter');
+
 //        $builder->register(DataTableComponent::class);
 //        $builder->autowire(DataTableComponent::class);
 

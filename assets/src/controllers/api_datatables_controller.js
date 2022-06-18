@@ -5,19 +5,28 @@ import 'datatables.net-scroller';
 import 'datatables.net-scroller-bs5';
 // import 'datatables.net-searchpanes-bs5'
 import 'datatables.net-fixedheader-bs5';
-
-// import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
-// require('./js/Components/DataTables');
-import Routing from '../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
-import Twig from 'twig/twig.min';
-// import('datatables.net-buttons-bs5');
 const DataTable = require('datatables.net');
+// import('datatables.net-buttons-bs5');
 
-const routes = require('../../../../../public/js/fos_js_routes.json');
+
 
 import ('datatables.net-bs5');
 import('datatables.net-select-bs5');
 
+// import Routing from '../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+// require('./js/Components/DataTables');
+import Twig from 'twig/twig.min';
+
+
+// if component
+import Routing from '../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+const routes = require('../../../../../public/js/fos_js_routes.json');
+
+// if a local test.
+import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+const routes = require('../../public/js/fos_js_routes.json');
+
+Routing.setRoutingData(routes);
 
 Twig.extend(function (Twig) {
     Twig._function.extend('path', (route, routeParams) => {
@@ -28,21 +37,16 @@ Twig.extend(function (Twig) {
 
 // import {Modal} from "bootstrap"; !!
 // https://stackoverflow.com/questions/68084742/dropdown-doesnt-work-after-modal-of-bootstrap-imported
-// import Modal from 'bootstrap/js/dist/modal';
+import Modal from 'bootstrap/js/dist/modal';
 // import cb from "../js/app-buttons";
 
 
-console.log("loading global.Routing (api_datatables)");
-console.log(__dirname);
-console.error(routes);
-Routing.setRoutingData(routes);
 console.assert(Routing, 'Routing is not defined');
 // global.Routing = Routing;
 
 Twig.extend(function (Twig) {
-    Twig._function.extend('reverseRange', function (start, end) {
-        console.log(start, end);
-        return start + end;
+    Twig._function.extend('path', (route, routeParams) => {
+        return Routing.generate(route, routeParams);
     });
 });
 
@@ -63,6 +67,7 @@ export default class extends Controller {
         apiCall: String,
         columnConfiguration: {type: String, default: '[]'},
         sortableFields: String,
+        searchableFields: {type: String, default: '[]'},
         filter: String
     }
 
@@ -78,31 +83,34 @@ export default class extends Controller {
                 }
             }
 
+            if (c.name === '_actions') {
+                return this.actions({prefix: c.prefix, actions: c.actions})
+            }
+
             return this.c({propertyName: c.name,
                 data: c.name,
                 label: c.title,
                 render: render
             })
         });
-        console.warn(x);
         return x;
 
     }
     connect() {
+
         this.columns = JSON.parse(this.columnConfigurationValue);
-        console.error(this.columns, this.columnConfigurationValue);
         // "compile" the custom twig blocks
         // var columnRender = [];
 
         this.filter = JSON.parse(this.filterValue||'[]')
         this.sortableFields = JSON.parse(this.sortableFieldsValue);
-        console.log('hi from ' + this.identifier, this.sortableFields, this.filter);
+        console.log('hi from ' + this.identifier);
         super.connect(); //
 
-        console.log(this.hasTableTarget ? 'table target exists' : 'missing table target')
-        console.log(this.hasModalTarget ? 'target exists' : 'missing modalstarget')
-        // console.log(this.fieldSearch ? 'target exists' : 'missing fieldSearch')
-        console.log(this.sortableFieldsValue);
+        // console.log(this.hasTableTarget ? 'table target exists' : 'missing table target')
+        // console.log(this.hasModalTarget ? 'target exists' : 'missing modalstarget')
+        // // console.log(this.fieldSearch ? 'target exists' : 'missing fieldSearch')
+        // console.log(this.sortableFieldsValue);
         console.assert(this.hasModalTarget, "Missing modal target");
         this.that = this;
         this.dt = this.initDataTable(this.tableTarget);
@@ -167,7 +175,7 @@ export default class extends Controller {
 
     addButtonClickListener(dt)
     {
-        console.log("Listening for transition events");
+        console.log("Listening for button.transition and button .btn-modal clicks events");
 
         dt.on('click', 'tr td button.transition',  ($event) => {
             console.log($event.currentTarget);
@@ -182,7 +190,8 @@ export default class extends Controller {
 
         });
 
-        dt.on('click', 'tr td button .modal',  ($event, x) => {
+        // dt.on('click', 'tr td button .btn-modal',  ($event, x) => {
+        dt.on('click', 'tr td button ',  ($event, x) => {
             console.log($event, $event.currentTarget);
             var data = dt.row( $event.currentTarget.closest('tr') ).data();
             console.log(data, $event, x);
@@ -262,8 +271,12 @@ export default class extends Controller {
             'Content-Type': 'application/json'
         };
 
+
         // let dt = $(el).DataTable({
         let dt = new DataTable(el, {
+            language: {
+                searchPlaceholder: this.searchableFields.join(',')
+            },
             createdRow: this.createdRow,
             // paging: true,
             scrollY: '70vh', // vh is percentage of viewport height, https://css-tricks.com/fun-viewport-units/
@@ -287,110 +300,16 @@ export default class extends Controller {
 
             initComplete: (obj, data) => {
                 this.handleTrans(el);
-                console.log(obj, data);
                 let xapi = new DataTable.Api(obj);
                 // console.log(xapi);
                 // console.log(xapi.table);
 
                 // this.addRowClickListener(dt);
                 this.addButtonClickListener(dt);
-
-                return; // forget it, not worth the effort.
-
-
-                // https://datatables.net/reference/api/
-                // console.error(obj.oApi, el, dt);
-                // console.warn(Object.getOwnPropertyNames(obj).filter(item => typeof obj[item] === 'function'));
-                // console.warn(Object.getOwnPropertyNames(obj).filter(item => typeof obj[item] !== 'function'));
-                let tr = el.querySelector('thead tr');
-                let trClone = tr.cloneNode(true);
-
-                trClone.classList.add('filters');
-
-                // i give up on putting it in the table, so move it to above the table
-                el.querySelector('thead').insertBefore(trClone, tr);
-                // this.fieldSearchTarget.append(trClone);
-                // console.log(el);
-                // el.querySelector('.js-dt-info').insert(trClone);
-
-
-
-                console.log(el.querySelector('thead'));
-
-                // const trClone = JSON.parse(JSON.stringify(tr)); // {...tr}; //  Object.assign({}, tr);
-                console.warn(trClone);
-
-                // $('thead tr').clone(true).addClass('filters').appendTo( '#example thead' );
-
-                console.error('init complete, set up footer');
-                console.log(trClone.childNodes);
-
-                let columns = this.columns();
-                for (let i = 0; i < trClone.children.length; i++) {
-                    let th = trClone.children[i];
-                    let column = columns[i];
-
-                    const input = document.createElement("input");
-                    input.setAttribute("type", "text");
-                    input.setAttribute("placeholder", column.data);
-                    th.appendChild(input);
-
-                    // console.log(th, column);
-                }
-                return;
-
-                trClone.children.forEach( (node, index, parent) => {
-                    console.log(index, node);
-                });
-                this.columns().forEach( (column, index) => {
-                    // var cell = trClone.insertCell(index);
-                    var headerCell = document.createElement("TH");
-                    var cell = trClone.append(headerCell);
-
-                    // console.log(column, index, cell);
-                    // cell.innerHTML = column.data;
-
-                    const input = document.createElement("input");
-                    input.setAttribute("type", "text");
-                    input.setAttribute("placeholder", column.data);
-                    headerCell.appendChild(input);
-                });
-                console.log(trClone);
-
-                // this.initFooter(trClone);
-                // var api = event.api();
-                return;
-
-
-                var api = this.api();
-                // For each column
-                console.log(api.columns());
-                api.columns().eq(0).each(function (colIdx) {
-                    // Set the header cell to contain the input element
-                    var cell = $('.filters th').eq($(api.column(colIdx).header()).index());
-                    var title = $(cell).text();
-                    $(cell).html('<input type="text" placeholder="' + title + '" />');
-                    // On every keypress in this input
-                    $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
-                        .off('keyup change')
-                        .on('keyup change', function (e) {
-                            e.stopPropagation();
-                            // Get the search value
-                            $(this).attr('title', $(this).val());
-                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
-                            var cursorPosition = this.selectionStart;
-                            // Search the column for that value
-                            api
-                                .column(colIdx)
-                                .search((this.value != "") ? regexr.replace('{search}', '(((' + this.value + ')))') : "", this.value != "", this.value == "")
-                                .draw();
-                            $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
-                        });
-                });
             },
 
             // dom: '<"js-dt-buttons"B><"js-dt-info"i>ft',
-            dom: '<"js-dt-buttons"B><"js-dt-info"i>ft',
+            dom: '<"js-dt-buttons"B><"js-dt-info"i>' + '' +t,
             buttons: [], // this.buttons,
             columns: this.cols(),
             // columns:
@@ -400,18 +319,12 @@ export default class extends Controller {
             //     }),
             // ],
             ajax: (params, callback, settings) => {
-
-                console.warn(params, settings);
-                // this is the data sent to API platform!
-
-
                 let apiParams = this.dataTableParamsToApiPlatformParams(params);
                 // this.debug &&
                 // console.error(params, apiParams);
                 // console.log(`DataTables is requesting ${params.length} records starting at ${params.start}`, apiParams);
 
                 Object.assign(apiParams, this.filter);
-                console.log(params, apiParams, this.filter);
                 axios.get(this.apiCallValue, {
                     params: apiParams,
                     headers: apiPlatformHeaders
@@ -427,14 +340,16 @@ export default class extends Controller {
                             console.log(`dt search: ${params.search.value}`);
                         }
 
-                        console.log(`dt request: ${params.length} starting at ${params.start}`);
+                        // console.log(`dt request: ${params.length} starting at ${params.start}`);
 
                         // let first = (apiOptions.page - 1) * apiOptions.itemsPerPage;
                         let d = hydraData['hydra:member'];
-                        if (total) {
+                        if (d.length) {
                             console.log(d[0]);
                         }
-                        // console.log(d, itemsReturned, total, params.draw);
+                        // if next page isn't working, make sure api_platform.yaml is correctly configured
+                        // defaults:
+                        //     pagination_client_items_per_page: true
 
                         // if there's a "next" page and we didn't get everything, fetch the next page and return the slice.
                         let next = hydraData["hydra:view"]['hydra:next'];
@@ -445,8 +360,6 @@ export default class extends Controller {
                             recordsFiltered: total, //  itemsReturned,
                         }
 
-                        console.log('X', next, hydraData,  'total: ' + total);
-                        console.warn(params);
                         if ( next && (params.start > 0) ) // && itemsReturned !== params.length
                         {
 
@@ -471,8 +384,6 @@ export default class extends Controller {
                                     console.log(d);
                                 });
                         }
-                        console.log(callbackValues);
-
                         callback(callbackValues);
                     })
                     .catch(function (error) {
@@ -512,7 +423,7 @@ export default class extends Controller {
             let modal_route = prefix + action;
             let icon = icons[action];
             // Routing.generate()
-            return `<button data-modal-route="${modal_route}" class="btn btn-action-${action}" title="${modal_route}"><span class="action-${action} fas fa-${icon}"></span></button>`;
+            return `<button data-modal-route="${modal_route}" class="btn btn-modal btn-action-${action}" title="${modal_route}"><span class="action-${action} fas fa-${icon}"></span></button>`;
         });
 
         // console.log(buttons);
@@ -562,7 +473,7 @@ export default class extends Controller {
                     if (modal_route) {
                         return `<button data-modal-route="${modal_route}" class="btn btn-success">${modal_route}</button>`;
                     } else {
-                        return "<b>" + data + "</b>"
+                        return data;
                     }
                 }
 
@@ -615,7 +526,6 @@ export default class extends Controller {
     }
 
     dataTableParamsToApiPlatformParams(params) {
-        console.error(params);
         let columns = params.columns; // get the columns passed back to us, sanity.
         var apiData = {
             page: 1
@@ -652,7 +562,6 @@ export default class extends Controller {
                 apiData[column.data] = value;
             }
         });
-        console.error(apiData);
 
         if (params.start) {
             // was apiData.page = Math.floor(params.start / params.length) + 1;
