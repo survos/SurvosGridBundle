@@ -32,18 +32,13 @@ export default class extends Controller {
         filter: {type: String, default: ''}
     }
 
+    initalize() {
+        this.initialized = false;
+    }
+
     connect() {
-        super.connect(); //
-        // this.sortableFields = JSON.parse(this.sortableFieldsValue||'[]');
-        // this.filter = JSON.parse(this.filterValue||'[]')
-        // console.log('hi from ' + this.identifier, this.sortableFields, this.filter);
-        //
-        // console.log(this.hasTableTarget ? 'table target exists' : 'missing table target')
-        // console.log(this.hasModalTarget ? 'target exists' : 'missing modalstarget')
-        // // console.log(this.fieldSearch ? 'target exists' : 'missing fieldSearch')
-        // console.log(this.sortableFieldsValue);
-        // console.assert(this.hasModalTarget, "Missing modal target");
-        this.that = this;
+        // super.connect();
+        this.that = this; // for the modal
 
         this.tableElement = false;
         if (this.hasTableTarget) {
@@ -56,8 +51,15 @@ export default class extends Controller {
         // else {
         //     console.error('A table element is required.');
         // }
-        this.dt = this.initDataTable(this.tableElement);
+        if (this.tableElement) {
+            this.dt = this.initDataTable(this.tableElement);
+            this.initialized = true;
+        }
+    }
 
+    disconnect() {
+        console.log('disconnect called.');
+        super.disconnect();
     }
 
     openModal(e) {
@@ -212,6 +214,7 @@ export default class extends Controller {
         console.log('init table ', el);
         // let dt = $(el).DataTable({
         let dt = new DataTable(el, {
+            retrieve: true,
             createdRow: this.createdRow,
             // paging: true,
             scrollY: '70vh', // vh is percentage of viewport height, https://css-tricks.com/fun-viewport-units/

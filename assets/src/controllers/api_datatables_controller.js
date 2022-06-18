@@ -17,8 +17,15 @@ import Twig from 'twig/twig.min';
 
 
 // if component
+let routes = false;
+try {
+    // a path we KNOW is totally bogus and not a module
+    routes = require('../../../../../public/js/fos_js_routes.json');
+} catch {
+    console.log('FOS Routing Bundle needs to be installed to use path() in twigjs templates');
+}
 import Routing from '../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
-const routes = require('../../../../../public/js/fos_js_routes.json');
+
 
 // if a local test.
 // import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
@@ -62,9 +69,9 @@ const contentTypes = {
 export default class extends Controller {
     static targets = ['table', 'modal', 'modalBody', 'fieldSearch', 'message'];
     static values = {
-        apiCall: String,
+        apiCall: {type: String, default: ''},
         columnConfiguration: {type: String, default: '[]'},
-        sortableFields: String,
+        sortableFields: {type: String, default: '[]'},
         searchableFields: {type: String, default: '[]'},
         filter: String
     }
@@ -112,7 +119,6 @@ export default class extends Controller {
         // console.log(this.sortableFieldsValue);
         console.assert(this.hasModalTarget, "Missing modal target");
         this.that = this;
-        this.dt = this.initDataTable(this.tableTarget);
 
     }
 
