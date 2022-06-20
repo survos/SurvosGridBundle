@@ -18,18 +18,17 @@ import Twig from 'twig/twig.min';
 
 // if component
 let routes = false;
-try {
-    // a path we KNOW is totally bogus and not a module
-    routes = require('../../../../../public/js/fos_js_routes.json');
+
+    try {
 } catch {
     console.log('FOS Routing Bundle needs to be installed to use path() in twigjs templates');
 }
-import Routing from '../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 
-
+// import Routing from '../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
+//    routes = require('../../../../../public/js/fos_js_routes.json');
 // if a local test.
-// import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
-// const routes = require('../../public/js/fos_js_routes.json');
+routes = require('../../public/js/fos_js_routes.json');
+import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 
 
 Routing.setRoutingData(routes);
@@ -112,6 +111,7 @@ export default class extends Controller {
         this.sortableFields = JSON.parse(this.sortableFieldsValue);
         this.searchableFields = JSON.parse(this.searchableFieldsValue);
         console.log('hi from ' + this.identifier);
+        console.log('sortable fields: ' + this.sortableFieldsValue);
         super.connect(); //
 
         // console.log(this.hasTableTarget ? 'table target exists' : 'missing table target')
@@ -120,6 +120,21 @@ export default class extends Controller {
         // console.log(this.sortableFieldsValue);
         console.assert(this.hasModalTarget, "Missing modal target");
         this.that = this;
+        this.tableElement = false;
+        if (this.hasTableTarget) {
+            this.tableElement = this.tableTarget;
+        } else if (this.element.tagName === 'TABLE') {
+            this.tableElement = this.element;
+        } else {
+            this.tableElement = document.getElementsByTagName('table')[0];
+        }
+        // else {
+        //     console.error('A table element is required.');
+        // }
+        if (this.tableElement) {
+            this.dt = this.initDataTable(this.tableElement);
+            this.initialized = true;
+        }
 
     }
 
@@ -276,7 +291,7 @@ export default class extends Controller {
             Accept: 'application/ld+json',
             'Content-Type': 'application/json'
         };
-
+        console.log(this.cols());
 
         // let dt = $(el).DataTable({
         let dt = new DataTable(el, {

@@ -36,26 +36,43 @@ class ApiDataTableComponent
 //        return $resolver->resolve($data);
 //    }
 
-    /** @return array<string, Column> */
-    public function normalizedColumns(): iterable
+    private function getTwigBlocks(): iterable
     {
         $customColumnTemplates = [];
         if ($this->caller) {
             $template = $this->twig->resolveTemplate($this->caller);
             // total hack, but not sure how to get the blocks any other way
             $source = $template->getSourceContext()->getCode();
-            if (preg_match_all('/component.*{% ?block (\w+) %}(.*?){% endblock .*?endcomponent/ms', $source, $mm, PREG_SET_ORDER)) {
+            $source = preg_replace('/{#.*?#}/', '', $source);
+
+            // this blows up with nested blocks.
+            // first, get the component twig
+            if (preg_match('/component.*?%}(.*?) {% endcomponent/ms', $source, $mm)) {
+                $twigBlocks = $mm[1];
+            } else {
+                $twigBlocks = $source;
+            }
+            if (preg_match_all('/{% block (.*?) %}(.*?){% endblock/ms', $twigBlocks, $mm, PREG_SET_ORDER)) {
                 foreach ($mm as $m) {
                     [$all, $columnName, $twigCode] = $m;
                     $customColumnTemplates[$columnName] = trim($twigCode);
                 }
             }
         }
+        return $customColumnTemplates;
+    }
+
+    /** @return array<string, Column> */
+    public function normalizedColumns(): iterable
+    {
+//        $normalizedColumns = parent::normalizedColumns();
+
+//        dd($customColumnTemplates);
 //        dd($template->getBlockNames());
 //        dd($template->getSourceContext());
 //        dd($template->getBlockNames());
 //        dump($this->caller);
-        $normalizedColumns = [];
+        $customColumnTemplates = $this->getTwigBlocks();
         foreach ($this->columns as $c) {
             if (is_string($c)) {
                 $c = ['name' => $c];

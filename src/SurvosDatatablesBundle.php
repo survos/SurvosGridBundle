@@ -83,6 +83,20 @@ class SurvosDatatablesBundle extends AbstractBundle
         ;
     }
 
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        $configs = $builder->getExtensionConfig('api_platform');
+//        dd($configs[0]);
+        assert($configs[0]['defaults']['pagination_client_items_per_page'], "pagination_client_items_per_page must be tree in config/api_platform");
+
+        // https://stackoverflow.com/questions/72507212/symfony-6-1-get-another-bundle-configuration-data/72664468#72664468
+//        // iterate in reverse to preserve the original order after prepending the config
+//        foreach (array_reverse($configs) as $config) {
+//            $container->prependExtensionConfig('my_maker', [
+//                'root_namespace' => $config['root_namespace'],
+//            ]);
+//        }
+    }
 
 
 }

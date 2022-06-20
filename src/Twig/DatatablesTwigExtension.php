@@ -44,7 +44,8 @@ class DatatablesTwigExtension extends AbstractExtension
         return [
             new TwigFunction('reverseRange', fn($x, $y) => sprintf("%s-%s", $x, $y)),
             new TwigFunction('api_route', [$this, 'apiCollectionRoute']),
-            new TwigFunction('api_item_route', [$this, 'apiCollectionRoute']),
+            new TwigFunction('api_item_route', [$this, 'apiItemRoute']),
+            new TwigFunction('api_subresource_route', [$this, 'apiCollectionSubresourceRoute']),
             new TwigFunction('sortable_fields', [$this, 'sortableFields']),
             new TwigFunction('searchable_fields', [$this, 'searchableFields']),
             new TwigFunction('api_table', [$this, 'apiTable'], ['needs_environment' => true, 'is_safe' => ['html']]),
@@ -89,17 +90,25 @@ class DatatablesTwigExtension extends AbstractExtension
         return $x;
     }
 
-    public function apiCollectionSubresourceRoute($entityOrClass, $object)
+    public function apiItemRoute($entity)
     {
-        $x = $this->iriConverter->getSubresourceIriFromResourceClass($entityOrClass, $object);
+        $x = $this->iriConverter->getIriFromItem($entity);
         return $x;
     }
 
-    public function apiItemRoute($entityOrClass, $id)
+    public function apiCollectionSubresourceRoute($entityOrClass, $identifiers)
     {
-        $x = $this->iriConverter->getIriFromItem($entityOrClass);
+
+        $x = $this->iriConverter->getSubresourceIriFromResourceClass($entityOrClass,
+            [
+                'imdbId' => $this->apiItemRoute($entityOrClass),
+                'property' => 'subtitles'
+            ]
+        )
+            ;
         return $x;
     }
+
 
     public function datatable(Environment $env, iterable $data, array $headers = []): string
     {
