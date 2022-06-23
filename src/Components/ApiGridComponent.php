@@ -7,12 +7,12 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Twig\Environment;
 
-#[AsTwigComponent('api_datatable', template: '@SurvosGrid/components/api_datatable.html.twig')]
+#[AsTwigComponent('api_grid', template: '@SurvosGrid/components/api_grid.html.twig')]
 class ApiGridComponent
 {
     public function __construct(private Environment $twig, public ?string $stimulusController)
     {
-//        ='@survos/datatables-bundle/api_datatables';
+//        ='@survos/grid-bundle/api_grid';
 
     }
     public iterable $data;
@@ -47,7 +47,7 @@ class ApiGridComponent
         return $customColumnTemplates;
     }
 
-    /** @return array<string, Column> */
+    /** @return array<int, Column> */
     public function normalizedColumns(): iterable
     {
 //        $normalizedColumns = parent::normalizedColumns();
@@ -58,6 +58,7 @@ class ApiGridComponent
 //        dd($template->getBlockNames());
 //        dump($this->caller);
         $customColumnTemplates = $this->getTwigBlocks();
+        $normalizedColumns = [];
         foreach ($this->columns as $c) {
             if (is_string($c)) {
                 $c = ['name' => $c];

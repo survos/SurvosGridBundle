@@ -16,14 +16,16 @@
     "require": {
         "php": "^8.1",
         "api-platform/core": "^2.6",
+        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/orm": "^2.12",
+        "doctrine/persistence": "^2.0 || ^3.0",
         "friendsofsymfony/jsrouting-bundle": "^3.1",
         "symfony/config": "^6.1",
         "symfony/dependency-injection": "^6.1",
         "symfony/http-kernel": "^6.1",
+        "symfony/options-resolver": "^6.1",
         "symfony/ux-twig-component": "^2.2",
-        "twig/twig": "^2 || ^3.4",
-        "doctrine/persistence": "^2.0 || ^3.0",
-        "doctrine/orm": "^2.12"
+        "twig/twig": "^2 || ^3.4"
     },
     "autoload": {
         "psr-4": {

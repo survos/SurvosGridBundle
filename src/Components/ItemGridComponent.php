@@ -8,14 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 
-#[AsTwigComponent('grid', template: '@SurvosGrid/components/grid.html.twig')]
-class GridComponent
+#[AsTwigComponent('datatable', template: '@SurvosGrid/components/datatable.html.twig')]
+class ItemGridComponent
 {
-    public function __construct(private Registry $registry) {}
+    public function __construct() {}
 
     public ?iterable $data=null;
     public array $columns;
-    public ?string $stimulusController='@survos/grid-bundle/grid';
+    public ?string $stimulusController='@survos/grid-bundle/item_grid';
 
     #[PreMount]
     public function preMount(array $parameters = []): array
@@ -28,16 +28,6 @@ class GridComponent
             'columns' => []
         ]);
         $parameters =  $resolver->resolve($parameters);
-        if (is_null($parameters['data'])) {
-            $class = $parameters['class'];
-            assert($class, "Must pass class or data");
-
-            // @todo: something clever to limit memory, use yield?
-            $parameters['data'] =  $this->registry->getRepository($class)->findAll();
-        }
-//        $resolver->setAllowedValues('type', ['success', 'danger']);
-//        $resolver->setRequired('message');
-//        $resolver->setAllowedTypes('message', 'string');
             return $parameters;
 
     }

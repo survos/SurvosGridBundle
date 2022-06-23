@@ -145,7 +145,7 @@ class TwigExtension extends AbstractExtension
         $attributes['apiCall'] = $this->apiCollectionRoute($class);
         $attributes['prefix'] = $class::getPrefix();
         dd($attributes);
-        $dtController = '@survos/datatables-bundle/api_datatables';
+        $dtController = '@survos/grid-bundle/api_grid';
         $controllers[$dtController] = $attributes;
 
         $html = '<div ' . $this->stimulus->renderStimulusController($env, $controllers) . ' ';
