@@ -50,10 +50,12 @@ class SurvosDatatablesBundle extends AbstractBundle
         $builder->register(DataTableComponent::class)
             ->setAutowired(true)
             ->setAutoconfigured(true)
+            ->setArgument('$registry', new Reference('doctrine'))
         ;
         $builder->register(ApiDataTableComponent::class)
             ->setAutowired(true)
             ->setAutoconfigured(true)
+            ->setArgument('$stimulusController', $config['stimulus_controller'])
         ;
 
         $builder->register(MultiFieldSearchFilter::class)
@@ -75,6 +77,7 @@ class SurvosDatatablesBundle extends AbstractBundle
         // since the configuration is short, we can add it here
         $definition->rootNode()
             ->children()
+            ->scalarNode('stimulus_controller')->defaultValue('@survos/datatables-bundle/api_datatables')->end()
             ->scalarNode('widthFactor')->defaultValue(2)->end()
             ->scalarNode('height')->defaultValue(30)->end()
             ->scalarNode('foregroundColor')->defaultValue('green')->end()

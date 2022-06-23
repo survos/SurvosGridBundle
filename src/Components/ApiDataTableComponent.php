@@ -10,8 +10,9 @@ use Twig\Environment;
 #[AsTwigComponent('api_datatable', template: '@SurvosDatatables/components/api_datatable.html.twig')]
 class ApiDataTableComponent
 {
-    public function __construct(private Environment $twig)
+    public function __construct(private Environment $twig, public ?string $stimulusController)
     {
+//        ='@survos/datatables-bundle/api_datatables';
 
     }
     public iterable $data;
@@ -19,22 +20,6 @@ class ApiDataTableComponent
     public ?string $caller=null;
     public string $class;
     public array $filter = [];
-    public ?string $stimulusController='@survos/datatables-bundle/api_datatables';
-
-//    #[PreMount]
-//    public function preMount(array $data): array
-//    {
-//        return [];
-//        dd($data);
-//        // validate data
-//        $resolver = new OptionsResolver();
-//        $resolver->setDefaults(['type' => 'success']);
-//        $resolver->setAllowedValues('type', ['success', 'danger']);
-//        $resolver->setRequired('message');
-//        $resolver->setAllowedTypes('message', 'string');
-//
-//        return $resolver->resolve($data);
-//    }
 
     private function getTwigBlocks(): iterable
     {

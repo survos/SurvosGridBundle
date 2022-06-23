@@ -4,6 +4,7 @@ namespace Survos\Datatables\Twig;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
+use Survos\Datatables\Attribute\Crud;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -44,11 +45,16 @@ class DatatablesTwigExtension extends AbstractExtension
         return [
             new TwigFunction('reverseRange', fn($x, $y) => sprintf("%s-%s", $x, $y)),
             new TwigFunction('api_route', [$this, 'apiCollectionRoute']),
+
             new TwigFunction('api_item_route', [$this, 'apiItemRoute']),
             new TwigFunction('api_subresource_route', [$this, 'apiCollectionSubresourceRoute']),
             new TwigFunction('sortable_fields', [$this, 'sortableFields']),
             new TwigFunction('searchable_fields', [$this, 'searchableFields']),
             new TwigFunction('api_table', [$this, 'apiTable'], ['needs_environment' => true, 'is_safe' => ['html']]),
+
+            // survosCrudBundle?
+            new TwigFunction('browse_route', [$this, 'browseRoute']),
+
         ];
     }
 
@@ -107,6 +113,19 @@ class DatatablesTwigExtension extends AbstractExtension
         )
             ;
         return $x;
+    }
+
+
+    public function browseRoute(string $class) {
+        $reflection = new \ReflectionClass($class);
+        foreach ($reflection->getAttributes(Crud::class) as $attribute) {
+            return $attribute->getArguments()['prefix'] . 'index';
+        }
+        return $class;
+        dd($reflection->getAttributes());
+        return $reflection->getAttributes();
+
+
     }
 
 
