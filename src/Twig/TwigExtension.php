@@ -1,10 +1,10 @@
 <?php
 
-namespace Survos\Datatables\Twig;
+namespace Survos\Grid\Twig;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
-use Survos\Datatables\Attribute\Crud;
+use Survos\Grid\Attribute\Crud;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -18,7 +18,7 @@ use Twig\TwigFunction;
 use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
 use function Symfony\Component\String\u;
 
-class DatatablesTwigExtension extends AbstractExtension
+class TwigExtension extends AbstractExtension
 {
     public function __construct(
         private SerializerInterface   $serializer,

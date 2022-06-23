@@ -1,15 +1,15 @@
 <?php
 
-namespace Survos\Datatables\Components;
+namespace Survos\Grid\Components;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Survos\Datatables\Model\Column;
+use Survos\Grid\Model\Column;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 
-#[AsTwigComponent('datatable', template: '@SurvosDatatables/components/datatable.html.twig')]
-class DataTableComponent
+#[AsTwigComponent('datatable', template: '@SurvosGrid/components/datatable.html.twig')]
+class GridComponent
 {
     public function __construct(private Registry $registry) {}
 

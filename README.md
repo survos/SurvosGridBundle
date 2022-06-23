@@ -1,9 +1,9 @@
-# Survos Datatable Bundle
+# Survos Grid Bundle
 
 Use the DataTables.net javascript library with Symfony, Twig and API Platform.
 
 ```bash
-composer req survos/datatables-bundle
+composer req survos/grid-bundle
 ```
 
 ## 

@@ -1,14 +1,14 @@
 <?php
 
-namespace Survos\Datatables\Components;
+namespace Survos\Grid\Components;
 
-use Survos\Datatables\Model\Column;
+use Survos\Grid\Model\Column;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Twig\Environment;
 
-#[AsTwigComponent('api_datatable', template: '@SurvosDatatables/components/api_datatable.html.twig')]
-class ApiDataTableComponent
+#[AsTwigComponent('api_datatable', template: '@SurvosGrid/components/api_datatable.html.twig')]
+class ApiGridComponent
 {
     public function __construct(private Environment $twig, public ?string $stimulusController)
     {

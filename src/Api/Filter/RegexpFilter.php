@@ -1,7 +1,7 @@
 <?php
 // api/src/Filter/RegexpFilter.php
 
-namespace Survos\Datatables\Api\Filter;
+namespace Survos\Grid\Api\Filter;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;

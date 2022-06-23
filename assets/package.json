@@ -5,14 +5,14 @@
   "version": "1.0.1",
   "symfony": {
     "controllers": {
-      "datatables": {
-        "main": "src/controllers/datatables_controller.js",
+      "grid": {
+        "main": "src/controllers/grid_controller.js",
         "webpackMode": "eager",
         "fetch": "lazy",
         "enabled": true
       },
-      "api_datatables": {
-        "main": "src/controllers/api_datatables_controller.js",
+      "api_grid": {
+        "main": "src/controllers/api_grid_controller.js",
         "webpackMode": "eager",
         "fetch": "lazy",
         "enabled": true

@@ -1,5 +1,5 @@
 {
-    "name": "survos/datatables-bundle",
+    "name": "survos/grid-bundle",
     "description": "incorporate DatatablesNet, using twig and stimulus, twig_component requires ^2.2",
     "keywords": ["symfony-ux", "symfony6"],
     "minimum-stability": "dev",
@@ -27,8 +27,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Survos\\Datatables\\": "src/"
+            "Survos\\Grid\\": "src/"
         }
+    },
+    "scripts": {
+        "phpstan": "vendor/bin/phpstan analyse"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.7",

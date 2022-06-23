@@ -1,5 +1,5 @@
 <?php
-namespace Survos\Datatables\Attribute;
+namespace Survos\Grid\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
