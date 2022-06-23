@@ -102,6 +102,10 @@ export default class extends Controller {
 
     }
     connect() {
+        console.warn("dispatching changeFormUrlEvent");
+        const event = new CustomEvent("changeFormUrlEvent", {formUrl: 'testing formURL!' });
+        window.dispatchEvent(event);
+
 
         this.columns = JSON.parse(this.columnConfigurationValue);
         // "compile" the custom twig blocks
@@ -111,7 +115,6 @@ export default class extends Controller {
         this.sortableFields = JSON.parse(this.sortableFieldsValue);
         this.searchableFields = JSON.parse(this.searchableFieldsValue);
         console.log('hi from ' + this.identifier);
-        console.log('sortable fields: ' + this.sortableFieldsValue);
         super.connect(); //
 
         // console.log(this.hasTableTarget ? 'table target exists' : 'missing table target')
@@ -194,6 +197,11 @@ export default class extends Controller {
 
     }
 
+    // eh... not working
+    get modalController() {
+        return this.application.getControllerForElementAndIdentifier(this.modalTarget, "modal_form")
+    }
+
     addButtonClickListener(dt)
     {
         console.log("Listening for button.transition and button .btn-modal clicks events");
@@ -216,6 +224,10 @@ export default class extends Controller {
             console.log($event, $event.currentTarget);
             var data = dt.row( $event.currentTarget.closest('tr') ).data();
             console.log(data, $event, x);
+            console.warn("dispatching changeFormUrlEvent");
+            const event = new CustomEvent("changeFormUrlEvent", {formUrl: 'test' });
+            window.dispatchEvent(event);
+
 
             let btn = $event.currentTarget;
             let modalRoute = btn.dataset.modalRoute;
@@ -225,15 +237,16 @@ export default class extends Controller {
                 this.modal.show();
                 console.assert(data.uniqueIdentifiers, "missing uniqueIdentifiers, add @Groups to entity")
                 let formUrl = Routing.generate(modalRoute, {...data.uniqueIdentifiers, _page_content_only: 1});
+                console.warn("dispatching changeFormUrlEvent");
+                const event = new CustomEvent("changeFormUrlEvent", {detail: {formUrl: formUrl }});
+                window.dispatchEvent(event);
+                document.dispatchEvent(event);
 
-                axios({
-                    method: 'get', //you can set what request you want to be
-                    url: formUrl,
-                    // data: {id: varID},
-                    // headers: {
-                    //     _page_content_only: '1' // could send blocks that we want??
-                    // }
-                })
+                console.log('getting formURL ' + formUrl);
+
+
+
+                axios.get(formUrl)
                     .then( response => this.modalBodyTarget.innerHTML = response.data)
                     .catch( error => this.modalBodyTarget.innerHTML = error)
                 ;
@@ -291,7 +304,6 @@ export default class extends Controller {
             Accept: 'application/ld+json',
             'Content-Type': 'application/json'
         };
-        console.log(this.cols());
 
         // let dt = $(el).DataTable({
         let dt = new DataTable(el, {
@@ -439,12 +451,15 @@ export default class extends Controller {
 
     actions({prefix = null, actions=['edit','show']} = {})
     {
-        let icons = {edit: 'fas fa-edit', show: 'fas fa-pencil-square'};
+        let icons = {edit: 'fas fa-edit', show: 'fas fa-eye text-success', 'delete': 'fas fa-trash text-danger'};
         let buttons = actions.map( action => {
             let modal_route = prefix + action;
             let icon = icons[action];
+            // return action + ' ' + modal_route;
             // Routing.generate()
-            return `<button data-modal-route="${modal_route}" class="btn btn-modal btn-action-${action}" title="${modal_route}"><span class="action-${action} fas fa-${icon}"></span></button>`;
+
+            return `<button data-modal-route="${modal_route}" class="btn btn-modal btn-action-${action}" 
+title="${modal_route}"><span class="action-${action} fas fa-${icon}"></span></button>`;
         });
 
         // console.log(buttons);
@@ -628,12 +643,10 @@ export default class extends Controller {
 
 // Add some bold text in the new cell:
 //         cell.innerHTML = "<b>This is a table footer</b>";
-        console.log(el);
 
         this.columns().forEach( (column, index) => {
                 var cell = row.insertCell(index);
 
-                console.log(column, index);
                 // cell.innerHTML = column.data;
 
                 const input = document.createElement("input");
