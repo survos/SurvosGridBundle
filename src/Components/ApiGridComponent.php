@@ -1,17 +1,18 @@
 <?php
 
-namespace Survos\Datatables\Components;
+namespace Survos\Grid\Components;
 
-use Survos\Datatables\Model\Column;
+use Survos\Grid\Model\Column;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Twig\Environment;
 
-#[AsTwigComponent('api_datatable', template: '@SurvosDatatables/components/api_datatable.html.twig')]
-class ApiDataTableComponent
+#[AsTwigComponent('api_grid', template: '@SurvosGrid/components/api_grid.html.twig')]
+class ApiGridComponent
 {
-    public function __construct(private Environment $twig)
+    public function __construct(private Environment $twig, public ?string $stimulusController)
     {
+//        ='@survos/grid-bundle/api_grid';
 
     }
     public iterable $data;
@@ -19,22 +20,6 @@ class ApiDataTableComponent
     public ?string $caller=null;
     public string $class;
     public array $filter = [];
-    public ?string $stimulusController='@survos/datatables-bundle/api_datatables';
-
-//    #[PreMount]
-//    public function preMount(array $data): array
-//    {
-//        return [];
-//        dd($data);
-//        // validate data
-//        $resolver = new OptionsResolver();
-//        $resolver->setDefaults(['type' => 'success']);
-//        $resolver->setAllowedValues('type', ['success', 'danger']);
-//        $resolver->setRequired('message');
-//        $resolver->setAllowedTypes('message', 'string');
-//
-//        return $resolver->resolve($data);
-//    }
 
     private function getTwigBlocks(): iterable
     {
@@ -62,7 +47,7 @@ class ApiDataTableComponent
         return $customColumnTemplates;
     }
 
-    /** @return array<string, Column> */
+    /** @return array<int, Column> */
     public function normalizedColumns(): iterable
     {
 //        $normalizedColumns = parent::normalizedColumns();
@@ -73,6 +58,7 @@ class ApiDataTableComponent
 //        dd($template->getBlockNames());
 //        dump($this->caller);
         $customColumnTemplates = $this->getTwigBlocks();
+        $normalizedColumns = [];
         foreach ($this->columns as $c) {
             if (is_string($c)) {
                 $c = ['name' => $c];

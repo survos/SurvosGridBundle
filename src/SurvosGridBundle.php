@@ -1,16 +1,15 @@
 <?php
 
-namespace Survos\Datatables;
+namespace Survos\Grid;
 
-use Gedmo\Mapping\Annotation\Tree;
-use Survos\Datatables\Api\DataProvider\DataTablesCollectionProvider;
-use Survos\Datatables\Api\Filter\MultiFieldSearchFilter;
-use Survos\Datatables\Components\ApiDataTableComponent;
-use Survos\Datatables\Components\DataTableComponent;
+use Survos\Grid\Api\DataProvider\GridCollectionProvider;
+use Survos\Grid\Api\Filter\MultiFieldSearchFilter;
+use Survos\Grid\Components\ApiGridComponent;
+use Survos\Grid\Components\GridComponent;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
-use Survos\Datatables\Twig\DatatablesTwigExtension;
+use Survos\Grid\Twig\TwigExtension;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -18,10 +17,8 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Twig\Environment;
 
-class SurvosDatatablesBundle extends AbstractBundle
+class SurvosGridBundle extends AbstractBundle
 {
-
-    protected string $extensionAlias = 'survos_datatables';
 
     // $config is the bundle Configuration that you usually process in ExtensionInterface::load() but already merged and processed
     /**
@@ -31,7 +28,7 @@ class SurvosDatatablesBundle extends AbstractBundle
     {
         if (class_exists(Environment::class) && class_exists(StimulusTwigExtension::class)) {
             $builder
-                ->setDefinition('survos.datatables_bundle', new Definition(DatatablesTwigExtension::class))
+                ->setDefinition('survos.grid_bundle', new Definition(TwigExtension::class))
                 ->addArgument(new Reference('serializer'))
                 ->addArgument(new Reference('serializer.normalizer.object'))
                 ->addArgument(new Reference('router.default'))
@@ -43,17 +40,19 @@ class SurvosDatatablesBundle extends AbstractBundle
             ;
         }
 
-        $builder->register(DataTablesCollectionProvider::class)
+        $builder->register(GridCollectionProvider::class)
             ->setPublic(true)
             ->setAutowired(true);
 
-        $builder->register(DataTableComponent::class)
+        $builder->register(GridComponent::class)
             ->setAutowired(true)
             ->setAutoconfigured(true)
+            ->setArgument('$registry', new Reference('doctrine'))
         ;
-        $builder->register(ApiDataTableComponent::class)
+        $builder->register(ApiGridComponent::class)
             ->setAutowired(true)
             ->setAutoconfigured(true)
+            ->setArgument('$stimulusController', $config['stimulus_controller'])
         ;
 
         $builder->register(MultiFieldSearchFilter::class)
@@ -62,8 +61,8 @@ class SurvosDatatablesBundle extends AbstractBundle
             ->addArgument(new Reference('logger'))
             ->addTag('api_platform.filter');
 
-//        $builder->register(DataTableComponent::class);
-//        $builder->autowire(DataTableComponent::class);
+//        $builder->register(GridComponent::class);
+//        $builder->autowire(GridComponent::class);
 
 //        $definition->setArgument('$widthFactor', $config['widthFactor']);
 //        $definition->setArgument('$height', $config['height']);
@@ -75,6 +74,7 @@ class SurvosDatatablesBundle extends AbstractBundle
         // since the configuration is short, we can add it here
         $definition->rootNode()
             ->children()
+            ->scalarNode('stimulus_controller')->defaultValue('@survos/grid-bundle/api_grid')->end()
             ->scalarNode('widthFactor')->defaultValue(2)->end()
             ->scalarNode('height')->defaultValue(30)->end()
             ->scalarNode('foregroundColor')->defaultValue('green')->end()

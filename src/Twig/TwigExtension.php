@@ -1,9 +1,10 @@
 <?php
 
-namespace Survos\Datatables\Twig;
+namespace Survos\Grid\Twig;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
+use Survos\Grid\Attribute\Crud;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -17,7 +18,7 @@ use Twig\TwigFunction;
 use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
 use function Symfony\Component\String\u;
 
-class DatatablesTwigExtension extends AbstractExtension
+class TwigExtension extends AbstractExtension
 {
     public function __construct(
         private SerializerInterface   $serializer,
@@ -44,11 +45,16 @@ class DatatablesTwigExtension extends AbstractExtension
         return [
             new TwigFunction('reverseRange', fn($x, $y) => sprintf("%s-%s", $x, $y)),
             new TwigFunction('api_route', [$this, 'apiCollectionRoute']),
+
             new TwigFunction('api_item_route', [$this, 'apiItemRoute']),
             new TwigFunction('api_subresource_route', [$this, 'apiCollectionSubresourceRoute']),
             new TwigFunction('sortable_fields', [$this, 'sortableFields']),
             new TwigFunction('searchable_fields', [$this, 'searchableFields']),
             new TwigFunction('api_table', [$this, 'apiTable'], ['needs_environment' => true, 'is_safe' => ['html']]),
+
+            // survosCrudBundle?
+            new TwigFunction('browse_route', [$this, 'browseRoute']),
+
         ];
     }
 
@@ -110,6 +116,19 @@ class DatatablesTwigExtension extends AbstractExtension
     }
 
 
+    public function browseRoute(string $class) {
+        $reflection = new \ReflectionClass($class);
+        foreach ($reflection->getAttributes(Crud::class) as $attribute) {
+            return $attribute->getArguments()['prefix'] . 'index';
+        }
+        return $class;
+        dd($reflection->getAttributes());
+        return $reflection->getAttributes();
+
+
+    }
+
+
     public function datatable(Environment $env, iterable $data, array $headers = []): string
     {
         return "Generate the component...";
@@ -126,7 +145,7 @@ class DatatablesTwigExtension extends AbstractExtension
         $attributes['apiCall'] = $this->apiCollectionRoute($class);
         $attributes['prefix'] = $class::getPrefix();
         dd($attributes);
-        $dtController = '@survos/datatables-bundle/api_datatables';
+        $dtController = '@survos/grid-bundle/api_grid';
         $controllers[$dtController] = $attributes;
 
         $html = '<div ' . $this->stimulus->renderStimulusController($env, $controllers) . ' ';

@@ -27,8 +27,8 @@
         filter: filter,
 
     {% block modal %}
-        MODAL '@SurvosDatatables/_modal.html.twig HERE
-        {{ include('@SurvosDatatables/_modal.html.twig', {
+        {{ include('@SurvosGrid/_modal.html.twig', {
+            formUrl: '/',
             aaController: this.stimulusController,
             modalController: 'modal-form',
             modalClass: 'modal-md',

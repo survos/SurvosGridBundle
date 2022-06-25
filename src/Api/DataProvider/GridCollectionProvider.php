@@ -1,7 +1,7 @@
 <?php
 // api/src/DataProvider/BlogPostCollectionDataProvider.php
 
-namespace Survos\Datatables\Api\DataProvider;
+namespace Survos\Grid\Api\DataProvider;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\CollectionDataProvider;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
@@ -14,7 +14,7 @@ use ApiPlatform\Core\Exception\RuntimeException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
-class DataTablesCollectionProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface
+class GridCollectionProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface
 {
 
     public function __construct(private CollectionDataProviderInterface $collectionDataProvider,

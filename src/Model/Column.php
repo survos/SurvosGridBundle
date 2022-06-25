@@ -1,6 +1,6 @@
 <?php
 
-namespace Survos\Datatables\Model;
+namespace Survos\Grid\Model;
 
 class Column {
 

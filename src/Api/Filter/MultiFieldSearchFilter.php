@@ -1,6 +1,6 @@
 <?php
 
-namespace Survos\Datatables\Api\Filter;
+namespace Survos\Grid\Api\Filter;
 
 use ApiPlatform\Core\Api\FilterInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
