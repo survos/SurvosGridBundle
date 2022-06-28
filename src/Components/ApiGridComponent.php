@@ -32,7 +32,7 @@ class ApiGridComponent
 
             // this blows up with nested blocks.
             // first, get the component twig
-            if (preg_match('/component.*?%}(.*?) {% endcomponent/ms', $source, $mm)) {
+            if (preg_match('/component.*?%}(.*?) endcomponent/ms', $source, $mm)) {
                 $twigBlocks = $mm[1];
             } else {
                 $twigBlocks = $source;
