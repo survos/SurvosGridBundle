@@ -87,7 +87,7 @@ class SurvosGridBundle extends AbstractBundle
     {
         $configs = $builder->getExtensionConfig('api_platform');
 //        dd($configs[0]);
-        assert($configs[0]['defaults']['pagination_client_items_per_page'], "pagination_client_items_per_page must be tree in config/api_platform");
+//        assert($configs[0]['defaults']['pagination_client_items_per_page'], "pagination_client_items_per_page must be tree in config/api_platform");
 
         // https://stackoverflow.com/questions/72507212/symfony-6-1-get-another-bundle-configuration-data/72664468#72664468
 //        // iterate in reverse to preserve the original order after prepending the config

@@ -2,7 +2,10 @@
 
 namespace Survos\Grid\Twig;
 
-use ApiPlatform\Core\Api\IriConverterInterface;
+use ApiPlatform\Api\IriConverterInterface;
+use ApiPlatform\Core\Api\IriConverterInterface as LegacyIriConverterInterface;
+use ApiPlatform\Metadata\GetCollection;
+use App\Entity\Media;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
 use Survos\Grid\Attribute\Crud;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -24,7 +27,7 @@ class TwigExtension extends AbstractExtension
         private SerializerInterface   $serializer,
         private NormalizerInterface   $normalizer,
         private UrlGeneratorInterface $generator,
-        private IriConverterInterface $iriConverter,
+        private IriConverterInterface|LegacyIriConverterInterface $iriConverter,
         private StimulusTwigExtension $stimulus)
     {
     }
@@ -92,20 +95,24 @@ class TwigExtension extends AbstractExtension
 
     public function apiCollectionRoute($entityOrClass)
     {
-        $x = $this->iriConverter->getIriFromResourceClass($entityOrClass);
+        if ($this->iriConverter instanceof LegacyIriConverterInterface) {
+            $x = $this->iriConverter->getIriFromResourceClass($entityOrClass);
+        } else {
+            $x = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection());
+        }
         return $x;
     }
 
     public function apiItemRoute($entity)
     {
-        $x = $this->iriConverter->getIriFromItem($entity);
+        $x = $this->iriConverter->getIriFromResource($entity);
         return $x;
     }
 
     public function apiCollectionSubresourceRoute($entityOrClass, $identifiers)
     {
 
-        $x = $this->iriConverter->getSubresourceIriFromResourceClass($entityOrClass,
+        $x = $this->iriConverter->getIriFromResource($entityOrClass,
             [
                 'imdbId' => $this->apiItemRoute($entityOrClass),
                 'property' => 'subtitles'
