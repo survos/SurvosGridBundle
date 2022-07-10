@@ -63,6 +63,7 @@ class TwigExtension extends AbstractExtension
 
     public function sortableFields(string $class): array
     {
+        assert(class_exists($class), $class);
         $reflector = new \ReflectionClass($class);
         foreach ($reflector->getAttributes() as $attribute) {
             if (!u($attribute->getName())->endsWith('ApiFilter')) {
