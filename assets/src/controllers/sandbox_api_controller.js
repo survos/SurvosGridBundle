@@ -1,3 +1,5 @@
+// during dev, from project_dir run
+// ln -s ~/survos/bundles/grid-bundle/assets/src/controllers/sandbox_api_controller.js assets/controllers/sandbox_api_controller.js
 import {Controller} from "@hotwired/stimulus";
 
 import {default as axios} from "axios";
@@ -8,31 +10,20 @@ import 'datatables.net-fixedheader-bs5';
 const DataTable = require('datatables.net');
 // import('datatables.net-buttons-bs5');
 
-
-
 import ('datatables.net-bs5');
 import('datatables.net-select-bs5');
 
-import Twig from 'twig/twig.min';
-
-
 // if component
 let routes = false;
-
-    try {
-} catch {
-    console.log('FOS Routing Bundle needs to be installed to use path() in twigjs templates');
-}
 
 // import Routing from '../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
 //    routes = require('../../../../../public/js/fos_js_routes.json');
 // if a local test.
 routes = require('../../public/js/fos_js_routes.json');
 import Routing from '../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js';
-
-
 Routing.setRoutingData(routes);
 
+import Twig from 'twig/twig.min';
 Twig.extend(function (Twig) {
     Twig._function.extend('path', (route, routeParams) => {
         return Routing.generate(route, routeParams);
@@ -48,12 +39,6 @@ import Modal from 'bootstrap/js/dist/modal';
 
 console.assert(Routing, 'Routing is not defined');
 // global.Routing = Routing;
-
-Twig.extend(function (Twig) {
-    Twig._function.extend('path', (route, routeParams) => {
-        return Routing.generate(route, routeParams);
-    });
-});
 
 // try {
 // } catch (e) {
@@ -92,9 +77,11 @@ export default class extends Controller {
                 return this.actions({prefix: c.prefix, actions: c.actions})
             }
 
-            return this.c({propertyName: c.name,
+            return this.c({
+                propertyName: c.name,
                 data: c.name,
                 label: c.title,
+                route: c.route,
                 render: render
             })
         });
@@ -484,15 +471,14 @@ title="${modal_route}"><span class="action-${action} fas fa-${icon}"></span></bu
           renderType = 'string'
       } = {}) {
 
-        // console.log(name, data, this.sortableFields.includes(data));
-
         if (render === null) {
             render =   ( data, type, row, meta ) => {
                 // if (!label) {
                 //     // console.log(row, data);
                 //     label = data || propertyName;
                 // }
-                let display = label ? label : data;
+                let display = data;
+                // @todo: move some twig templates to a common library
                 if (renderType === 'image') {
                     return `<img class="img-thumbnail plant-thumb" alt="${data}" src="${data}" />`;
                 }
@@ -502,7 +488,6 @@ title="${modal_route}"><span class="action-${action} fas fa-${icon}"></span></bu
                     if(modal) {
                         return `<button class="btn btn-primary"></button>`;
                     } else {
-
                         return `<a href="${url}">${display}</a>`;
                     }
                 } else {

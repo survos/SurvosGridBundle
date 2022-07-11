@@ -71,7 +71,9 @@ class TwigExtension extends AbstractExtension
             }
             $filter = $attribute->getArguments()[0];
             if (u($filter)->endsWith('OrderFilter')) {
-                return $attribute->getArguments()['properties'];
+
+                $orderProperties = $attribute->getArguments()['properties'];
+                return $orderProperties;
             }
         }
         return [];
