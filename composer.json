@@ -32,6 +32,14 @@
             "Survos\\Grid\\": "src/"
         }
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.1-dev"
+        },
+        "symfony": {
+            "require": "^6.1"
+        }
+    },
     "scripts": {
         "phpstan": "vendor/bin/phpstan analyse"
     },
