@@ -20,12 +20,6 @@
         filter: this.filter
     }) }}>
 
-        {{
-        api_route(class)
-        }}
-
-        filter: filter,
-
     {% block modal %}
         {{ include('@SurvosGrid/_modal.html.twig', {
             formUrl: '/',
@@ -37,7 +31,6 @@
             modalContent: 'really should load with ajax'
         }) }}
     {% endblock %}
-
 
 
     <table class="table" {{ stimulus_target(this.stimulusController, 'table') }}>
