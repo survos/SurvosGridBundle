@@ -60,6 +60,9 @@ class ApiGridComponent
         $customColumnTemplates = $this->getTwigBlocks();
         $normalizedColumns = [];
         foreach ($this->columns as $c) {
+            if (empty($c)) {
+                continue;
+            }
             if (is_string($c)) {
                 $c = ['name' => $c];
             }
