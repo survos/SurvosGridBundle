@@ -98,7 +98,9 @@ class TwigExtension extends AbstractExtension
 
     public function apiCollectionRoute($entityOrClass)
     {
+
         if ($this->iriConverter instanceof LegacyIriConverterInterface) {
+            assert(false, $this->iriConverter::class);
             $x = $this->iriConverter->getIriFromResourceClass($entityOrClass);
         } else {
             $x = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection());

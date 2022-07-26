@@ -353,7 +353,9 @@ export default class extends Controller {
                     {
                         // handle success
                         let hydraData = response.data;
-                        var total = hydraData['hydra:totalItems'];
+
+                        var total = hydraData.hasOwnProperty('hydra:totalItems') ? hydraData['hydra:totalItems'] : 999999; // Infinity;
+                        console.error(total);
                         var itemsReturned = hydraData['hydra:member'].length;
                         let first = (params.page-1) * params.itemsPerPage;
                         if (params.search.value) {
