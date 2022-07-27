@@ -20,6 +20,12 @@
         filter: this.filter
     }) }}>
 
+    {% for columnName, columnData in columns %}
+        <li>
+            {{ columnName }}
+            {{ columnData|json_encode }}
+        </li>
+    {% endfor %}
     {% block modal %}
         {{ include('@SurvosGrid/_modal.html.twig', {
             formUrl: '/',
