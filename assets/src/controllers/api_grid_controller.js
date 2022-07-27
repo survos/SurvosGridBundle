@@ -222,7 +222,7 @@ export default class extends Controller {
                 this.modalBodyTarget.innerHTML = data.code;
                 this.modal = new Modal(this.modalTarget);
                 this.modal.show();
-                console.assert(data.uniqueIdentifiers, "missing uniqueIdentifiers, add @Groups to entity")
+                console.assert(data.uniqueIdentifiers, "missing uniqueIdentifiers, add #[Groups to entity")
                 let formUrl = Routing.generate(modalRoute, {...data.uniqueIdentifiers, _page_content_only: 1});
                 console.warn("dispatching changeFormUrlEvent");
                 const event = new CustomEvent("changeFormUrlEvent", {detail: {formUrl: formUrl }});
