@@ -2,6 +2,7 @@
 
 namespace Survos\Grid\Components;
 
+use Psr\Log\LoggerInterface;
 use Survos\Grid\Model\Column;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
@@ -10,7 +11,9 @@ use Twig\Environment;
 #[AsTwigComponent('api_grid', template: '@SurvosGrid/components/api_grid.html.twig')]
 class ApiGridComponent
 {
-    public function __construct(private Environment $twig, public ?string $stimulusController)
+    public function __construct(private Environment $twig,
+                                private LoggerInterface $logger,
+                                public ?string $stimulusController)
     {
 //        ='@survos/grid-bundle/api_grid';
 
@@ -43,6 +46,7 @@ class ApiGridComponent
                 }
             }
         }
+        $this->logger->error(sprintf('Blocks: %s', join(',', array_keys($customColumnTemplates))));
         return $customColumnTemplates;
     }
 

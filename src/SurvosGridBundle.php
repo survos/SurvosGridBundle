@@ -52,6 +52,8 @@ class SurvosGridBundle extends AbstractBundle
         $builder->register(ApiGridComponent::class)
             ->setAutowired(true)
             ->setAutoconfigured(true)
+            ->setArgument('$twig', new Reference('twig'))
+            ->setArgument('$logger', new Reference('logger'))
             ->setArgument('$stimulusController', $config['stimulus_controller'])
         ;
 
