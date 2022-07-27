@@ -26,8 +26,7 @@ class ApiGridComponent
         $customColumnTemplates = [];
         if ($this->caller) {
             $template = $this->twig->resolveTemplate($this->caller);
-            // total hack, but not sure how to get the blocks any other way
-            $source = $template->getSourceContext()->getCode();
+            $source = file_get_contents($template->getSourceContext()->getPath());
             $source = preg_replace('/{#.*?#}/', '', $source);
 
             // this blows up with nested blocks.
