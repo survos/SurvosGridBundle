@@ -2,7 +2,7 @@
 
 namespace Survos\Grid\Api\Filter;
 
-//use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
+//use ApiPlatform\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 //use ApiPlatform\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
@@ -12,8 +12,8 @@ use Symfony\Component\PropertyInfo\Type;
 
 //use ApiPlatform\Core\Api\FilterInterface;
 use ApiPlatform\Api\FilterInterface;
-//use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
-//use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+//use ApiPlatform\Doctrine\Orm\Filter\AbstractContextAwareFilter;
+//use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
