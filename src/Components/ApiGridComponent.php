@@ -32,9 +32,15 @@ class ApiGridComponent
         if ($this->caller) {
             $template = $this->twig->resolveTemplate($this->caller);
             $path = $template->getSourceContext()->getPath();
+            $sourceContext = $this->twig->getLoader()->getSourceContext($this->caller);
+            $source = $sourceContext->getCode();
+            $path = $sourceContext->getPath();
             $this->path = $path;
+
+//            dd($template);
             $source = file_get_contents($path);
-            $this->source = $source;
+//            $this->source = $source;
+//            dd($this->twig);
             $source = preg_replace('/{#.*?#}/', '', $source);
 
             // this blows up with nested blocks.
