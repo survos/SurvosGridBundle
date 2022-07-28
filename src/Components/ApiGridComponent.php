@@ -23,13 +23,18 @@ class ApiGridComponent
     public ?string $caller=null;
     public string $class;
     public array $filter = [];
+    public ?string $source = null;
+    public ?string $path = null;
 
     private function getTwigBlocks(): iterable
     {
         $customColumnTemplates = [];
         if ($this->caller) {
             $template = $this->twig->resolveTemplate($this->caller);
-            $source = file_get_contents($template->getSourceContext()->getPath());
+            $path = $template->getSourceContext()->getPath();
+            $this->path = $path;
+            $source = file_get_contents($path);
+            $this->source = $source;
             $source = preg_replace('/{#.*?#}/', '', $source);
 
             // this blows up with nested blocks.

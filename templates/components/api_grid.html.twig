@@ -20,6 +20,8 @@
         filter: this.filter
     }) }}>
 
+    <b>{{ this.path }}</b>
+    <pre>{{ this.source }}</pre>
     {% for columnName, columnData in columns %}
         <li>
             {{ columnName }}
