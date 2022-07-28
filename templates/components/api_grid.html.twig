@@ -20,15 +20,6 @@
         filter: this.filter
     }) }}>
 
-    {{ _self }}
-    <b>{{ this.path }}</b>
-    <pre>{{ this.source }}</pre>
-    {% for columnName, columnData in columns %}
-        <li>
-            {{ columnName }}
-            {{ columnData|json_encode }}
-        </li>
-    {% endfor %}
     {% block modal %}
         {{ include('@SurvosGrid/_modal.html.twig', {
             formUrl: '/',
