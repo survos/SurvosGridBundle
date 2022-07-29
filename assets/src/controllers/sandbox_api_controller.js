@@ -586,7 +586,7 @@ title="${modal_route}"><span class="action-${action} fas fa-${icon}"></span></bu
             params.searchBuilder.criteria.forEach( (c, index) =>
             {
                 console.warn(c);
-                apiData[c.data + '[]']=c.value1;
+                apiData[c.origData + '[]']=c.value1;
             });
         }
         console.error(params, apiData);
