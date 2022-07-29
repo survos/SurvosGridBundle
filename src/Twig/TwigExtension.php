@@ -4,6 +4,7 @@ namespace Survos\Grid\Twig;
 
 use ApiPlatform\Api\IriConverterInterface;
 use ApiPlatform\Core\Api\IriConverterInterface as LegacyIriConverterInterface;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Media;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
@@ -53,6 +54,7 @@ class TwigExtension extends AbstractExtension
             new TwigFunction('api_subresource_route', [$this, 'apiCollectionSubresourceRoute']),
             new TwigFunction('sortable_fields', [$this, 'sortableFields']),
             new TwigFunction('searchable_fields', [$this, 'searchableFields']),
+            new TwigFunction('search_builder_fields', [$this, 'searchBuilderFields']),
             new TwigFunction('api_table', [$this, 'apiTable'], ['needs_environment' => true, 'is_safe' => ['html']]),
 
             // survosCrudBundle?
@@ -81,7 +83,6 @@ class TwigExtension extends AbstractExtension
 
     public function searchableFields(string $class): array
     {
-
         $reflector = new \ReflectionClass($class);
         foreach ($reflector->getAttributes() as $attribute) {
             if (!u($attribute->getName())->endsWith('ApiFilter')) {
@@ -178,5 +179,31 @@ class TwigExtension extends AbstractExtension
         $html .= "CLASS: " . $class;
         return $html;
     }
+
+    public function searchBuilderFields(string $class, array $normalizedColumns): array
+    {
+
+        $reflector = new \ReflectionClass($class);
+        $columnNumbers = [];
+        foreach ($reflector->getAttributes() as $attribute) {
+            if (!u($attribute->getName())->endsWith('ApiFilter')) {
+                continue;
+            }
+            $filter = $attribute->getArguments()[0];
+            // @todo: handle other filters
+            if ($filter === SearchFilter::class) {
+                $searchFields = $attribute->getArguments()['properties'];
+                foreach ($normalizedColumns as $idx => $column)
+                {
+                    if (array_key_exists($column->name, $searchFields)) {
+                        $columnNumbers[] = $idx;
+                    }
+                }
+            }
+        }
+        return $columnNumbers;
+    }
+
+
 
 }

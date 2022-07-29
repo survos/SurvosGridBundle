@@ -60,6 +60,7 @@ export default class extends Controller {
         columnConfiguration: {type: String, default: '[]'},
         sortableFields: {type: String, default: '[]'},
         searchableFields: {type: String, default: '[]'},
+        searchBuilderFields: {type: String, default: '[]'},
         filter: String
     }
 
@@ -103,6 +104,7 @@ export default class extends Controller {
         this.filter = JSON.parse(this.filterValue||'[]')
         this.sortableFields = JSON.parse(this.sortableFieldsValue);
         this.searchableFields = JSON.parse(this.searchableFieldsValue);
+        this.searchBuilderFields = JSON.parse(this.searchBuilderFieldsValue);
         console.log('hi from ' + this.identifier);
         super.connect(); //
 
@@ -335,6 +337,7 @@ export default class extends Controller {
             buttons: [], // this.buttons,
             columns: this.cols(),
             searchBuilder: {
+                columns: this.searchBuilderFields,
                 depthLimit: 1
             },
             // columns:

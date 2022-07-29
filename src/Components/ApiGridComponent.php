@@ -2,11 +2,13 @@
 
 namespace Survos\Grid\Components;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Psr\Log\LoggerInterface;
 use Survos\Grid\Model\Column;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Twig\Environment;
+use function Symfony\Component\String\u;
 
 #[AsTwigComponent('api_grid', template: '@SurvosGrid/components/api_grid.html.twig')]
 class ApiGridComponent
@@ -73,7 +75,7 @@ class ApiGridComponent
 //        dump($this->caller);
         $customColumnTemplates = $this->getTwigBlocks();
         $normalizedColumns = [];
-        foreach ($this->columns as $c) {
+        foreach ($this->columns as $idx=>$c) {
             if (empty($c)) {
                 continue;
             }
@@ -91,5 +93,7 @@ class ApiGridComponent
         }
         return $normalizedColumns;
     }
+
+
 
 }
