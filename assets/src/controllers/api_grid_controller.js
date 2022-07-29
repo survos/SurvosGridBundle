@@ -5,6 +5,8 @@ import {Controller} from "@hotwired/stimulus";
 import {default as axios} from "axios";
 import 'datatables.net-scroller';
 import 'datatables.net-scroller-bs5';
+import 'datatables.net-datetime';
+import 'datatables.net-searchbuilder-bs5';
 // import 'datatables.net-searchpanes-bs5'
 import 'datatables.net-fixedheader-bs5';
 const DataTable = require('datatables.net');
@@ -58,6 +60,7 @@ export default class extends Controller {
         columnConfiguration: {type: String, default: '[]'},
         sortableFields: {type: String, default: '[]'},
         searchableFields: {type: String, default: '[]'},
+        searchBuilderFields: {type: String, default: '[]'},
         filter: String
     }
 
@@ -101,6 +104,7 @@ export default class extends Controller {
         this.filter = JSON.parse(this.filterValue||'[]')
         this.sortableFields = JSON.parse(this.sortableFieldsValue);
         this.searchableFields = JSON.parse(this.searchableFieldsValue);
+        this.searchBuilderFields = JSON.parse(this.searchBuilderFieldsValue);
         console.log('hi from ' + this.identifier);
         super.connect(); //
 
@@ -222,7 +226,7 @@ export default class extends Controller {
                 this.modalBodyTarget.innerHTML = data.code;
                 this.modal = new Modal(this.modalTarget);
                 this.modal.show();
-                console.assert(data.uniqueIdentifiers, "missing uniqueIdentifiers, add #[Groups to entity")
+                console.assert(data.uniqueIdentifiers, "missing uniqueIdentifiers, add @Groups to entity")
                 let formUrl = Routing.generate(modalRoute, {...data.uniqueIdentifiers, _page_content_only: 1});
                 console.warn("dispatching changeFormUrlEvent");
                 const event = new CustomEvent("changeFormUrlEvent", {detail: {formUrl: formUrl }});
@@ -329,9 +333,13 @@ export default class extends Controller {
             },
 
             // dom: '<"js-dt-buttons"B><"js-dt-info"i>ft',
-            dom: '<"js-dt-buttons"B><"js-dt-info"i>' + (this.searchableFields.length ? 'f': '') +'t',
+            dom: 'Q<"js-dt-buttons"B><"js-dt-info"i>' + (this.searchableFields.length ? 'f': '') +'t',
             buttons: [], // this.buttons,
             columns: this.cols(),
+            searchBuilder: {
+                columns: this.searchBuilderFields,
+                depthLimit: 1
+            },
             // columns:
             //     [
             //     this.c({
@@ -353,7 +361,9 @@ export default class extends Controller {
                     {
                         // handle success
                         let hydraData = response.data;
-                        var total = hydraData['hydra:totalItems'];
+
+                        var total = hydraData.hasOwnProperty('hydra:totalItems') ? hydraData['hydra:totalItems'] : 999999; // Infinity;
+                        console.error(total);
                         var itemsReturned = hydraData['hydra:member'].length;
                         let first = (params.page-1) * params.itemsPerPage;
                         if (params.search.value) {
@@ -568,10 +578,18 @@ title="${modal_route}"><span class="action-${action} fas fa-${icon}"></span></bu
             if (c.data) {
                 order[c.data] = o.dir;
                 // apiData.order = order;
-                apiData['order[' + c.data + ']']  = o.dir;
+                apiData['order[' + c.data + ']'] = o.dir;
             }
             // console.error(c, order, o.column, o.dir);
         });
+        if (params.searchBuilder) {
+            params.searchBuilder.criteria.forEach( (c, index) =>
+            {
+                console.warn(c);
+                apiData[c.data + '[]']=c.value1;
+            });
+        }
+        console.error(params, apiData);
 
         params.columns.forEach(function(column, index) {
             if (column.search && column.search.value) {
