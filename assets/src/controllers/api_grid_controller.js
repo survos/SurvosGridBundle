@@ -7,7 +7,6 @@ import 'datatables.net-scroller';
 import 'datatables.net-scroller-bs5';
 import 'datatables.net-datetime';
 import 'datatables.net-searchbuilder-bs5';
-// import 'datatables.net-searchpanes-bs5'
 import 'datatables.net-fixedheader-bs5';
 const DataTable = require('datatables.net');
 // import('datatables.net-buttons-bs5');
@@ -582,7 +581,7 @@ title="${modal_route}"><span class="action-${action} fas fa-${icon}"></span></bu
             }
             // console.error(c, order, o.column, o.dir);
         });
-        if (params.searchBuilder) {
+        if (params.searchBuilder && params.searchBuilder.criteria) {
             params.searchBuilder.criteria.forEach( (c, index) =>
             {
                 console.warn(c);
