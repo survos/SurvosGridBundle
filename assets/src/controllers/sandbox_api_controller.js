@@ -582,7 +582,7 @@ title="${modal_route}"><span class="action-${action} fas fa-${icon}"></span></bu
             }
             // console.error(c, order, o.column, o.dir);
         });
-        if (params.searchBuilder) {
+        if (params.searchBuilder && params.searchBuilder.criteria) {
             params.searchBuilder.criteria.forEach( (c, index) =>
             {
                 console.warn(c);
