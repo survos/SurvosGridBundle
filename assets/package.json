@@ -17,7 +17,9 @@
         "fetch": "lazy",
         "enabled": true,
         "autoimport": {
-          "datatables.net-searchbuilder-bs5": true
+          "datatables.net-bs5/css/dataTables.bootstrap5.min.css": true,
+          "datatables.net-searchbuilder-bs/css/searchBuilder.bootstrap5.min.css": true,
+          "datatables.net-searchbuilder-bs5/css/searchBuilder.bootstrap.min.css": true
         }
       }
     }
