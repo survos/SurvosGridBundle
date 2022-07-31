@@ -59,7 +59,6 @@ class ApiGridComponent
                 }
             }
         }
-        $this->logger->error(sprintf('Blocks: %s', join(',', array_keys($customColumnTemplates))));
         return $customColumnTemplates;
     }
 
