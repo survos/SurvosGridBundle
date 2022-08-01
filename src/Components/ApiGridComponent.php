@@ -82,8 +82,9 @@ class ApiGridComponent
                 $c = ['name' => $c];
             }
             $columnName = $c['name'];
-            if (array_key_exists($columnName, $customColumnTemplates)) {
-                $c['twigTemplate'] = $customColumnTemplates[$columnName];
+            $fixDotColumnName = str_replace('.', '_', $columnName);
+            if (array_key_exists($fixDotColumnName, $customColumnTemplates)) {
+                $c['twigTemplate'] = $customColumnTemplates[$fixDotColumnName];
             }
             assert(is_array($c));
             $column = new Column(...$c);
