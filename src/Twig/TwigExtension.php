@@ -115,17 +115,22 @@ class TwigExtension extends AbstractExtension
         return $x;
     }
 
-    public function apiCollectionSubresourceRoute($entityOrClass, $identifiers)
+    public function apiCollectionSubresourceRoute($entityOrClass, RouteParametersInterface $parent)
     {
+//        #[ApiResource(
+//            uriTemplate: '/companies/{companyId}/employees',
+//            uriVariables: [
+//                'companyId' => new Link(fromClass: Company::class, toProperty: 'company'),
+//            ],
+//            operations: [ new GetCollection() ]
+//        )]
 
-        $x = $this->iriConverter->getIriFromResource($entityOrClass,
-            [
-                'imdbId' => $this->apiItemRoute($entityOrClass),
-                'property' => 'subtitles'
-            ]
-        )
-            ;
-        return $x;
+//        dump($entityOrClass, $parent, $parent->getUniqueIdentifiers());
+        $iri = $this->iriConverter->getIriFromResource($entityOrClass, operation: new GetCollection(), context: $context = [
+            'uri_variables' => $parent->getrp()
+        ]);
+//        dd($context, $iri);
+        return $iri;
     }
 
 

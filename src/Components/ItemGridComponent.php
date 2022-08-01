@@ -8,12 +8,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 
-#[AsTwigComponent('datatable', template: '@SurvosGrid/components/datatable.html.twig')]
+#[AsTwigComponent('item_grid', template: '@SurvosGrid/components/item.html.twig')]
 class ItemGridComponent
 {
     public function __construct() {}
 
-    public ?iterable $data=null;
+    public $data=null;
     public array $columns;
     public ?string $stimulusController='@survos/grid-bundle/item_grid';
 

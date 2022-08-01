@@ -6,6 +6,7 @@ use Survos\Grid\Api\DataProvider\GridCollectionProvider;
 use Survos\Grid\Api\Filter\MultiFieldSearchFilter;
 use Survos\Grid\Components\ApiGridComponent;
 use Survos\Grid\Components\GridComponent;
+use Survos\Grid\Components\ItemGridComponent;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
@@ -49,6 +50,12 @@ class SurvosGridBundle extends AbstractBundle
             ->setAutoconfigured(true)
             ->setArgument('$registry', new Reference('doctrine'))
         ;
+
+        $builder->register(ItemGridComponent::class)
+            ->setAutowired(true)
+            ->setAutoconfigured(true)
+        ;
+
         $builder->register(ApiGridComponent::class)
             ->setAutowired(true)
             ->setAutoconfigured(true)
