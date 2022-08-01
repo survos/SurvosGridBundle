@@ -20,7 +20,7 @@
         "doctrine/orm": "^2.12",
         "doctrine/persistence": "^2.0 || ^3.0",
         "friendsofsymfony/jsrouting-bundle": "^3.1",
-        "survos/inspection-bundle": "^1.0",
+        "survos/inspection-bundle": "^1.1-dev",
         "symfony/config": "^6.1",
         "symfony/dependency-injection": "^6.1",
         "symfony/http-kernel": "^6.1",
@@ -45,6 +45,8 @@
         "phpstan": "vendor/bin/phpstan analyse"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-latest"
+        ,
         "phpstan/phpstan": "^1.7",
         "symfony/browser-kit": "^6.1",
         "symfony/framework-bundle": "^6.1",

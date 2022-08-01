@@ -11,7 +11,7 @@
 {#        {{ attribute(row, c.name)|default() }}#}
 {#    {% endif %}#}
 
-{{ dump(search_builder_fields(this.class, columns)) }}
+    {{ dump(search_builder_fields(this.class, columns)) }}
 {{ dump(sortable_fields(this.class)) }}
 <div {{ stimulus_controller(this.stimulusController, {
         class: this.class,
