@@ -11,6 +11,9 @@
 {#        {{ attribute(row, c.name)|default() }}#}
 {#    {% endif %}#}
 
+{{ dump(search_builder_fields(this.class, columns)) }}
+{#searchBuilderFields: {{ search_builder_fields(this.class, columns)|map(x => dump(x))  }},#}
+
 <div {{ stimulus_controller(this.stimulusController, {
         class: this.class,
         searchBuilderFields: search_builder_fields(this.class, columns),
