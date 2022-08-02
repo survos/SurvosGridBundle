@@ -58,7 +58,6 @@ class SurvosGridBundle extends AbstractBundle
             ->setArgument('$logger', new Reference('logger'))
             ->setArgument('$stimulusController', $config['stimulus_controller'])
         ;
-
         $builder->register(MultiFieldSearchFilter::class)
             ->addArgument(new Reference('doctrine.orm.default_entity_manager'))
             ->addArgument(new Reference('request_stack'))

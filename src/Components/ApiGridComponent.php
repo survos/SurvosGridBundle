@@ -18,7 +18,6 @@ class ApiGridComponent
                                 public ?string $stimulusController)
     {
 //        ='@survos/grid-bundle/api_grid';
-
     }
     public iterable $data;
     public array $columns = [];

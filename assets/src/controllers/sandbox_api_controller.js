@@ -295,6 +295,8 @@ export default class extends Controller {
             Accept: 'application/ld+json',
             'Content-Type': 'application/json'
         };
+        let cols = this.cols();
+        console.log(cols);
 
         // let dt = $(el).DataTable({
         let dt = new DataTable(el, {

@@ -11,7 +11,7 @@ import 'datatables.net-fixedheader-bs5';
 const DataTable = require('datatables.net');
 // import('datatables.net-buttons-bs5');
 
-import ('datatables.net-bs5');
+import('datatables.net-bs5');
 import('datatables.net-select-bs5');
 
 // if component
