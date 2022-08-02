@@ -9,7 +9,11 @@
         "main": "src/controllers/grid_controller.js",
         "webpackMode": "eager",
         "fetch": "lazy",
-        "enabled": true
+        "enabled": true,
+        "autoimport": {
+          "datatables.net-bs5/css/dataTables.bootstrap5.min.css": true,
+          "datatables.net-searchbuilder-bs5/css/searchBuilder.bootstrap5.min.css": true
+        }
       },
       "api_grid": {
         "main": "src/controllers/api_grid_controller.js",
@@ -17,6 +21,7 @@
         "fetch": "lazy",
         "enabled": true,
         "autoimport": {
+          "datatables.net-bs5/css/dataTables.bootstrap5.min.css": true,
           "datatables.net-searchbuilder-bs5/css/searchBuilder.bootstrap5.min.css": true
         }
       }
