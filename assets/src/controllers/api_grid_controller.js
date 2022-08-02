@@ -259,9 +259,6 @@ export default class extends Controller {
             }
 
 
-            console.error(el.dataset, data, $event.currentTarget, );
-            console.log(this.identifier + ' received an tr->click event', data, el);
-
             if(el.querySelector("a")) {
                 return; // skip links, let it bubble up to handle
             }
@@ -362,7 +359,6 @@ export default class extends Controller {
                         let hydraData = response.data;
 
                         var total = hydraData.hasOwnProperty('hydra:totalItems') ? hydraData['hydra:totalItems'] : 999999; // Infinity;
-                        console.error(total);
                         var itemsReturned = hydraData['hydra:member'].length;
                         let first = (params.page-1) * params.itemsPerPage;
                         if (params.search.value) {
@@ -543,7 +539,6 @@ title="${modal_route}"><span class="action-${action} fas fa-${icon}"></span></bu
 
 
         }
-        console.error(v);
         let obj = {
             title : v,
             data : v,
@@ -588,8 +583,6 @@ title="${modal_route}"><span class="action-${action} fas fa-${icon}"></span></bu
                 apiData[c.origData + '[]']=c.value1;
             });
         }
-        console.error(params, apiData);
-
         params.columns.forEach(function(column, index) {
             if (column.search && column.search.value) {
                 // console.error(column);
