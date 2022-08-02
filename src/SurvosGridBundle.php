@@ -27,12 +27,12 @@ class SurvosGridBundle extends AbstractBundle
      */
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $builder
-            ->setDefinition('survos.inspection_bundle', new Definition(\Survos\InspectionBundle\Twig\TwigExtension::class))
-            ->setArgument('$iriConverter', new Reference('api_platform.iri_converter'))
-            ->addTag('twig.extension')
-            ->setPublic(false)
-        ;
+//        $builder
+//            ->setDefinition('survos.inspection_bundle', new Definition(\Survos\InspectionBundle\Twig\TwigExtension::class))
+//            ->setArgument('$iriConverter', new Reference('api_platform.iri_converter'))
+//            ->addTag('twig.extension')
+//            ->setPublic(false)
+//        ;
 
         if (class_exists(Environment::class) && class_exists(StimulusTwigExtension::class)) {
             $builder
