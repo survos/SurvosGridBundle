@@ -15,11 +15,9 @@
     ],
     "require": {
         "php": "^8.1",
-        "api-platform/core": "^2.7 || ^3.0",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.12",
         "doctrine/persistence": "^2.0 || ^3.0",
-        "friendsofsymfony/jsrouting-bundle": "^3.1",
         "survos/inspection-bundle": "^1.1-dev",
         "symfony/config": "^6.1",
         "symfony/dependency-injection": "^6.1",
@@ -43,6 +41,11 @@
     },
     "scripts": {
         "phpstan": "vendor/bin/phpstan analyse"
+    },
+    "suggest": {
+        "monolog/monolog": "Allows more advanced logging of the application flow",
+        "api-platform/core": "For javascript-based grid rendering",
+        "friendsofsymfony/jsrouting-bundle": "use path() in javascript grid rendering"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest"
