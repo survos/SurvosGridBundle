@@ -2,9 +2,6 @@
 
 namespace Survos\Grid;
 
-use Survos\Grid\Api\DataProvider\GridCollectionProvider;
-use Survos\Grid\Api\Filter\MultiFieldSearchFilter;
-use Survos\Grid\Components\ApiGridComponent;
 use Survos\Grid\Components\GridComponent;
 use Survos\Grid\Components\ItemGridComponent;
 use Symfony\Component\DependencyInjection\Definition;
@@ -42,10 +39,6 @@ class SurvosGridBundle extends AbstractBundle
             ;
         }
 
-        $builder->register(GridCollectionProvider::class)
-            ->setPublic(true)
-            ->setAutowired(true);
-
         $builder->register(GridComponent::class)
             ->setAutowired(true)
             ->setAutoconfigured(true)
@@ -57,25 +50,6 @@ class SurvosGridBundle extends AbstractBundle
             ->setAutoconfigured(true)
         ;
 
-        $builder->register(ApiGridComponent::class)
-            ->setAutowired(true)
-            ->setAutoconfigured(true)
-            ->setArgument('$twig', new Reference('twig'))
-            ->setArgument('$logger', new Reference('logger'))
-            ->setArgument('$stimulusController', $config['stimulus_controller'])
-        ;
-        $builder->register(MultiFieldSearchFilter::class)
-            ->addArgument(new Reference('doctrine.orm.default_entity_manager'))
-            ->addArgument(new Reference('request_stack'))
-            ->addArgument(new Reference('logger'))
-            ->addTag('api_platform.filter');
-
-//        $builder->register(GridComponent::class);
-//        $builder->autowire(GridComponent::class);
-
-//        $definition->setArgument('$widthFactor', $config['widthFactor']);
-//        $definition->setArgument('$height', $config['height']);
-//        $definition->setArgument('$foregroundColor', $config['foregroundColor']);
     }
 
     public function configure(DefinitionConfigurator $definition): void
@@ -94,7 +68,6 @@ class SurvosGridBundle extends AbstractBundle
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $configs = $builder->getExtensionConfig('api_platform');
 //        dd($configs);
 //        assert($configs[0]['defaults']['pagination_client_items_per_page'], "pagination_client_items_per_page must be tree in config/api_platform");
 

@@ -1,6 +1,6 @@
 # Survos Grid Bundle
 
-Use the DataTables.net javascript library with Symfony, Twig and API Platform.
+Use the DataTables.net javascript library with Symfony, Twig.
 
 
 

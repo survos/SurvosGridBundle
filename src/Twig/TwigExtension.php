@@ -2,11 +2,6 @@
 
 namespace Survos\Grid\Twig;
 
-use ApiPlatform\Api\IriConverterInterface;
-use ApiPlatform\Core\Api\IriConverterInterface as LegacyIriConverterInterface;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\GetCollection;
-use App\Entity\Media;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
 use Survos\Grid\Attribute\Crud;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -43,7 +38,6 @@ class TwigExtension extends AbstractExtension
     {
         return [
             new TwigFunction('reverseRange', fn($x, $y) => sprintf("%s-%s", $x, $y)),
-            new TwigFunction('api_table', [$this, 'apiTable'], ['needs_environment' => true, 'is_safe' => ['html']]),
             // survosCrudBundle?
             new TwigFunction('browse_route', [$this, 'browseRoute']),
 
@@ -60,9 +54,5 @@ class TwigExtension extends AbstractExtension
             return $attribute->getArguments()['prefix'] . 'index';
         }
         return $class;
-        dd($reflection->getAttributes());
-        return $reflection->getAttributes();
-
-
     }
 }
