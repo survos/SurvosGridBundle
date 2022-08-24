@@ -7,6 +7,7 @@ use Survos\Grid\Model\Column;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
+use Symfony\UX\TwigComponent\Attribute\PostMount;
 
 #[AsTwigComponent('item_grid', template: '@SurvosGrid/components/item.html.twig')]
 class ItemGridComponent
@@ -28,7 +29,14 @@ class ItemGridComponent
             'columns' => []
         ]);
         $parameters =  $resolver->resolve($parameters);
-            return $parameters;
+        $data = $parameters['data'];
+        if (count($parameters['columns'])  === 0)
+        {
+            if (is_array($data)) {
+                $parameters['columns'] = array_keys($data);
+            }
+        }
+        return $parameters;
 
     }
 

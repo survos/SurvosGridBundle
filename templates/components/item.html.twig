@@ -1,9 +1,6 @@
 {# templates/components/datatable.html.twig #}
 {% set columns = this.normalizedColumns %}
 <div {{ this.stimulusController ? stimulus_controller(this.stimulusController) }}>
-
-
-
     <div class="m-4">
         <dl class="row">
             {% for c in columns %}
@@ -16,6 +13,7 @@
                             {{ block(c.name) }}
                         {% endwith %}
                     {% else %}
+                        {# handle bools #}
                         {{ attribute(data, c.name)|default() }}
                     {% endif %}
                 </dd>
@@ -23,6 +21,4 @@
 
         </dl>
     </div>
-
 </div>
-{{ dump(data, columns) }}
