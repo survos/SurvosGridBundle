@@ -17,9 +17,8 @@
             {% for c in columns %}
             <td>
 
-
                 {% if block(c.name) is defined %}
-                    {% with {row: row} %}
+                    {% with {row: row, column: c} %}
                         {{ block(c.name) }}
                     {% endwith %}
                 {% else %}

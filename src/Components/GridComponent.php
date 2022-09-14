@@ -55,7 +55,10 @@ class GridComponent
             }
             assert(is_array($c));
             $column = new Column(...$c);
-            $normalizedColumns[$column->name] = $column;
+            if ($column->condition)
+            {
+                $normalizedColumns[$column->name] = $column;
+            }
         }
         return $normalizedColumns;
     }

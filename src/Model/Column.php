@@ -11,7 +11,8 @@ class Column {
         public ?string $route=null,
         public ?string $prefix=null,
         public ?array $actions=null,
-        public bool $modal=false
+        public bool $modal=false,
+        public bool $condition=true
     )
     {
         if (empty($this->title)) {
