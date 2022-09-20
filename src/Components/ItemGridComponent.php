@@ -6,17 +6,21 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Survos\Grid\Model\Column;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
-use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\UX\TwigComponent\Attribute\PostMount;
+use Symfony\UX\TwigComponent\Attribute\PreMount;
 
 #[AsTwigComponent('item_grid', template: '@SurvosGrid/components/item.html.twig')]
 class ItemGridComponent
 {
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
-    public $data=null;
+    public $data = null;
+
     public array $columns;
-    public ?string $stimulusController='@survos/grid-bundle/item_grid';
+
+    public ?string $stimulusController = '@survos/grid-bundle/item_grid';
 
     #[PreMount]
     public function preMount(array $parameters = []): array
@@ -26,27 +30,29 @@ class ItemGridComponent
             'data' => null,
             'class' => null,
             'caller' => null,
-            'columns' => []
+            'columns' => [],
         ]);
-        $parameters =  $resolver->resolve($parameters);
+        $parameters = $resolver->resolve($parameters);
         $data = $parameters['data'];
-        if (count($parameters['columns'])  === 0)
-        {
+        if (count($parameters['columns']) === 0) {
             if (is_array($data)) {
                 $parameters['columns'] = array_keys($data);
             }
         }
         return $parameters;
-
     }
 
-    /** @return array<string, Column> */
+    /**
+     * @return array<string, Column>
+     */
     public function normalizedColumns(): iterable
     {
         $normalizedColumns = [];
         foreach ($this->columns as $c) {
             if (is_string($c)) {
-                $c = ['name' => $c];
+                $c = [
+                    'name' => $c,
+                ];
             }
             assert(is_array($c));
             $column = new Column(...$c);
@@ -54,5 +60,4 @@ class ItemGridComponent
         }
         return $normalizedColumns;
     }
-
 }

@@ -11,11 +11,15 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 #[AsTwigComponent('grid', template: '@SurvosGrid/components/grid.html.twig')]
 class GridComponent
 {
-    public function __construct(private Registry $registry) {}
+    public function __construct(private Registry $registry)
+    {
+    }
 
-    public ?iterable $data=null;
+    public ?iterable $data = null;
+
     public array $columns;
-    public ?string $stimulusController='@survos/grid-bundle/grid';
+
+    public ?string $stimulusController = '@survos/grid-bundle/grid';
 
     #[PreMount]
     public function preMount(array $parameters = []): array
@@ -25,24 +29,25 @@ class GridComponent
             'data' => null,
             'class' => null,
             'caller' => null,
-            'columns' => []
+            'columns' => [],
         ]);
-        $parameters =  $resolver->resolve($parameters);
+        $parameters = $resolver->resolve($parameters);
         if (is_null($parameters['data'])) {
             $class = $parameters['class'];
             assert($class, "Must pass class or data");
 
             // @todo: something clever to limit memory, use yield?
-            $parameters['data'] =  $this->registry->getRepository($class)->findAll();
+            $parameters['data'] = $this->registry->getRepository($class)->findAll();
         }
-//        $resolver->setAllowedValues('type', ['success', 'danger']);
-//        $resolver->setRequired('message');
-//        $resolver->setAllowedTypes('message', 'string');
-            return $parameters;
-
+        //        $resolver->setAllowedValues('type', ['success', 'danger']);
+        //        $resolver->setRequired('message');
+        //        $resolver->setAllowedTypes('message', 'string');
+        return $parameters;
     }
 
-    /** @return array<string, Column> */
+    /**
+     * @return array<string, Column>
+     */
     public function normalizedColumns(): iterable
     {
         $normalizedColumns = [];
@@ -51,16 +56,16 @@ class GridComponent
                 continue;
             }
             if (is_string($c)) {
-                $c = ['name' => $c];
+                $c = [
+                    'name' => $c,
+                ];
             }
             assert(is_array($c));
             $column = new Column(...$c);
-            if ($column->condition)
-            {
+            if ($column->condition) {
                 $normalizedColumns[$column->name] = $column;
             }
         }
         return $normalizedColumns;
     }
-
 }
