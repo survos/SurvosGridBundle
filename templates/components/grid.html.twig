@@ -22,8 +22,14 @@
                         {{ block(c.name) }}
                     {% endwith %}
                 {% else %}
+                    {% if c.route %}
+                        <a href="{{ path(c.route, row.rp) }}">
+                            {{ attribute(row, c.name)|default() }}
+                        </a>
+                        {% else %}
 
                     {{ attribute(row, c.name)|default() }}
+                        {% endif %}
                 {% endif %}
                 {#                    {% set _block = block(c)|default(false) %} #}
                 {#                    {% if _block is not empty %} #}
