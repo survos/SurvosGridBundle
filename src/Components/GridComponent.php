@@ -16,9 +16,9 @@ class GridComponent
     }
 
     public ?iterable $data = null;
-
     public array $columns;
-
+    public bool $search = true;
+    public bool $info = false;
     public ?string $stimulusController = '@survos/grid-bundle/grid';
 
     #[PreMount]
@@ -28,6 +28,8 @@ class GridComponent
         $resolver->setDefaults([
             'data' => null,
             'class' => null,
+            'search' => true,
+            'info' => false,
             'caller' => null,
             'columns' => [],
         ]);

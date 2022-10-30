@@ -28,6 +28,8 @@ import 'datatables.net-fixedheader-bs5';
 export default class extends Controller {
     static targets = ['table', 'modal', 'modalBody', 'fieldSearch', 'message'];
     static values = {
+        search: true,
+        info: false,
         sortableFields: {type: String, default: '{}'},
         filter: {type: String, default: ''}
     }
@@ -52,18 +54,21 @@ export default class extends Controller {
         //     console.error('A table element is required.');
         // }
         if (this.tableElement) {
-            this.dt = this.initDataTable(this.tableElement);
+
+            let searchString = this.searchValue ? 'f' : '';
+            let infoString = this.infoValue ? 'i' : '';
+            let dom = `<"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
+            this.dt = this.initDataTable(this.tableElement, dom);
             this.initialized = true;
         }
     }
 
     disconnect() {
-        console.log('disconnect called.');
         super.disconnect();
     }
 
     openModal(e) {
-        console.error('yay, open modal!', e, e.currentTarget, e.currentTarget.dataset);
+        // console.error('yay, open modal!', e, e.currentTarget, e.currentTarget.dataset);
 
         this.modalTarget.addEventListener('show.bs.modal',  (e) => {
             console.log(e, e.relatedTarget, e.currentTarget);
@@ -95,7 +100,6 @@ export default class extends Controller {
 
     handleTrans(el)
     {
-        console.log(el);
         let transitionButtons = el.querySelectorAll('button.transition');
         // console.log(transitionButtons);
         transitionButtons.forEach( btn => btn.addEventListener('click', (event) => {
@@ -209,9 +213,9 @@ export default class extends Controller {
         } );
     }
 
-    initDataTable(el)
+    initDataTable(el, dom)
     {
-        console.log('init table ', el);
+
         // let dt = $(el).DataTable({
         let dt = new DataTable(el, {
             retrieve: true,
@@ -233,7 +237,7 @@ export default class extends Controller {
                 displayBuffer: 10,
                 loadingIndicator: true,
             },
-            dom: '<"js-dt-buttons"B><"js-dt-info"i>ft',
+            dom: dom,
             buttons: [], // this.buttons,
         });
 
