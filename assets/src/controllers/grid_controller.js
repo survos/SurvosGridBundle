@@ -30,6 +30,7 @@ export default class extends Controller {
     static values = {
         search: true,
         info: false,
+        useDatatables: true,
         sortableFields: {type: String, default: '{}'},
         filter: {type: String, default: ''}
     }
@@ -58,7 +59,9 @@ export default class extends Controller {
             let searchString = this.searchValue ? 'f' : '';
             let infoString = this.infoValue ? 'i' : '';
             let dom = `<"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
-            this.dt = this.initDataTable(this.tableElement, dom);
+            if (this.useDatatables) {
+                this.dt = this.initDataTable(this.tableElement, dom);
+            }
             this.initialized = true;
         }
     }

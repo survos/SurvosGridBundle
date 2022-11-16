@@ -1,6 +1,7 @@
 {# templates/components/datatable.html.twig #}
 {% set columns = this.normalizedColumns %}
-<div {{ this.stimulusController ? stimulus_controller(this.stimulusController, {
+<div
+        {{ this.stimulusController ? stimulus_controller(this.stimulusController, {
     search: this.search,
     info: this.info,
 }) }}>
