@@ -59,7 +59,7 @@ export default class extends Controller {
             let searchString = this.searchValue ? 'f' : '';
             let infoString = this.infoValue ? 'i' : '';
             let dom = `<"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
-            if (this.useDatatables) {
+            if (this.useDatatablesValue) {
                 this.dt = this.initDataTable(this.tableElement, dom);
             }
             this.initialized = true;
@@ -219,8 +219,8 @@ export default class extends Controller {
     initDataTable(el, dom)
     {
 
-        // let dt = $(el).DataTable({
-        let dt = new DataTable(el, {
+        let dt = $(el).DataTable({
+        // let dt = new DataTable(el, {
             retrieve: true,
             createdRow: this.createdRow,
             // paging: true,
