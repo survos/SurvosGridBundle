@@ -5,8 +5,8 @@
     search: this.search,
     info: this.info,
 }) }}>
-<table class="table">
-{#<table class="table" {{ this.stimulusController ? stimulus_target(this.stimulusController, 'table') }}>#}
+{#<table class="table">#}
+<table class="table" {{ this.stimulusController ? stimulus_target(this.stimulusController, 'table') }}>
     <thead>
     <tr>
         {% for c in columns %}
@@ -27,13 +27,16 @@
                         {{ block(c.name) }}
                     {% endwith %}
                 {% else %}
+                    {% set label = attribute(row, c.name)|default()  %}
+                    {% if label is iterable %}
+                        {% set label = label|length %}
+                        {% endif %}
                     {% if c.route %}
                         <a href="{{ path(c.route, row.rp) }}">
-                            {{ attribute(row, c.name)|default() }}
+                            {{ label }}
                         </a>
                         {% else %}
-
-                    {{ attribute(row, c.name)|default() }}
+                            {{ label }}
                         {% endif %}
                 {% endif %}
                 {#                    {% set _block = block(c)|default(false) %} #}

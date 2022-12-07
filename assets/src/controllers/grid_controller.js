@@ -49,6 +49,7 @@ export default class extends Controller {
         } else if (this.element.tagName === 'TABLE') {
             this.tableElement = this.element;
         } else {
+            console.error('missing table target, so Using the first table we can find in the document');
             this.tableElement = document.getElementsByTagName('table')[0];
         }
         // else {
@@ -218,6 +219,7 @@ export default class extends Controller {
 
     initDataTable(el, dom)
     {
+        console.error('Init Datatable ', el);
 
         let dt = $(el).DataTable({
         // let dt = new DataTable(el, {
