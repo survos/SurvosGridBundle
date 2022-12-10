@@ -60,6 +60,7 @@ export default class extends Controller {
             let searchString = this.searchValue ? 'f' : '';
             let infoString = this.infoValue ? 'i' : '';
             let dom = `<"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
+            // console.error(this.useDatatablesValue);
             if (this.useDatatablesValue) {
                 this.dt = this.initDataTable(this.tableElement, dom);
             }

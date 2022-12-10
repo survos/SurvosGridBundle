@@ -2,6 +2,7 @@
 {% set columns = this.normalizedColumns %}
 <div
         {{ this.stimulusController ? stimulus_controller(this.stimulusController, {
+    useDatatables: this.useDatatables,
     search: this.search,
     info: this.info,
 }) }}>
