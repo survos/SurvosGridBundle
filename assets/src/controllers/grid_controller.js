@@ -227,7 +227,7 @@ export default class extends Controller {
             retrieve: true,
             createdRow: this.createdRow,
             // paging: true,
-            scrollY: '70vh', // vh is percentage of viewport height, https://css-tricks.com/fun-viewport-units/
+            scrollY: this.scrollY, // vh is percentage of viewport height, https://css-tricks.com/fun-viewport-units/
             // scrollY: true,
             displayLength: 50, // not sure how to adjust the 'length' sent to the server
             // pageLength: 15,
