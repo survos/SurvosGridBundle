@@ -1,4 +1,5 @@
 {# templates/components/datatable.html.twig #}
+{% if condition %}
 {% set columns = this.normalizedColumns %}
 <div
         {{ this.stimulusController ? stimulus_controller(this.stimulusController, {
@@ -66,3 +67,4 @@
 
 </table>
 </div>
+{% endif %}

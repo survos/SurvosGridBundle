@@ -20,6 +20,7 @@ class GridComponent
     public bool $search = true;
     public bool $useDatatables = true;
     public bool $info = false;
+    public bool $condition = true;
     public ?string $stimulusController = null; // '@survos/grid-bundle/grid';
     public string $scrollY = '70vh';
 
@@ -35,6 +36,7 @@ class GridComponent
             'stimulusController' => '@survos/grid-bundle/grid',
             'search' => true,
             'info' => false,
+            'condition' => true,
             'caller' => null,
             'columns' => [],
         ]);
