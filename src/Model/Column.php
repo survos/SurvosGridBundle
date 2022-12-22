@@ -7,7 +7,8 @@ class Column
     public function __construct(
         public string $name,
         public ?string $title = null,
-        public ?string $twigTemplate = null,
+        public ?string $twigTemplate = null, // the actual twig
+        public ?string $block = null, // reuse the blocks even if the data changes
         public ?string $route = null,
         public ?string $prefix = null,
         public ?array $actions = null,

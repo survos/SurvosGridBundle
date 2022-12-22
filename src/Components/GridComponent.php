@@ -3,15 +3,23 @@
 namespace Survos\Grid\Components;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Psr\Log\LoggerInterface;
 use Survos\Grid\Model\Column;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
+use Twig\Environment;
 
 #[AsTwigComponent('grid', template: '@SurvosGrid/components/grid.html.twig')]
 class GridComponent
 {
-    public function __construct(private Registry $registry)
+    public function __construct(
+        private Registry $registry,
+        private Environment $twig,
+        private LoggerInterface $logger,
+        public ?string $stimulusController
+
+    )
     {
     }
 
@@ -21,7 +29,6 @@ class GridComponent
     public bool $useDatatables = true;
     public bool $info = false;
     public bool $condition = true;
-    public ?string $stimulusController = null; // '@survos/grid-bundle/grid';
     public string $scrollY = '70vh';
 
     #[PreMount]
@@ -33,7 +40,7 @@ class GridComponent
             'class' => null,
             'useDatatables' => true,
             'scrollY' => '50vh',
-            'stimulusController' => '@survos/grid-bundle/grid',
+//            'stimulusController' => '@survos/grid-bundle/grid',
             'search' => true,
             'info' => false,
             'condition' => true,

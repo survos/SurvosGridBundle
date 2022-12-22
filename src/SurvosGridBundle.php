@@ -41,6 +41,9 @@ class SurvosGridBundle extends AbstractBundle
         $builder->register(GridComponent::class)
             ->setAutowired(true)
             ->setAutoconfigured(true)
+            ->setArgument('$twig', new Reference('twig'))
+            ->setArgument('$logger', new Reference('logger'))
+            ->setArgument('$stimulusController', $config['stimulus_controller'])
             ->setArgument('$registry', new Reference('doctrine'))
         ;
 
@@ -55,7 +58,7 @@ class SurvosGridBundle extends AbstractBundle
         // since the configuration is short, we can add it here
         $definition->rootNode()
             ->children()
-            ->scalarNode('stimulus_controller')->defaultValue('@survos/grid-bundle/api_grid')->end()
+            ->scalarNode('stimulus_controller')->defaultValue('@survos/grid-bundle/grid')->end()
             ->scalarNode('widthFactor')->defaultValue(2)->end()
             ->scalarNode('height')->defaultValue(30)->end()
             ->scalarNode('foregroundColor')->defaultValue('green')->end()
