@@ -11,11 +11,19 @@
         "fetch": "lazy",
         "enabled": true,
         "autoimport": {
+          "datatables.net-bs5/css/dataTables.bootstrap5.min.css": true,
+
           "datatables.net-scroller-bs5/css/scroller.bootstrap5.min.css": true,
           "datatables.net-scroller-bs5/js/scroller.bootstrap5.min.js": true,
+
+          "datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js": true,
+          "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css": true,
+
+          "datatables.net-buttons/js/buttons.colVis.min.js": true,
           "datatables.net-select-bs5/css/select.bootstrap5.min.css": true,
-          "datatables.net-bs5/css/dataTables.bootstrap5.min.css": true,
+
           "datatables.net-searchbuilder-bs5/css/searchBuilder.bootstrap5.min.css": true
+
         }
       }
     }

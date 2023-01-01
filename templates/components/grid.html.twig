@@ -9,7 +9,7 @@
     info: this.info,
 }) }}>
 {#<table class="table">#}
-<table class="table" {{ this.stimulusController ? stimulus_target(this.stimulusController, 'table') }}>
+<table {{ this.tableId ? 'id="%s"'|format(this.tableId)|raw  }} class="table {{ this.tableClasses }}" {{ this.stimulusController ? stimulus_target(this.stimulusController, 'table') }}>
     <thead>
     <tr>
         {% for c in columns %}

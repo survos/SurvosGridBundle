@@ -7,20 +7,13 @@ import {Controller} from "@hotwired/stimulus";
 // // import {SurvosDataTable} from 'survos-datatables';
 
 import {default as axios} from "axios";
-// require('./js/Components/DataTables');
 
-// const DataTable = require('datatables.net');
-import {DataTable} from "datatables.net";
-
-
-import ('datatables.net-bs5');
-import('datatables.net-select-bs5');
-import('datatables.net-buttons-bs5');
-//
-import 'datatables.net-scroller';
-import 'datatables.net-scroller-bs5';
-import 'datatables.net-searchpanes-bs5'
-import 'datatables.net-fixedheader-bs5';
+require("datatables.net-bs5");
+require('datatables.net-select-bs5');
+require('datatables.net-responsive-bs5');
+require('datatables.net-buttons-bs5');
+require('datatables.net-scroller-bs5');
+require('datatables.net-buttons/js/buttons.colVis.min');
 
 // import {Modal} from "bootstrap"; !!
 // https://stackoverflow.com/questions/68084742/dropdown-doesnt-work-after-modal-of-bootstrap-imported
@@ -59,6 +52,7 @@ export default class extends Controller {
         //     console.error('A table element is required.');
         // }
         if (this.tableElement) {
+            this.buttons = ['colvis', 'copy', 'excel'];
 
             let searchString = this.searchValue ? 'f' : '';
             let infoString = this.infoValue ? 'i' : '';
@@ -236,9 +230,9 @@ export default class extends Controller {
             columnDefs: this.columnDefs,
             orderCellsTop: true,
             fixedHeader: true,
-
             deferRender: true,
             scrollX: true,
+            select: true,
             // scrollCollapse: true,
             // scroller: {
             //     // rowHeight: 90, // @WARNING: Problematic!!
@@ -246,9 +240,19 @@ export default class extends Controller {
             //     loadingIndicator: true,
             // },
             // dom: dom,
-            buttons: [], // this.buttons,
+            // dom: 'pBfrti',
+
+            dom: 'Bfrtip',
+            buttons: [
+                    {
+                        extend: 'colvis',
+                        columns: 'th:nth-child(n+2)'
+                    }
+                ]
+
+            // buttons: this.buttons,
         };
-        console.error('Init Datatable without $ ', el, setup);
+        console.error('Init Datatable with $ ', this.buttons, setup, dom);
         // let dt = new DataTable(el, setup);
 
         let dt = $(el).DataTable(setup);

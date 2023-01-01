@@ -30,6 +30,8 @@ class GridComponent
     public bool $info = false;
     public bool $condition = true;
     public string $scrollY = '70vh';
+    public ?string $tableId = null;
+    public string $tableClasses = '';
 
     #[PreMount]
     public function preMount(array $parameters = []): array
@@ -39,6 +41,8 @@ class GridComponent
             'data' => null,
             'class' => null,
             'useDatatables' => true,
+            'tableId' => null,
+            'tableClasses' => '',
             'scrollY' => '50vh',
 //            'stimulusController' => '@survos/grid-bundle/grid',
             'search' => true,
