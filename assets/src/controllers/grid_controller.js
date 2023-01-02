@@ -8,16 +8,12 @@ import {Controller} from "@hotwired/stimulus";
 
 import {default as axios} from "axios";
 
-// require('./js/Components/DataTables');
-const DataTable = require('datatables.net');
-import ('datatables.net-bs5');
-import('datatables.net-select-bs5');
-// import('datatables.net-buttons-bs5');
-
-import 'datatables.net-scroller';
-import 'datatables.net-scroller-bs5';
-// import 'datatables.net-searchpanes-bs5'
-import 'datatables.net-fixedheader-bs5';
+require("datatables.net-bs5");
+require('datatables.net-select-bs5');
+require('datatables.net-responsive-bs5');
+require('datatables.net-buttons-bs5');
+require('datatables.net-scroller-bs5');
+require('datatables.net-buttons/js/buttons.colVis.min');
 
 // import {Modal} from "bootstrap"; !!
 // https://stackoverflow.com/questions/68084742/dropdown-doesnt-work-after-modal-of-bootstrap-imported
@@ -56,6 +52,7 @@ export default class extends Controller {
         //     console.error('A table element is required.');
         // }
         if (this.tableElement) {
+            this.buttons = ['colvis', 'copy', 'excel'];
 
             let searchString = this.searchValue ? 'f' : '';
             let infoString = this.infoValue ? 'i' : '';
@@ -220,32 +217,45 @@ export default class extends Controller {
 
     initDataTable(el, dom)
     {
-        console.error('Init Datatable ', el);
 
-        let dt = $(el).DataTable({
-        // let dt = new DataTable(el, {
+        let setup = {
+            // let dt = new DataTable(el, {
             retrieve: true,
             createdRow: this.createdRow,
             // paging: true,
-            scrollY: this.scrollY, // vh is percentage of viewport height, https://css-tricks.com/fun-viewport-units/
+            // scrollY: this.scrollY, // vh is percentage of viewport height, https://css-tricks.com/fun-viewport-units/
             // scrollY: true,
-            displayLength: 50, // not sure how to adjust the 'length' sent to the server
+            // displayLength: 10, // not sure how to adjust the 'length' sent to the server
             // pageLength: 15,
             columnDefs: this.columnDefs,
             orderCellsTop: true,
             fixedHeader: true,
+            deferRender: true,
+            scrollX: true,
+            select: true,
+            // scrollCollapse: true,
+            // scroller: {
+            //     // rowHeight: 90, // @WARNING: Problematic!!
+            //     displayBuffer: 10,
+            //     loadingIndicator: true,
+            // },
+            // dom: dom,
+            // dom: 'pBfrti',
 
-            deferRender:    true,
-            // scrollX:        true,
-            scrollCollapse: true,
-            scroller: {
-                // rowHeight: 90, // @WARNING: Problematic!!
-                displayBuffer: 10,
-                loadingIndicator: true,
-            },
-            dom: dom,
-            buttons: [], // this.buttons,
-        });
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'colvis',
+                    columns: 'th:nth-child(n+2)'
+                }
+            ]
+
+            // buttons: this.buttons,
+        };
+        console.error('Init Datatable with $ ', this.buttons, setup, dom);
+        // let dt = new DataTable(el, setup);
+
+        let dt = $(el).DataTable(setup);
 
 
         return dt;
