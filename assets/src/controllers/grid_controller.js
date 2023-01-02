@@ -8,12 +8,12 @@ import {Controller} from "@hotwired/stimulus";
 
 import {default as axios} from "axios";
 
-require("datatables.net-bs5");
-require('datatables.net-select-bs5');
-require('datatables.net-responsive-bs5');
-require('datatables.net-buttons-bs5');
-require('datatables.net-scroller-bs5');
-require('datatables.net-buttons/js/buttons.colVis.min');
+// require("datatables.net-bs5");
+// require('datatables.net-select-bs5');
+// require('datatables.net-responsive-bs5');
+// require('datatables.net-buttons-bs5');
+// require('datatables.net-scroller-bs5');
+// require('datatables.net-buttons/js/buttons.colVis.min');
 
 // import {Modal} from "bootstrap"; !!
 // https://stackoverflow.com/questions/68084742/dropdown-doesnt-work-after-modal-of-bootstrap-imported
