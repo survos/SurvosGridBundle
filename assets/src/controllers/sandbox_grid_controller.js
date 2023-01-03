@@ -3,18 +3,18 @@ import {Controller} from "@hotwired/stimulus";
 // HTML dataable controller, works with GridComponent, which generates an HTML table.
 // see api_grid_controller for remote data loading use API Platform
 
-import $ from 'jquery'; // for datatables.
+// import $ from 'jquery'; // for datatables.
 // // import {SurvosDataTable} from 'survos-datatables';
 
 import {default as axios} from "axios";
-import("datatables.net-bs5");
-
-// require('datatables.net-responsive-bs5');
-// require('datatables.net-select-bs5');
-// require('datatables.net-responsive-bs5');
-// require('datatables.net-buttons-bs5');
-// require('datatables.net-scroller-bs5');
-// require('datatables.net-buttons/js/buttons.colVis.min');
+import DataTables from "datatables.net-bs5";
+import 'datatables.net-select-bs5';
+// import 'datatables.net-responsive-bs5';
+import 'datatables.net-buttons-bs5';
+import 'datatables.net-scroller-bs5';
+import 'datatables.net-buttons/js/buttons.colVis.min';
+import 'datatables.net-buttons/js/buttons.html5.min';
+import 'datatables.net-buttons/js/buttons.print.min';
 
 // import {Modal} from "bootstrap"; !!
 // https://stackoverflow.com/questions/68084742/dropdown-doesnt-work-after-modal-of-bootstrap-imported
@@ -225,26 +225,27 @@ export default class extends Controller {
             createdRow: this.createdRow,
             // paging: true,
             // scrollY: this.scrollY, // vh is percentage of viewport height, https://css-tricks.com/fun-viewport-units/
-            // scrollY: true,
+            scrollY: true,
             // displayLength: 10, // not sure how to adjust the 'length' sent to the server
-            // pageLength: 15,
+            pageLength: 15,
             columnDefs: this.columnDefs,
             orderCellsTop: true,
             fixedHeader: true,
             deferRender: true,
-            scrollX: true,
             select: true,
             // scrollCollapse: true,
-            // scroller: {
-            //     // rowHeight: 90, // @WARNING: Problematic!!
-            //     displayBuffer: 10,
-            //     loadingIndicator: true,
-            // },
-            // dom: dom,
+            scrollX: true,
+            scroller: {
+                // rowHeight: 90, // @WARNING: Problematic!!
+                displayBuffer: 10,
+                loadingIndicator: true,
+            },
+            dom: dom,
             // dom: 'pBfrti',
-
-            dom: 'Bfrtip',
+            // dom: 'Bfrtip',
             buttons: [
+                'copy',
+                'excel',
                     {
                         extend: 'colvis',
                         columns: 'th:nth-child(n+2)'
@@ -253,11 +254,8 @@ export default class extends Controller {
 
             // buttons: this.buttons,
         };
-        console.error('Init Datatable with $ ', this.buttons, setup, dom);
-        // let dt = new DataTable(el, setup);
-        //
-        let dt = $(el).DataTable(setup);
-
+        console.error('Init Datatable without $ ', this.buttons, setup, dom);
+        let dt = new DataTables(el, setup);
 
         return dt;
 
