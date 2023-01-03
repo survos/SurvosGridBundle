@@ -3,10 +3,9 @@ import {Controller} from "@hotwired/stimulus";
 // HTML dataable controller, works with GridComponent, which generates an HTML table.
 // see api_grid_controller for remote data loading use API Platform
 
-// import $ from 'jquery'; // for datatables.
-// // import {SurvosDataTable} from 'survos-datatables';
-
+import $ from 'jquery'; // for datatables.
 import {default as axios} from "axios";
+import("datatables.net-bs5");
 
 // require("datatables.net-bs5");
 // require('datatables.net-select-bs5');

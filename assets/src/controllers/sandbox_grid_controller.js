@@ -3,17 +3,18 @@ import {Controller} from "@hotwired/stimulus";
 // HTML dataable controller, works with GridComponent, which generates an HTML table.
 // see api_grid_controller for remote data loading use API Platform
 
-// import $ from 'jquery'; // for datatables.
+import $ from 'jquery'; // for datatables.
 // // import {SurvosDataTable} from 'survos-datatables';
 
 import {default as axios} from "axios";
+import("datatables.net-bs5");
 
-require("datatables.net-bs5");
-require('datatables.net-select-bs5');
-require('datatables.net-responsive-bs5');
-require('datatables.net-buttons-bs5');
-require('datatables.net-scroller-bs5');
-require('datatables.net-buttons/js/buttons.colVis.min');
+// require('datatables.net-responsive-bs5');
+// require('datatables.net-select-bs5');
+// require('datatables.net-responsive-bs5');
+// require('datatables.net-buttons-bs5');
+// require('datatables.net-scroller-bs5');
+// require('datatables.net-buttons/js/buttons.colVis.min');
 
 // import {Modal} from "bootstrap"; !!
 // https://stackoverflow.com/questions/68084742/dropdown-doesnt-work-after-modal-of-bootstrap-imported
@@ -254,7 +255,7 @@ export default class extends Controller {
         };
         console.error('Init Datatable with $ ', this.buttons, setup, dom);
         // let dt = new DataTable(el, setup);
-
+        //
         let dt = $(el).DataTable(setup);
 
 
