@@ -225,9 +225,8 @@ export default class extends Controller {
             createdRow: this.createdRow,
             // paging: true,
             // scrollY: this.scrollY, // vh is percentage of viewport height, https://css-tricks.com/fun-viewport-units/
-            scrollY: true,
             // displayLength: 10, // not sure how to adjust the 'length' sent to the server
-            pageLength: 15,
+            pageLength: 50,
             columnDefs: this.columnDefs,
             orderCellsTop: true,
             fixedHeader: true,
@@ -235,20 +234,22 @@ export default class extends Controller {
             select: true,
             // scrollCollapse: true,
             scrollX: true,
-            scroller: {
-                // rowHeight: 90, // @WARNING: Problematic!!
-                displayBuffer: 10,
-                loadingIndicator: true,
-            },
-            dom: dom,
-            // dom: 'pBfrti',
+            scrollY: true,
+            scroller: true,
+            // scroller: {
+            //     // rowHeight: 90, // @WARNING: Problematic!!
+            //     // displayBuffer: 10,
+            //     loadingIndicator: true,
+            // },
+            // dom: dom,
+            dom: 'pBfrti',
             // dom: 'Bfrtip',
             buttons: [
                 'copy',
                 'excel',
                     {
                         extend: 'colvis',
-                        columns: 'th:nth-child(n+2)'
+                        columns: 'th:nth-child(n)'
                     }
                 ]
 
