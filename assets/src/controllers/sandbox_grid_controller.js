@@ -9,7 +9,7 @@ import {Controller} from "@hotwired/stimulus";
 import {default as axios} from "axios";
 import DataTables from "datatables.net-bs5";
 import 'datatables.net-select-bs5';
-// import 'datatables.net-responsive-bs5';
+import 'datatables.net-responsive-bs5';
 import 'datatables.net-buttons-bs5';
 import 'datatables.net-scroller-bs5';
 import 'datatables.net-buttons/js/buttons.colVis.min';
@@ -21,7 +21,7 @@ import 'datatables.net-buttons/js/buttons.print.min';
 // import Modal from 'bootstrap/js/dist/modal';
 // import cb from "../js/app-buttons";
 
-
+/* stimulusFetch: 'lazy' */
 export default class extends Controller {
     static targets = ['table', 'modal', 'modalBody', 'fieldSearch', 'message'];
     static values = {
@@ -73,7 +73,7 @@ export default class extends Controller {
     openModal(e) {
         // console.error('yay, open modal!', e, e.currentTarget, e.currentTarget.dataset);
 
-        this.modalTarget.addEventListener('show.bs.modal',  (e) => {
+        this.modalTarget.addEventListener('show.bs.modal', (e) => {
             console.log(e, e.relatedTarget, e.currentTarget);
             // do something...
         });
@@ -84,8 +84,7 @@ export default class extends Controller {
 
     }
 
-    createdRow( row, data, dataIndex )
-    {
+    createdRow(row, data, dataIndex) {
         // we could add the thumbnail URL here.
         // console.log(row, data, dataIndex, this.identifier);
         // let aaController = 'projects';
@@ -100,20 +99,18 @@ export default class extends Controller {
     }
 
 
-
-    handleTrans(el)
-    {
+    handleTrans(el) {
         let transitionButtons = el.querySelectorAll('button.transition');
         // console.log(transitionButtons);
-        transitionButtons.forEach( btn => btn.addEventListener('click', (event) => {
+        transitionButtons.forEach(btn => btn.addEventListener('click', (event) => {
             const isButton = event.target.nodeName === 'BUTTON';
             if (!isButton) {
                 return;
             }
             console.log(event, event.target, event.currentTarget);
 
-            let row  = this.dt.row( event.target.closest('tr') );
-            let  data = row.data();
+            let row = this.dt.row(event.target.closest('tr'));
+            let data = row.data();
             console.log(row, data);
             this.notify('deleting ' + data.id);
 
@@ -126,14 +123,13 @@ export default class extends Controller {
 
     }
 
-    addButtonClickListener(dt)
-    {
+    addButtonClickListener(dt) {
         console.log("Listening for transition events");
 
-        dt.on('click', 'tr td button.transition',  ($event) => {
+        dt.on('click', 'tr td button.transition', ($event) => {
             console.log($event.currentTarget);
             let target = $event.currentTarget;
-            var data = dt.row( target.closest('tr') ).data();
+            var data = dt.row(target.closest('tr')).data();
             let transition = target.dataset['t'];
             console.log(transition, target);
             console.log(data, $event);
@@ -143,9 +139,9 @@ export default class extends Controller {
 
         });
 
-        dt.on('click', 'tr td button .modal',  ($event, x) => {
+        dt.on('click', 'tr td button .modal', ($event, x) => {
             console.log($event, $event.currentTarget);
-            var data = dt.row( $event.currentTarget.closest('tr') ).data();
+            var data = dt.row($event.currentTarget.closest('tr')).data();
             console.log(data, $event, x);
 
             let btn = $event.currentTarget;
@@ -165,19 +161,19 @@ export default class extends Controller {
                     //     _page_content_only: '1' // could send blocks that we want??
                     // }
                 })
-                    .then( response => this.modalBodyTarget.innerHTML = response.data)
-                    .catch( error => this.modalBodyTarget.innerHTML = error)
+                    .then(response => this.modalBodyTarget.innerHTML = response.data)
+                    .catch(error => this.modalBodyTarget.innerHTML = error)
                 ;
             }
 
         });
     }
-    addRowClickListener(dt)
-    {
-        dt.on('click', 'tr td',  ($event) => {
+
+    addRowClickListener(dt) {
+        dt.on('click', 'tr td', ($event) => {
             let el = $event.currentTarget;
             console.log($event, $event.currentTarget);
-            var data = dt.row( $event.currentTarget ).data();
+            var data = dt.row($event.currentTarget).data();
             var btn = el.querySelector('button');
             console.log(btn);
             let modalRoute = null;
@@ -187,10 +183,10 @@ export default class extends Controller {
             }
 
 
-            console.error(el.dataset, data, $event.currentTarget, );
+            console.error(el.dataset, data, $event.currentTarget,);
             console.log(this.identifier + ' received an tr->click event', data, el);
 
-            if(el.querySelector("a")) {
+            if (el.querySelector("a")) {
                 return; // skip links, let it bubble up to handle
             }
 
@@ -209,15 +205,14 @@ export default class extends Controller {
                         _page_content_only: '1' // could send blocks that we want??
                     }
                 })
-                    .then( response => this.modalBodyTarget.innerHTML = response.data)
-                    .catch( error => this.modalBodyTarget.innerHTML = error)
+                    .then(response => this.modalBodyTarget.innerHTML = response.data)
+                    .catch(error => this.modalBodyTarget.innerHTML = error)
                 ;
             }
-        } );
+        });
     }
 
-    initDataTable(el, dom)
-    {
+    initDataTable(el, dom) {
 
         let setup = {
             // let dt = new DataTable(el, {
@@ -225,8 +220,9 @@ export default class extends Controller {
             createdRow: this.createdRow,
             // paging: true,
             // scrollY: this.scrollY, // vh is percentage of viewport height, https://css-tricks.com/fun-viewport-units/
+            scrollY: true,
             // displayLength: 10, // not sure how to adjust the 'length' sent to the server
-            pageLength: 50,
+            pageLength: 15,
             columnDefs: this.columnDefs,
             orderCellsTop: true,
             fixedHeader: true,
@@ -234,28 +230,40 @@ export default class extends Controller {
             select: true,
             // scrollCollapse: true,
             scrollX: true,
-            scrollY: true,
-            scroller: true,
-            // scroller: {
-            //     // rowHeight: 90, // @WARNING: Problematic!!
-            //     // displayBuffer: 10,
-            //     loadingIndicator: true,
-            // },
-            // dom: dom,
-            dom: 'pBfrti',
+            scroller: {
+                // rowHeight: 90, // @WARNING: Problematic!!
+                displayBuffer: 10,
+                loadingIndicator: true,
+            },
+            dom: dom,
+            // dom: 'pBfrti',
             // dom: 'Bfrtip',
             buttons: [
                 'copy',
                 'excel',
-                    {
-                        extend: 'colvis',
-                        columns: 'th:nth-child(n)'
-                    }
-                ]
+                {
+                    extend: 'colvis',
+                    columns: 'th:nth-child(n+2)'
+                }
+            ]
 
             // buttons: this.buttons,
         };
-        console.error('Init Datatable without $ ', this.buttons, setup, dom);
+
+        setup = {
+            dom: dom,
+            select: true,
+            scrollY: '70vh',
+            scrollX: true,
+            scrollCollapse: true,
+            scroller: true,
+            buttons: [
+                'colvis',
+                'csvHtml5',
+                'copy'
+            ]
+        };
+
         let dt = new DataTables(el, setup);
 
         return dt;
