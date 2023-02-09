@@ -17,7 +17,8 @@ class GridComponent
         private Registry $registry,
         private Environment $twig,
         private LoggerInterface $logger,
-        public ?string $stimulusController
+        public ?string $stimulusController,
+        public bool $trans = true, // translate the titles
 
     )
     {

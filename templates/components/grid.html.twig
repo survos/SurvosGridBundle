@@ -16,7 +16,7 @@
             <tr>
                 {% for c in columns %}
                     <th>
-                        {{ c.title }}
+                        {{ this.trans ? c.title|trans : c.title }}
                     </th>
                 {% endfor %}
             </tr>

@@ -13,6 +13,7 @@ class Column
         public ?string $prefix = null,
         public ?array $actions = null,
         public bool $modal = false,
+        public bool|string $locale=false,
         public bool $condition = true
     ) {
         if (empty($this->title)) {
