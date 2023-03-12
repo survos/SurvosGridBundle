@@ -35,7 +35,7 @@
                         {% set templateName = c.twigTemplate|default(c.name) %}
 
                         {% if block(templateName) is defined %}
-                            {% with {row: row, column: c, c:c } %}
+                            {% with {field_name: c.name, row: row, column: c, c:c } %}
                                 {{ block(templateName) }}
                             {% endwith %}
                         {% else %}

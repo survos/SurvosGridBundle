@@ -12,6 +12,7 @@ import 'datatables.net-select-bs5';
 import 'datatables.net-responsive-bs5';
 import 'datatables.net-buttons-bs5';
 import 'datatables.net-scroller-bs5';
+import 'datatables.net-searchpanes-bs5';
 import 'datatables.net-buttons/js/buttons.colVis.min';
 import 'datatables.net-buttons/js/buttons.html5.min';
 import 'datatables.net-buttons/js/buttons.print.min';
@@ -57,7 +58,13 @@ export default class extends Controller {
 
             let searchString = this.searchValue ? 'f' : '';
             let infoString = this.infoValue ? 'i' : '';
-            let dom = `<"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
+            // let dom = ` <"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
+            // let dom = `<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
+            let dom = `<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}`;
+            dom = '<"dtsp-dataTable"frtip>';
+            // let dom = `<"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
+            // let dom = `t`;
+
             // console.error(this.useDatatablesValue);
             if (this.useDatatablesValue) {
                 this.dt = this.initDataTable(this.tableElement, dom);
@@ -257,6 +264,9 @@ export default class extends Controller {
             scrollX: true,
             scrollCollapse: true,
             scroller: true,
+            searchPanes:{
+                layout: 'columns-1'
+            },
             buttons: [
                 'colvis',
                 'csvHtml5',
