@@ -31,6 +31,7 @@ class GridComponent
     public bool $info = false;
     public bool $condition = true;
     public string $scrollY = '70vh';
+    public string $dom='?';
     public ?string $tableId = null;
     public string $tableClasses = '';
 
@@ -41,6 +42,7 @@ class GridComponent
         $resolver->setDefaults([
             'data' => null,
             'class' => null,
+            'dom' => 'Plfrtip',
             'useDatatables' => true,
             'tableId' => null,
             'tableClasses' => '',

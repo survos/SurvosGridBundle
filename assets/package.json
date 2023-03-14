@@ -22,6 +22,8 @@
           "datatables.net-select-bs5/js/select.bootstrap5.min.js": true,
           "datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css": true,
           "datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js": true,
+          "datatables.net-searchpanes-bs5/js/searchPanes.bootstrap5.min.js": true,
+          "datatables.net-searchpanes-bs5/css/searchPanes.bootstrap5.min.css": true,
           "datatables.net-searchbuilder-bs5/css/searchBuilder.bootstrap5.min.css": true,
           "datatables.net-searchbuilder-bs5/js/searchBuilder.bootstrap5.min.js": true
         }

@@ -28,8 +28,10 @@ export default class extends Controller {
     static values = {
         search: true,
         info: false,
+        dom: 'Plfrtip',
         useDatatables: true,
         sortableFields: {type: String, default: '{}'},
+        searchableFields: {type: String, default: '{}'},
         filter: {type: String, default: ''}
     }
 
@@ -60,8 +62,10 @@ export default class extends Controller {
             let infoString = this.infoValue ? 'i' : '';
             // let dom = ` <"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
             // let dom = `<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
-            let dom = `<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}`;
-            dom = '<"dtsp-dataTable"frtip>';
+            // let dom = `<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}`;
+            // dom = '<"dtsp-dataTable"frtip>';
+            let dom = this.domValue;
+
             // let dom = `<"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
             // let dom = `t`;
 
@@ -157,8 +161,8 @@ export default class extends Controller {
                 this.modalBodyTarget.innerHTML = data.code;
                 this.modal = new Modal(this.modalTarget);
                 this.modal.show();
-                console.assert(data.uniqueIdentifiers, "missing uniqueIdentifiers, add @Groups to entity")
-                let formUrl = Routing.generate(modalRoute, {...data.uniqueIdentifiers, _page_content_only: 1});
+                console.assert(data.rp, "missing rp, add @Groups to entity")
+                let formUrl = Routing.generate(modalRoute, {...data.rp, _page_content_only: 1});
 
                 axios({
                     method: 'get', //you can set what request you want to be
@@ -257,6 +261,7 @@ export default class extends Controller {
             // buttons: this.buttons,
         };
 
+        console.log("DOM: " + dom);
         setup = {
             dom: dom,
             select: true,
@@ -265,7 +270,7 @@ export default class extends Controller {
             scrollCollapse: true,
             scroller: true,
             searchPanes:{
-                layout: 'columns-1'
+                layout: 'columns-1',
             },
             buttons: [
                 'colvis',
@@ -274,9 +279,12 @@ export default class extends Controller {
             ]
         };
 
-        let dt = new DataTables(el, setup);
+        let table = new DataTables(el, setup);
+        table.searchPanes();
+        console.log('moving panes.');
+        $("div.dtsp-verticalPanes").append(table.searchPanes.container());
 
-        return dt;
+        return table;
 
     }
 
