@@ -32,6 +32,7 @@ class GridComponent
     public bool $condition = true;
     public string $scrollY = '70vh';
     public string $dom='?';
+    public array $searchPanesFields=[];
     public ?string $tableId = null;
     public string $tableClasses = '';
 
@@ -90,5 +91,19 @@ class GridComponent
             }
         }
         return $normalizedColumns;
+    }
+
+    public function searchPanesColumns(): int
+    {
+        $count = 0;
+        // count the number, if > 6 we could figured out the best layout
+        foreach ($this->normalizedColumns() as $column) {
+//            dd($column);
+            if ($column->inSearchPane) {
+                $count++;
+            }
+        }
+        $count = min($count, 6);
+        return $count;
     }
 }

@@ -30,6 +30,7 @@ export default class extends Controller {
         info: false,
         dom: 'Plfrtip',
         useDatatables: true,
+        searchPanesFields: {type: String, default: '[]]'}, // names of the fields for searchPanes
         sortableFields: {type: String, default: '{}'},
         searchableFields: {type: String, default: '{}'},
         filter: {type: String, default: ''}
@@ -42,7 +43,6 @@ export default class extends Controller {
     connect() {
         // super.connect();
         this.that = this; // for the modal
-
         this.tableElement = false;
         if (this.hasTableTarget) {
             this.tableElement = this.tableTarget;
@@ -57,6 +57,7 @@ export default class extends Controller {
         // }
         if (this.tableElement) {
             this.buttons = ['colvis', 'copy', 'excel'];
+
 
             let searchString = this.searchValue ? 'f' : '';
             let infoString = this.infoValue ? 'i' : '';
@@ -269,9 +270,10 @@ export default class extends Controller {
             scrollX: true,
             scrollCollapse: true,
             scroller: true,
-            searchPanes:{
-                layout: 'columns-1',
-            },
+            columnDefs: this.columnDefs(),
+            // searchPanes:{
+            //     layout: 'columns-' + this.searchPanesColumns,
+            // },
             buttons: [
                 'colvis',
                 'csvHtml5',
@@ -286,6 +288,16 @@ export default class extends Controller {
 
         return table;
 
+    }
+
+    columnDefs() {
+        // convert list to numbers
+
+        let x = [
+            {searchPanes: {show: true}, targets: 'in-search-pane'},
+            {searchPanes: {show: false}, targets: '_all'},
+        ];
+        return x;
     }
 
 }

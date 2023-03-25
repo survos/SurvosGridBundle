@@ -7,6 +7,7 @@
                 search: this.search,
                 scrollY: this.scrollY,
                 dom: this.dom,
+                searchPanesColumns: this.searchPanesColumns,
                 info: this.info,
             }) }}>
         {# <table class="table"> #}
@@ -16,7 +17,10 @@
             <thead>
             <tr>
                 {% for c in columns %}
-                    <th>
+                    <th class="
+                        {{ c.inSearchPane ? 'in-search-pane' }}
+                        "
+                    >
                         {{ this.trans ? c.title|trans : c.title }}
                     </th>
                 {% endfor %}
@@ -46,6 +50,9 @@
                             {% set label = attribute(row, c.name)|default() %}
                             {% if label is iterable %}
                                 {% set label = label|length %}
+                            {% endif %}
+                            {% if c.translateValue %}
+                                {% set label = label|trans %}
                             {% endif %}
                             {% if c.route %}
                                 <a href="{{ path(c.route, row.rp) }}">

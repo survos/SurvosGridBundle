@@ -12,6 +12,7 @@ import 'datatables.net-select-bs5';
 import 'datatables.net-responsive-bs5';
 import 'datatables.net-buttons-bs5';
 import 'datatables.net-scroller-bs5';
+import 'datatables.net-searchpanes-bs5';
 import 'datatables.net-buttons/js/buttons.colVis.min';
 import 'datatables.net-buttons/js/buttons.html5.min';
 import 'datatables.net-buttons/js/buttons.print.min';
@@ -27,6 +28,7 @@ export default class extends Controller {
     static values = {
         search: true,
         info: false,
+        dom: 'Plfrtip',
         useDatatables: true,
         sortableFields: {type: String, default: '{}'},
         filter: {type: String, default: ''}
@@ -57,7 +59,15 @@ export default class extends Controller {
 
             let searchString = this.searchValue ? 'f' : '';
             let infoString = this.infoValue ? 'i' : '';
-            let dom = `<"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
+            // let dom = ` <"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
+            // let dom = `<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
+            // let dom = `<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}`;
+            // dom = '<"dtsp-dataTable"frtip>';
+            let dom = this.domValue;
+
+            // let dom = `<"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
+            // let dom = `t`;
+
             // console.error(this.useDatatablesValue);
             if (this.useDatatablesValue) {
                 this.dt = this.initDataTable(this.tableElement, dom);
@@ -150,8 +160,8 @@ export default class extends Controller {
                 this.modalBodyTarget.innerHTML = data.code;
                 this.modal = new Modal(this.modalTarget);
                 this.modal.show();
-                console.assert(data.uniqueIdentifiers, "missing uniqueIdentifiers, add @Groups to entity")
-                let formUrl = Routing.generate(modalRoute, {...data.uniqueIdentifiers, _page_content_only: 1});
+                console.assert(data.rp, "missing rp, add @Groups to entity")
+                let formUrl = Routing.generate(modalRoute, {...data.rp, _page_content_only: 1});
 
                 axios({
                     method: 'get', //you can set what request you want to be
@@ -250,6 +260,7 @@ export default class extends Controller {
             // buttons: this.buttons,
         };
 
+        console.log("DOM: " + dom);
         setup = {
             dom: dom,
             select: true,
@@ -257,6 +268,10 @@ export default class extends Controller {
             scrollX: true,
             scrollCollapse: true,
             scroller: true,
+            columnDefs: this.columnDefs(),
+            // searchPanes:{
+            //     layout: 'columns-' + this.searchPanesColumns,
+            // },
             buttons: [
                 'colvis',
                 'csvHtml5',
@@ -264,10 +279,23 @@ export default class extends Controller {
             ]
         };
 
-        let dt = new DataTables(el, setup);
+        let table = new DataTables(el, setup);
+        table.searchPanes();
+        console.log('moving panes.');
+        $("div.dtsp-verticalPanes").append(table.searchPanes.container());
 
-        return dt;
+        return table;
 
+    }
+
+    columnDefs() {
+        // convert list to numbers
+
+        let x = [
+            {searchPanes: {show: true}, targets: 'in-search-pane'},
+            {searchPanes: {show: false}, targets: '_all'},
+        ];
+        return x;
     }
 
 }

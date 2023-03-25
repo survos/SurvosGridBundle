@@ -14,6 +14,8 @@ class Column
         public ?array $actions = null,
         public bool $modal = false,
         public bool $searchable = false,
+        public bool $inSearchPane = false,
+        public bool $translateValue = false,
         public bool $sortable = false,
         public bool|string $locale=false,
         public bool $condition = true
