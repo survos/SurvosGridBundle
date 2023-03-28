@@ -16,6 +16,7 @@ class Column
         public bool $searchable = false,
         public bool $inSearchPane = false,
         public bool $translateValue = false,
+        public ?string  $domain = null, // null is default, false blocks translation
         public bool $sortable = false,
         public bool|string $locale=false,
         public bool $condition = true

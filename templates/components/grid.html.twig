@@ -52,7 +52,7 @@
                                 {% set label = label|length %}
                             {% endif %}
                             {% if c.translateValue %}
-                                {% set label = label|trans %}
+                                {% set label = c.domain ? label|trans(domain=c.domain) : label|trans %}
                             {% endif %}
                             {% if c.route %}
                                 <a href="{{ path(c.route, row.rp) }}">
