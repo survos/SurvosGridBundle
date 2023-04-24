@@ -18,8 +18,6 @@ class GridComponent
         private Environment $twig,
         private LoggerInterface $logger,
         public ?string $stimulusController,
-        public bool $trans = true, // translate the titles
-
     )
     {
     }
@@ -27,6 +25,10 @@ class GridComponent
     public ?iterable $data = null;
     public array $columns;
     public bool $search = true;
+    public bool $trans = true;
+    public string|bool|null $domain = null;
+
+
     public bool $useDatatables = true;
     public bool $info = false;
     public bool $condition = true;
@@ -45,6 +47,7 @@ class GridComponent
             'class' => null,
             'dom' => 'Plfrtip',
             'useDatatables' => true,
+
             'tableId' => null,
             'tableClasses' => '',
             'scrollY' => '50vh',
@@ -52,6 +55,8 @@ class GridComponent
             'search' => true,
             'info' => false,
             'condition' => true,
+            'trans' => false,
+            'domain' => null,
             'caller' => null,
             'columns' => [],
         ]);

@@ -228,6 +228,7 @@ export default class extends Controller {
             // let dt = new DataTable(el, {
             retrieve: true,
             createdRow: this.createdRow,
+            autoWidth: false,
             // paging: true,
             // scrollY: this.scrollY, // vh is percentage of viewport height, https://css-tricks.com/fun-viewport-units/
             scrollY: true,

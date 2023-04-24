@@ -22,7 +22,8 @@ class Column
         public bool $condition = true
     ) {
         if (empty($this->title)) {
-            $this->title = ucwords($this->name);
+            $this->title = $this->name; // when dealing with raw csv, this is confusing 
+//            $this->title = ucwords($this->name);
         }
     }
 
