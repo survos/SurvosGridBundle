@@ -1,7 +1,10 @@
 {
     "name": "survos/grid-bundle",
     "description": "incorporate DatatablesNet, using twig and stimulus, twig_component requires ^2.3",
-    "keywords": ["symfony-ux", "symfony6"],
+    "keywords": [
+        "symfony-ux",
+        "symfony6"
+    ],
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -15,7 +18,7 @@
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.12",
         "doctrine/persistence": "^2.0 || ^3.0",
-        "survos/core-bundle": "^1.4.32",
+        "survos/core-bundle": "^1.4.33",
         "symfony/config": "^6.1.0",
         "symfony/dependency-injection": "^6.1.0",
         "symfony/http-kernel": "^6.1.0",
