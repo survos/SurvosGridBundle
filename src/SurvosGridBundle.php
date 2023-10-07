@@ -11,8 +11,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
+use Symfony\UX\StimulusBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
 
 class SurvosGridBundle extends AbstractBundle
@@ -23,6 +22,7 @@ class SurvosGridBundle extends AbstractBundle
      */
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
+//        dd($config, $config, $builder);
         //        $builder
         //            ->setDefinition('survos.inspection_bundle', new Definition(\Survos\InspectionBundle\Twig\TwigExtension::class))
         //            ->setArgument('$iriConverter', new Reference('api_platform.iri_converter'))

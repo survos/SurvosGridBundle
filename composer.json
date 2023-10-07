@@ -18,14 +18,15 @@
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.12",
         "doctrine/persistence": "^2.0 || ^3.0",
-        "survos/core-bundle": "^1.5.36",
+        "survos/core-bundle": "^1.5",
         "symfony/config": "^6.1.0",
         "symfony/dependency-injection": "^6.1.0",
         "symfony/http-kernel": "^6.1.0",
         "symfony/options-resolver": "^6.1.0",
-        "symfony/ux-twig-component": "^2.8",
+        "symfony/ux-twig-component": "^2.9",
         "symfony/webpack-encore-bundle": "^1.11",
-        "twig/twig": "^3.4"
+        "twig/twig": "^3.4",
+        "symfony/stimulus-bundle": "^2.12"
     },
     "autoload": {
         "psr-4": {
