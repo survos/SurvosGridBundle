@@ -2,6 +2,7 @@
 
 namespace Survos\Grid;
 
+use Survos\CoreBundle\Traits\HasAssetMapperTrait;
 use Survos\Grid\Components\GridComponent;
 use Survos\Grid\Components\ItemGridComponent;
 use Survos\Grid\Twig\TwigExtension;
@@ -16,6 +17,8 @@ use Twig\Environment;
 
 class SurvosGridBundle extends AbstractBundle
 {
+
+    use HasAssetMapperTrait;
     // $config is the bundle Configuration that you usually process in ExtensionInterface::load() but already merged and processed
     /**
      * @param array<mixed> $config
@@ -61,15 +64,20 @@ class SurvosGridBundle extends AbstractBundle
 
     public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        //        dd($configs);
-        //        assert($configs[0]['defaults']['pagination_client_items_per_page'], "pagination_client_items_per_page must be tree in config/api_platform");
+        if (!$this->isAssetMapperAvailable($builder)) {
+            return;
+        }
 
-        // https://stackoverflow.com/questions/72507212/symfony-6-1-get-another-bundle-configuration-data/72664468#72664468
-        //        // iterate in reverse to preserve the original order after prepending the config
-        //        foreach (array_reverse($configs) as $config) {
-        //            $container->prependExtensionConfig('my_maker', [
-        //                'root_namespace' => $config['root_namespace'],
-        //            ]);
-        //        }
+        $dir = realpath(__DIR__.'/../assets/');
+        assert(file_exists($dir), $dir);
+
+        $builder->prependExtensionConfig('framework', [
+            'asset_mapper' => [
+                'paths' => [
+                    $dir => '@survos/grid',
+                ],
+            ],
+        ]);
     }
+
 }

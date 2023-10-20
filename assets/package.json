@@ -40,7 +40,7 @@
     "@popperjs/core": "^2.11.5",
     "axios": "^1.2.2",
     "bootstrap": "^5.2.0",
-    "datatables.net-bs5": "^1.10.25",
+    " ": "^1.10.25",
     "datatables.net-buttons-bs5": "^2.2",
     "datatables.net-colreorder-bs5": "^1.5.4",
     "datatables.net-datetime": "^1.1.2",
