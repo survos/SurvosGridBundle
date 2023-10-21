@@ -21,7 +21,6 @@ http://2016.padjo.org/tutorials/sqlite-data-starterpacks/#more-info-simplefolks-
 
 composer config repositories.survos_grid_bundle '{"type": "vcs", "url": "git@github.com:survos/SurvosGridBundle.git"}'
 
-
 ```bash
 symfony new --demo command-demo && cd command-demo
 # bump to the latest version of Symfony 6.3, use whatever version of you have installed
@@ -34,6 +33,16 @@ composer update
 composer req survos/grid-bundle
 
 bin/console make:controller Grid -i
+```bash
+
+symfony new grid-demo --webapp --version=next --php=8.2 && cd grid-demo
+composer config minimum-stability dev
+composer config extra.symfony.allow-contrib true
+composer req symfony/asset-mapper:^6.4
+composer req symfony/stimulus-bundle:2.x-dev
+
+composer req survos/grid-bundle
+bin/console make:controller grid -i
 cat > templates/grid.html.twig <<END
 {% extends 'base.html.twig' %}
 

@@ -8,6 +8,7 @@ import {Controller} from "@hotwired/stimulus";
 
 import {default as axios} from "axios";
 import DataTables from "datatables.net-bs5";
+// @todo: re-add these whwen importmap works
 import 'datatables.net-select-bs5';
 import 'datatables.net-responsive-bs5';
 import 'datatables.net-buttons-bs5';
