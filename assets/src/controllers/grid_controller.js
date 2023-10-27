@@ -6,17 +6,26 @@ import {Controller} from "@hotwired/stimulus";
 // import $ from 'jquery'; // for datatables.
 // // import {SurvosDataTable} from 'survos-datatables';
 
+import bootstrap from 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/+esm'
+import jQuery from 'https://cdn.jsdelivr.net/npm/jquery@3.7.1/+esm'
+const $ = jQuery;
+// global.jQuery = global.$ = $;
+import DataTables from 'https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.mjs'
+// import DataTable from 'datatables.net-bs5'
+
 import {default as axios} from "axios";
-import DataTables from "datatables.net-bs5";
+// import 'datatables.net-searchpanes-bs5/css/searchPanes.bootstrap5.min.css';
+
+// import DataTables from "datatables.net-bs5";
 // @todo: re-add these whwen importmap works
-import 'datatables.net-select-bs5';
-import 'datatables.net-responsive-bs5';
-import 'datatables.net-buttons-bs5';
-import 'datatables.net-scroller-bs5';
-import 'datatables.net-searchpanes-bs5';
-import 'datatables.net-buttons/js/buttons.colVis.min';
-import 'datatables.net-buttons/js/buttons.html5.min';
-import 'datatables.net-buttons/js/buttons.print.min';
+// import 'datatables.net-select-bs5';
+// import 'datatables.net-responsive-bs5';
+// import 'datatables.net-buttons-bs5';
+// import 'datatables.net-scroller-bs5';
+// import 'datatables.net-searchpanes-bs5';
+// import 'datatables.net-buttons/js/buttons.colVis.min';
+// import 'datatables.net-buttons/js/buttons.html5.min';
+// import 'datatables.net-buttons/js/buttons.print.min';
 
 // import {Modal} from "bootstrap"; !!
 // https://stackoverflow.com/questions/68084742/dropdown-doesnt-work-after-modal-of-bootstrap-imported
@@ -35,19 +44,28 @@ export default class extends Controller {
         filter: {type: String, default: ''}
     }
 
-    initalize() {
+    initialize() {
         this.initialized = false;
     }
 
     connect() {
         // super.connect();
         this.that = this; // for the modal
+        let dom = this.domValue;
 
         this.tableElement = false;
         if (this.hasTableTarget) {
             this.tableElement = this.tableTarget;
         } else if (this.element.tagName === 'TABLE') {
             this.tableElement = this.element;
+            if (this.useDatatablesValue) {
+                if (!this.initialized) {
+                    this.dt = this.initDataTable(this.tableElement, dom);
+                } else {
+                    console.warn('no reason to initialize!');
+                }
+            }
+
         } else {
             console.error('missing table target, so Using the first table we can find in the document');
             this.tableElement = document.getElementsByTagName('table')[0];
@@ -64,17 +82,13 @@ export default class extends Controller {
             // let dom = `<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
             // let dom = `<"dtsp-verticalContainer"<"dtsp-verticalPanes"P><"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}`;
             // dom = '<"dtsp-dataTable"frtip>';
-            let dom = this.domValue;
 
             // let dom = `<"js-dt-buttons"B><"js-dt-info"${infoString}>${searchString}t`;
             // let dom = `t`;
 
             // console.error(this.useDatatablesValue);
-            if (this.useDatatablesValue) {
-                this.dt = this.initDataTable(this.tableElement, dom);
-            }
-            this.initialized = true;
         }
+        this.initialized = true;
     }
 
     disconnect() {
@@ -264,6 +278,7 @@ export default class extends Controller {
 
         console.log("DOM: " + dom);
         setup = {
+            retrieve: true, // avoid datatable has been initialized
             dom: dom,
             select: true,
             scrollY: '70vh',
@@ -282,11 +297,13 @@ export default class extends Controller {
         };
 
         let table = new DataTables(el, setup);
-        table.searchPanes();
-        console.log('moving panes.');
-        $("div.dtsp-verticalPanes").append(table.searchPanes.container());
-
+        if (false) {
+            table.searchPanes();
+            console.log('moving panes.');
+            $("div.dtsp-verticalPanes").append(table.searchPanes.container());
+        }
         return table;
+
 
     }
 

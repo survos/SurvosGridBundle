@@ -62,22 +62,9 @@ class SurvosGridBundle extends AbstractBundle
         ;
     }
 
-    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
-    {
-        if (!$this->isAssetMapperAvailable($builder)) {
-            return;
-        }
-
-        $dir = realpath(__DIR__.'/../assets/');
-        assert(file_exists($dir), $dir);
-
-        $builder->prependExtensionConfig('framework', [
-            'asset_mapper' => [
-                'paths' => [
-                    $dir => '@survos/grid',
-                ],
-            ],
-        ]);
+    static public function getPrefix() {
+        return '@survos/grid';
     }
+
 
 }
