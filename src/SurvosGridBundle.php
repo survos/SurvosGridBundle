@@ -2,6 +2,7 @@
 
 namespace Survos\Grid;
 
+use Survos\CoreBundle\HasAssetMapperInterface;
 use Survos\CoreBundle\Traits\HasAssetMapperTrait;
 use Survos\Grid\Components\GridComponent;
 use Survos\Grid\Components\ItemGridComponent;
@@ -15,7 +16,7 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\UX\StimulusBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
 
-class SurvosGridBundle extends AbstractBundle
+class SurvosGridBundle extends AbstractBundle implements HasAssetMapperInterface
 {
 
     use HasAssetMapperTrait;
@@ -62,8 +63,11 @@ class SurvosGridBundle extends AbstractBundle
         ;
     }
 
-    static public function getPrefix() {
-        return '@survos/grid';
+    public function getPaths(): array
+    {
+        $dir = realpath(__DIR__.'/../assets/');
+        assert(file_exists($dir), 'asset path must exist for the assets in ' . __DIR__);
+        return [$dir => '@survos/grid'];
     }
 
 
