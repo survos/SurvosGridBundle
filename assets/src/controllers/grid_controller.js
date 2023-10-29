@@ -12,6 +12,7 @@ const $ = jQuery;
 // global.jQuery = global.$ = $;
 import DataTables from 'https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.mjs'
 // import DataTable from 'datatables.net-bs5'
+import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 
 import {default as axios} from "axios";
 // import 'datatables.net-searchpanes-bs5/css/searchPanes.bootstrap5.min.css';
