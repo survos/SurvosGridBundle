@@ -10,18 +10,16 @@
         "webpackMode": "eager",
         "fetch": "lazy",
         "enabled": true,
-        "importmap": {
-          "@hotwired/stimulus": "^3.1.0",
-          "@popperjs/core": "^2.11.8",
-          "bootstrap": "^5.3.2",
-          "jquery": "^3.7.1",
-          "datatables.net-bs5": "1.13.6"
-        },
         "autoimport": {
-          "jquery": true,
-          "datatables.net-bs5": true
         }
       }
+    },
+    "importmap": {
+      "@hotwired/stimulus": "^3.1.0",
+      "@popperjs/core": "^2.11.8",
+      "bootstrap": "^5.3.2",
+      "jquery": "^3.7.1",
+      "datatables.net-bs5": "1.13.6"
     }
   },
   "peerDependencies": {
