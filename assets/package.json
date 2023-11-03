@@ -12,12 +12,14 @@
         "enabled": true,
         "importmap": {
           "@hotwired/stimulus": "^3.1.0",
-          "axios": "^1.5.1",
           "@popperjs/core": "^2.11.8",
-          "bootstrap": "^5.3.2"
+          "bootstrap": "^5.3.2",
+          "jquery": "^3.7.1",
+          "datatables.net-bs5": "1.13.6"
         },
         "autoimport": {
-          "axios": true
+          "jquery": true,
+          "datatables.net-bs5": true
         }
       }
     }
@@ -30,9 +32,9 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "axios": "^1.2.2",
     "bootstrap": "^5.3.0",
     "datatables.net-bs5": "^1.10.25",
+    "jquery": "^3.7.1",
     "twig": "^1.15.4"
   }
 

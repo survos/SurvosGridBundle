@@ -1,20 +1,21 @@
 import {Controller} from "@hotwired/stimulus";
 
-// HTML dataable controller, works with GridComponent, which generates an HTML table.
+// HTML datatable controller, works with SimpleDatatablesComponent, which generates an HTML table.
 // see api_grid_controller for remote data loading use API Platform
 
 // import $ from 'jquery'; // for datatables.
 // // import {SurvosDataTable} from 'survos-datatables';
 
 import bootstrap from 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/+esm'
-import jQuery from 'https://cdn.jsdelivr.net/npm/jquery@3.7.1/+esm'
-const $ = jQuery;
+import jquery from 'jquery';
+console.log('local jquery');
+const $ = jquery;
 // global.jQuery = global.$ = $;
-import DataTables from 'https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.mjs'
-// import DataTable from 'datatables.net-bs5'
+
+import DataTables from 'datatables.net-bs5'
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 
-import {default as axios} from "axios";
+// import {default as axios} from "axios";
 // import 'datatables.net-searchpanes-bs5/css/searchPanes.bootstrap5.min.css';
 
 // import DataTables from "datatables.net-bs5";
@@ -50,9 +51,12 @@ export default class extends Controller {
     }
 
     connect() {
+
+
         // super.connect();
         this.that = this; // for the modal
         let dom = this.domValue;
+
 
         this.tableElement = false;
         if (this.hasTableTarget) {
@@ -179,17 +183,19 @@ export default class extends Controller {
                 console.assert(data.rp, "missing rp, add @Groups to entity")
                 let formUrl = Routing.generate(modalRoute, {...data.rp, _page_content_only: 1});
 
-                axios({
-                    method: 'get', //you can set what request you want to be
-                    url: formUrl,
-                    // data: {id: varID},
-                    // headers: {
-                    //     _page_content_only: '1' // could send blocks that we want??
-                    // }
-                })
-                    .then(response => this.modalBodyTarget.innerHTML = response.data)
-                    .catch(error => this.modalBodyTarget.innerHTML = error)
-                ;
+                console.assert(false, "axios has been removed.");
+
+                // axios({
+                //     method: 'get', //you can set what request you want to be
+                //     url: formUrl,
+                //     // data: {id: varID},
+                //     // headers: {
+                //     //     _page_content_only: '1' // could send blocks that we want??
+                //     // }
+                // })
+                //     .then(response => this.modalBodyTarget.innerHTML = response.data)
+                //     .catch(error => this.modalBodyTarget.innerHTML = error)
+                // ;
             }
 
         });

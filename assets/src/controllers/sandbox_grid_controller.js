@@ -1,6 +1,6 @@
 import {Controller} from "@hotwired/stimulus";
 
-// HTML dataable controller, works with GridComponent, which generates an HTML table.
+// HTML dataable controller, works with SimpleDatatablesComponent, which generates an HTML table.
 // see api_grid_controller for remote data loading use API Platform
 
 // import $ from 'jquery'; // for datatables.
