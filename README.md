@@ -23,7 +23,6 @@ composer config repositories.survos_grid_bundle '{"type": "vcs", "url": "git@git
 
 ```bash
 symfony new grid-demo --webapp --version=next --php=8.2 && cd grid-demo
-composer config minimum-stability dev
 composer config extra.symfony.allow-contrib true
 composer req symfony/asset-mapper symfony/stimulus-bundle:2.x-dev
 composer req survos/grid-bundle survos/scraper-bundle

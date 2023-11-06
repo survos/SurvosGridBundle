@@ -27,6 +27,7 @@ class GridComponent
     public bool $search = true;
     public bool $trans = true;
     public string|bool|null $domain = null;
+    public int $pageLength=10;
 
 
     public bool $useDatatables = true;
@@ -36,6 +37,7 @@ class GridComponent
     public string $dom='?';
     public array $searchPanesFields=[];
     public ?string $tableId = null;
+    public ?string $rowAlias = null;
     public string $tableClasses = '';
 
     #[PreMount]
@@ -46,8 +48,9 @@ class GridComponent
             'data' => null,
             'class' => null,
             'dom' => 'Plfrtip',
+            'rowAlias' => null,
             'useDatatables' => true,
-
+            'pageLength' => 20,
             'tableId' => null,
             'tableClasses' => '',
             'scrollY' => '50vh',

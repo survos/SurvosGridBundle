@@ -10,21 +10,24 @@ import bootstrap from 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/+esm'
 import jquery from 'jquery';
 console.log('local jquery');
 const $ = jquery;
-// global.jQuery = global.$ = $;
 
 import DataTables from 'datatables.net-bs5'
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+import 'datatables.net-select';
+// import 'datatables.net-select-bs5';
+import 'datatables.net-searchpanes';
+
+// https://jsfiddle.net/tacman1123/b2f3hj08/23/
 
 // import {default as axios} from "axios";
 // import 'datatables.net-searchpanes-bs5/css/searchPanes.bootstrap5.min.css';
 
 // import DataTables from "datatables.net-bs5";
-// @todo: re-add these whwen importmap works
+// @todo: re-add these when importmap works
 // import 'datatables.net-select-bs5';
 // import 'datatables.net-responsive-bs5';
 // import 'datatables.net-buttons-bs5';
 // import 'datatables.net-scroller-bs5';
-// import 'datatables.net-searchpanes-bs5';
 // import 'datatables.net-buttons/js/buttons.colVis.min';
 // import 'datatables.net-buttons/js/buttons.html5.min';
 // import 'datatables.net-buttons/js/buttons.print.min';
@@ -40,6 +43,7 @@ export default class extends Controller {
     static values = {
         search: true,
         info: false,
+        pageLength: 15,
         dom: 'Plfrtip',
         useDatatables: true,
         sortableFields: {type: String, default: '{}'},
@@ -57,24 +61,25 @@ export default class extends Controller {
         this.that = this; // for the modal
         let dom = this.domValue;
 
-
         this.tableElement = false;
         if (this.hasTableTarget) {
             this.tableElement = this.tableTarget;
+            console.log(this.tableElement);
         } else if (this.element.tagName === 'TABLE') {
             this.tableElement = this.element;
             if (this.useDatatablesValue) {
-                if (!this.initialized) {
-                    this.dt = this.initDataTable(this.tableElement, dom);
-                } else {
-                    console.warn('no reason to initialize!');
-                }
             }
 
         } else {
             console.error('missing table target, so Using the first table we can find in the document');
             this.tableElement = document.getElementsByTagName('table')[0];
         }
+        if (!this.initialized) {
+            this.dt = this.initDataTable(this.tableElement, dom);
+        } else {
+            console.warn('no reason to initialize!');
+        }
+
         // else {
         //     console.error('A table element is required.');
         // }
@@ -292,6 +297,7 @@ export default class extends Controller {
             scrollX: true,
             scrollCollapse: true,
             scroller: true,
+            pageLength: this.pageLengthValue,
             columnDefs: this.columnDefs(),
             // searchPanes:{
             //     layout: 'columns-' + this.searchPanesColumns,
@@ -304,11 +310,12 @@ export default class extends Controller {
         };
 
         let table = new DataTables(el, setup);
-        if (false) {
-            table.searchPanes();
+        // if (this.dom.hasOwnProperty('P')) {
+            // dt.searchPanes();
             console.log('moving panes.');
             $("div.dtsp-verticalPanes").append(table.searchPanes.container());
-        }
+        // }
+
         return table;
 
 

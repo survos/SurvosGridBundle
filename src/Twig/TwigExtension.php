@@ -5,6 +5,7 @@ namespace Survos\Grid\Twig;
 use Survos\CoreBundle\Entity\RouteParametersInterface;
 use Survos\Grid\Attribute\Crud;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
@@ -19,7 +20,7 @@ use function Symfony\Component\String\u;
 
 class TwigExtension extends AbstractExtension
 {
-    public function __construct()
+    public function __construct(private PropertyAccessorInterface $propertyAccessor)
     {
     }
 
@@ -39,7 +40,12 @@ class TwigExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('reverseRange', fn ($x, $y) => sprintf("%s-%s", $x, $y)),
+            new TwigFunction('setAttribute', function (array $object, $attribute, $value) {
+                $object[$attribute] = $value;
+                return $object;
+            }),
+//            $this->propertyAccessor->setValue($object, $attribute, $value)),
+            new TwigFunction('reverseRange', fn($x, $y) => sprintf("%s-%s", $x, $y)),
             // survosCrudBundle?
             new TwigFunction('browse_route', [$this, 'browseRoute']),
 

@@ -13,7 +13,6 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
-use Symfony\UX\StimulusBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
 
 class SurvosGridBundle extends AbstractBundle implements HasAssetMapperInterface
@@ -26,9 +25,10 @@ class SurvosGridBundle extends AbstractBundle implements HasAssetMapperInterface
      */
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        if (class_exists(Environment::class) && class_exists(StimulusTwigExtension::class)) {
+        if (class_exists(Environment::class)) {
             $builder
                 ->setDefinition('survos.grid_bundle', new Definition(TwigExtension::class))
+                ->setArgument('$propertyAccessor', new Reference('property_accessor'))
                 ->addTag('twig.extension')
                 ->setPublic(false)
             ;

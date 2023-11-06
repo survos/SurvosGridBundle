@@ -7,6 +7,7 @@
                 search: this.search,
                 scrollY: this.scrollY,
                 dom: this.dom,
+                pageLength: this.pageLength,
                 searchPanesColumns: this.searchPanesColumns,
                 info: this.info,
             }) }}>
@@ -39,9 +40,20 @@
                         {% set templateName = c.twigTemplate|default(c.name) %}
 
                         {% if block(templateName) is defined %}
-                            {% with {field_name: c.name, row: row, column: c, c:c } %}
+                            {% set blockParams = {field_name: c.name, row: row, column: c, c:c } %}
+                            {% if rowAlias %}
+                                {% set blockParams = setAttribute(blockParams, rowAlias, row ) %}
+{#                                {{ blockParams|json_encode }}#}
+{#                                {{ blockParams|keys|join(',') }}#}
+                            {% endif %}
+
+                            {% with blockParams %}
                                 {{ block(templateName) }}
                             {% endwith %}
+{#                            {% with {field_name: c.name, row: row, column: c, c:c } %}#}
+{#                                {{ block(templateName) }}#}
+{#                            {% endwith %}#}
+
                         {% else %}
                             {% if c.twigTemplate %}
                                 <span class="text-danger">{{ templateName }} is not defined.</span>
