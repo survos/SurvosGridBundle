@@ -13,9 +13,9 @@ const $ = jquery;
 
 import DataTables from 'datatables.net-bs5'
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
-import 'datatables.net-select';
+// import 'datatables.net-select';
 // import 'datatables.net-select-bs5';
-import 'datatables.net-searchpanes';
+// import 'datatables.net-searchpanes';
 
 // https://jsfiddle.net/tacman1123/b2f3hj08/23/
 
@@ -312,8 +312,8 @@ export default class extends Controller {
         let table = new DataTables(el, setup);
         // if (this.dom.hasOwnProperty('P')) {
             // dt.searchPanes();
-            console.log('moving panes.');
-            $("div.dtsp-verticalPanes").append(table.searchPanes.container());
+            // console.log('moving panes.');
+            // $("div.dtsp-verticalPanes").append(table.searchPanes.container());
         // }
 
         return table;

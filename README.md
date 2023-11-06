@@ -32,7 +32,7 @@ cat > templates/grid.html.twig <<END
 {% extends 'base.html.twig' %}
 {% block body %}
     {% set data = request_data('https://jsonplaceholder.typicode.com/users') %}
-    <twig:grid :columns="data[0]|keys">
+    <twig:grid :data="data" :columns="data[0]|keys">
         <twig:block name="id">
             {{ row.id }}
         </twig:block>
