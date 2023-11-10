@@ -6,22 +6,23 @@ import {Controller} from "@hotwired/stimulus";
 // import $ from 'jquery'; // for datatables.
 // // import {SurvosDataTable} from 'survos-datatables';
 
-import bootstrap from 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/+esm'
-import jquery from 'jquery';
-console.log('local jquery');
-const $ = jquery;
+// import jquery from 'jquery';
+// console.log('local jquery');
+// const $ = jquery;
 
-let style = 'bs5';
-import DataTables from 'datatables.net-' + style;
+// import 'bootstrap';
+
+import DataTables from 'datatables.net-bs5'
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
-// import 'datatables.net-select';
-// import 'datatables.net-select-bs5';
-// import 'datatables.net-searchpanes';
+
+import 'datatables.net-select';
+import 'datatables.net-select-bs5';
+import 'datatables.net-searchpanes';
 
 // https://jsfiddle.net/tacman1123/b2f3hj08/23/
 
 // import {default as axios} from "axios";
-// import 'datatables.net-searchpanes-bs5/css/searchPanes.bootstrap5.min.css';
+import 'datatables.net-searchpanes-bs5/css/searchPanes.bootstrap5.min.css';
 
 // import DataTables from "datatables.net-bs5";
 // @todo: re-add these when importmap works
