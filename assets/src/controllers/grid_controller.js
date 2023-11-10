@@ -11,7 +11,8 @@ import jquery from 'jquery';
 console.log('local jquery');
 const $ = jquery;
 
-import DataTables from 'datatables.net-bs5'
+let style = 'bs5';
+import DataTables from 'datatables.net-' + style;
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 // import 'datatables.net-select';
 // import 'datatables.net-select-bs5';

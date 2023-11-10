@@ -21,8 +21,7 @@
       "@popperjs/core": "^2.11.8",
       "bootstrap": "^5.3.2",
       "jquery": "^3.7.1",
-      "datatables.net-bs5": "1.13.6",
-      "datatables.net-select-bs5": "1.7.0"
+      "datatables.net-bs5": "1.13.6"
     }
   },
   "peerDependencies": {
