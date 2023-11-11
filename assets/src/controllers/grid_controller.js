@@ -29,7 +29,7 @@ import 'datatables.net-searchpanes-bs5/css/searchPanes.bootstrap5.min.css';
 // import 'datatables.net-select-bs5';
 // import 'datatables.net-responsive-bs5';
 // import 'datatables.net-buttons-bs5';
-// import 'datatables.net-scroller-bs5';
+import 'datatables.net-scroller-bs5';
 // import 'datatables.net-buttons/js/buttons.colVis.min';
 // import 'datatables.net-buttons/js/buttons.html5.min';
 // import 'datatables.net-buttons/js/buttons.print.min';
