@@ -27,6 +27,10 @@ composer config extra.symfony.allow-contrib true
 composer req symfony/asset-mapper symfony/stimulus-bundle:2.x-dev
 composer req survos/grid-bundle survos/scraper-bundle
 
+# make it prettier with bootstrap, but not necessary
+bin/console importmap:require bootstrap
+echo "import 'bootstrap/dist/css/bootstrap.min.css'" >> assets/app.js
+
 bin/console make:controller grid -i
 cat > templates/grid.html.twig <<END
 {% extends 'base.html.twig' %}

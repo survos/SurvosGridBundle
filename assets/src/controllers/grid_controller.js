@@ -23,11 +23,13 @@ import 'datatables.net-searchpanes';
 
 // import {default as axios} from "axios";
 import 'datatables.net-searchpanes-bs5/css/searchPanes.bootstrap5.min.css';
+import 'datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css';
+import 'datatables.net-scroller-bs5/css/scroller.bootstrap5.min.css';
 
 // import DataTables from "datatables.net-bs5";
 // @todo: re-add these when importmap works
-// import 'datatables.net-select-bs5';
-// import 'datatables.net-responsive-bs5';
+import 'datatables.net-select-bs5';
+import 'datatables.net-responsive-bs5';
 // import 'datatables.net-buttons-bs5';
 import 'datatables.net-scroller-bs5';
 // import 'datatables.net-buttons/js/buttons.colVis.min';
@@ -299,6 +301,7 @@ export default class extends Controller {
             scrollX: true,
             scrollCollapse: true,
             scroller: true,
+            responsive: true,
             pageLength: this.pageLengthValue,
             columnDefs: this.columnDefs(),
             // searchPanes:{
