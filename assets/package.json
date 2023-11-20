@@ -42,6 +42,16 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "datatables.net-buttons-bs5": "^2.2",
+    "datatables.net-colreorder": "^1.5.4",
+    "datatables.net-colreorder-bs5": "^1.5.4",
+    "datatables.net-datetime": "^1.4.1",
+    "datatables.net-fixedcolumns-bs5": "^4.0.0",
+    "datatables.net-fixedheader-bs5": "^3.2.2",
+    "datatables.net-responsive": "^2.4.0",
+    "datatables.net-responsive-bs5": "^2.4.0",
+    "datatables.net-scroller": "^2.0.4",
+    "datatables.net-scroller-bs5": "^2.0.4",
     "bootstrap": "^5.3.2",
     "jquery": "^3.7.1",
     "twig": "^1.17.1"
